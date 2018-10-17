@@ -1,4 +1,4 @@
-package com.mhlab.BookingRooms.domain.pages;
+package com.mhlab.br.domain.pages;
 
 import lombok.Getter;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -29,6 +29,7 @@ public class PageMaker {
         this.totalCount = totalCount;
         this.criteria = criteria;
 
+        //마지막 페이지 구하는 식
         this.endPage  = (int) (Math.ceil(criteria.getPage() / (double)pagingCnt) * pagingCnt); //마지막 페이지 구하는 식
         this.startPage = (endPage - pagingCnt) + 1; //시작 페이지
 

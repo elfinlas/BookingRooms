@@ -1,4 +1,4 @@
-package com.mhlab.BookingRooms;
+package com.mhlab.br;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

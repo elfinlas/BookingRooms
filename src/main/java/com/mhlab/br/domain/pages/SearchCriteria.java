@@ -1,4 +1,4 @@
-package com.mhlab.BookingRooms.domain.pages;
+package com.mhlab.br.domain.pages;
 
 import lombok.Getter;
 import lombok.Setter;

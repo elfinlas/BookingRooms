@@ -1,4 +1,4 @@
-package com.mhlab.BookingRooms.domain.pages;
+package com.mhlab.br.domain.pages;
 
 import lombok.Getter;
 
@@ -33,10 +33,6 @@ public class Criteria {
     public void setPerPageNum(int perPageNum) {
         this.perPageNum = perPageNum;
     }
-
-
-
-
 
 
     @Override

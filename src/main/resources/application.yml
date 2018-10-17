@@ -1,2 +1,16 @@
-server:
-  port: 8888
+spring:
+  profiles:
+    active: dev
+  devtools:
+    livereload:
+      enabled: true
+  thymeleaf:
+    cache: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    generate-ddl: false
+    database: mysql
+    database-platform: com.mhlab.br.config.CustomMySql5Dialect
+

@@ -33,6 +33,12 @@ dependencies {
 	//Lombok
 	implementation('org.projectlombok:lombok:1.18.2')
 
+	//MariaDB
+	implementation('org.mariadb.jdbc:mariadb-java-client:2.3.0')
+
+	//ModelMapper
+	implementation('org.modelmapper:modelmapper:2.3.0')
+
 	runtimeOnly('org.springframework.boot:spring-boot-devtools')
 
 	testImplementation('org.springframework.boot:spring-boot-starter-test')

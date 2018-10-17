@@ -1,6 +1,11 @@
 
 # Created by https://www.gitignore.io/api/java,macos,gradle,windows,eclipse,netbeans,java-web,intellij+all
 
+
+#
+/src/main/resources/application-dev.yml
+
+
 ### Eclipse ###
 
 .metadata
@@ -256,14 +261,3 @@ gradle-app.setting
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
-
-
-# End of https://www.gitignore.io/api/java,macos,gradle,windows,eclipse,netbeans,java-web,intellij+all
-# build.gradle
-#gradle/
-#gradlew
-#gradlew.bat
-#settings.gradle
-#src/main/resources/static/
-#src/main/resources/templates/
-#src/main/java/com/mhlab/vstudy/ch02/part24/

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<body th:fragment="mainBody">
+    <!-- Contents -->
+    <th:block layout:fragment="content_body"></th:block>
+
+    <!-- Footer -->
+    <th:block th:include="fragments/main/footer"></th:block>
+
+    <!-- Js -->
+    <th:block th:include="fragments/common/common_js"></th:block>
+
+    <!-- Custom JS  -->
+    <th:block layout:fragment="custom_js"></th:block>
+
+</body>
+
+</html>

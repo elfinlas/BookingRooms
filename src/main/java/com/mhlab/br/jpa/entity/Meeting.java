@@ -1,4 +1,4 @@
-package com.mhlab.BookingRooms.jpa.entity;
+package com.mhlab.br.jpa.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +22,7 @@ public class Meeting {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int idx;
+    private int meetingIdx;
 
     @Column(nullable = false)
     private String title; //회의 제목
@@ -49,6 +49,6 @@ public class Meeting {
     @JoinColumn(name = "room")
     private Room room; //회의실
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "meeting")
     private List<Account> joinCompanyMember; //회의 참석자 (내부인물)
 }

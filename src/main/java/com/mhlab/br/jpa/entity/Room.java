@@ -1,4 +1,4 @@
-package com.mhlab.BookingRooms.jpa.entity;
+package com.mhlab.br.jpa.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +19,7 @@ public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int idx;
+    private int roomIdx;
 
     @Column(nullable = false)
     private String name;

@@ -1,4 +1,4 @@
-package com.mhlab.BookingRooms.jpa.entity;
+package com.mhlab.br.jpa.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +20,7 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int idx;
+    private int accountIdx;
 
     @Column(nullable = false)
     private String id; //계정명
@@ -38,9 +38,9 @@ public class Account {
     private LocalDateTime createDate; //데이터 생성일
 
     @Column(nullable = false)
-    private LocalDateTime endDate; //데이터 수정일
+    private LocalDateTime updateDate; //데이터 수정일
 
     @ManyToOne
-    @JoinColumn(name = "idx")
+    @JoinColumn(name = "meetingIdx")
     private Meeting meeting;
 }

@@ -8,9 +8,9 @@ spring:
     cache: false
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: false
-    generate-ddl: false
+    generate-ddl: true
     database: mysql
     database-platform: com.mhlab.br.config.CustomMySql5Dialect
 

@@ -1,6 +1,6 @@
-package com.mhlab.BookingRooms.jpa.persistence;
+package com.mhlab.br.jpa.persistence;
 
-import com.mhlab.BookingRooms.jpa.entity.Meeting;
+import com.mhlab.br.jpa.entity.Meeting;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

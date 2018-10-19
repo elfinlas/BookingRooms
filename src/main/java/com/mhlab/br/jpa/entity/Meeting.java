@@ -42,13 +42,11 @@ public class Meeting {
     @Column(nullable = false)
     private LocalDateTime updateDate; //데이터 수정일
 
-    @Column()
-    private String joinOutMemeber; //회의 참석자 (외부인물)
-
     @OneToOne
     @JoinColumn(name = "room")
     private Room room; //회의실
 
     @OneToMany(mappedBy = "meeting")
-    private List<Account> joinCompanyMember; //회의 참석자 (내부인물)
+    private List<MeetingAttendMember> attendMemberList; //회의 참석자
+
 }

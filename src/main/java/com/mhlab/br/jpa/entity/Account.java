@@ -6,6 +6,8 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 회원 데이터 엔티티
@@ -40,7 +42,4 @@ public class Account {
     @Column(nullable = false)
     private LocalDateTime updateDate; //데이터 수정일
 
-    @ManyToOne
-    @JoinColumn(name = "meetingIdx")
-    private Meeting meeting;
 }

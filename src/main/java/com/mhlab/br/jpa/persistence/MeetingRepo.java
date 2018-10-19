@@ -12,4 +12,18 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MeetingRepo extends JpaRepository<Meeting, Integer> {
+
+
+    /////////////////////////
+    //    WithOut Paging
+    /////////////////////////
+
+
+
+
+
+
+    /////////////////////////
+    //     With Paging
+    /////////////////////////
 }

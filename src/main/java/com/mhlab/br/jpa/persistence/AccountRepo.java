@@ -11,4 +11,27 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface AccountRepo extends JpaRepository<Account, Integer> {
+
+
+    /**
+     * 로그인 처리를 위해 사용하는 메서드
+     * @param id
+     * @param pw
+     * @return
+     */
+    Account findByIdAndPw(String id, String pw);
+
+
+
+    /////////////////////////
+    //    WithOut Paging
+    /////////////////////////
+
+
+
+
+    /////////////////////////
+    //     With Paging
+    /////////////////////////
+
 }

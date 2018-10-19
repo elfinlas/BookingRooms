@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head th:fragment="mainHead">
+    <!-- 공용적으로 사용하는 Head 데이터 -->
+    <th:block th:include="fragments/common/head"></th:block>
+
+    <!-- Custom or page css  -->
+    <th:block layout:fragment="custom_css"></th:block>
+</head>
+</html>

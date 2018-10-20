@@ -17,7 +17,7 @@ public class MainViewController {
     @GetMapping("/")
     public ModelAndView getMain() {
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/views/main");
+        mv.setViewName("views/main");
         return mv;
     }
 

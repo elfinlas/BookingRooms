@@ -1,0 +1,13 @@
+@CHARSET "UTF-8";
+
+/*
+Sweet Alert2에서 크기가 작아질 때 문제 ->  https://github.com/sweetalert2/sweetalert2/issues/855
+ */
+.swal2-popup {
+    font-size: 1.5rem !important;
+}
+
+
+li.vaad {
+    color:white;
+}

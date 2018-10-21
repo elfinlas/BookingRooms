@@ -11,6 +11,7 @@
 
 
 <th:block layout:fragment="content_body">
+    <div th:replace="fragments/common/loading"></div>
     <header th:include="fragments/main/menu"></header>
 
     <div class="content-wrapper">
@@ -103,7 +104,6 @@
                             <h3 class="box-title">회의실 01 - 총 3건</h3>
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
-                                <!--<button id="info_box_close_bt" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>-->
                             </div>
                         </div><!-- /.box-header -->
                         <div class="box-body">
@@ -125,13 +125,14 @@
             </div> <!-- ./row -->
 
             <!-- Modal -->
-            <th:block th:include="fragments/meeting/add_"></th:block>
+            <th:block th:include="fragments/meeting/add_modal"></th:block>
 
         </section><!-- ./content -->
     </div> <!-- ./content-wrapper -->
 </th:block>
 
 <th:block layout:fragment="custom_js">
+
     <script th:src="@{/js/main/main.js}"></script>
 </th:block>
 

@@ -4,6 +4,8 @@ import com.mhlab.br.jpa.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Account Entity를 처리하는 리포지토리 객체
  *
@@ -27,6 +29,12 @@ public interface AccountRepo extends JpaRepository<Account, Integer> {
     //    WithOut Paging
     /////////////////////////
 
+    /**
+     * 특정 ID를 제외하고 가져오는 메서드
+     * @param userId
+     * @return
+     */
+    List<Account> findByIdIsNot(String userId);
 
 
 

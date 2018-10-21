@@ -1,90 +1,101 @@
-<div class="modal fade" id="stuffDataReadModal" tabindex="-1" role="dialog" aria-labelledby="stuffDataReadModalLabel" aria-hidden="true">
+<div class="modal fade" id="meetingDataAddModal" tabindex="-1" role="dialog" aria-labelledby="meetingDataAddModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                <h4 class="modal-title" id="stuffDataReadModalLabel"></h4>
+                <h4 class="modal-title" id="meetingDataAddModalLabel"></h4>
             </div> <!-- ./modal-header -->
             <div class="modal-body">
-                <h4 class="box-title" style="margin-left: 3%;">자산 열람</h4>
+                <h4 class="box-title">회의 등록</h4>
 
                 <input id="mhStuffIdx" type="hidden">
 
-                <ul class="list-group list-group-unbordered" style="margin-left: 3%; margin-right: 3%;">
-                    <li class="list-group-item">
-                        <b>이름</b> <p id="stuffName" class="text-muted pull-right" style="font-weight: bold"></p>
-                    </li>
 
-                    <li class="list-group-item">
-                        <b>수량</b> <p id="stuffQuantity" class="text-muted pull-right" style="font-weight: bold"></p>
-                    </li>
+                <div class="row" style="margin-top: 25px;">
+                    <div class="col-sm-9 col-md-9">
+                        <div class="form-group">
+                            <label for="titleInput">회의 제목</label>
+                            <input type="text" class="form-control" id="titleInput" placeholder="제목을 입력하세요.">
+                        </div>
+                    </div> <!-- ./col -->
+                    <div class="col-sm-3 col-md-3">
+                        <div class="form-group" style="margin-top: 25px;">
+                            <div class="checkbox">
+                                <label> <input type="checkbox" id="isPrivate"> 비 공개 회의 </label>
+                            </div>
+                        </div>
+                    </div> <!-- ./col -->
+                </div> <!-- ./row -->
 
-                    <li class="list-group-item">
-                        <b>상태</b> <p id="stuffStatus" class="text-muted pull-right" style="font-weight: bold"></p>
-                    </li>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label for="contentInput">내용</label>
+                    <textarea class="form-control" id="contentInput" rows="3" style="resize: none;" placeholder="제목을 입력하세요."></textarea>
+                </div>
 
-                    <li class="list-group-item">
-                        <b>타입</b> <p id="stuffType" class="text-muted pull-right" style="font-weight: bold"></p>
-                    </li>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-sm-12 col-md-4">
+                        <div class="form-group">
+                            <label>시작일</label>
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" id="startDate">
+                            </div>
+                        </div>
+                    </div> <!-- ./col -->
+                    <div class="col-sm-12 col-md-4">
+                        <div class="bootstrap-timepicker">
+                            <div class="form-group">
+                                <label>시작시간</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon"> <i class="fa fa-clock-o"></i> </div>
+                                    <input type="text" class="form-control timepicker" id="startTime">
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- ./col -->
 
-                    <li class="list-group-item">
-                        <b>시리얼번호</b> <p id="stuffSerial" class="text-muted pull-right" style="font-weight: bold"></p>
-                    </li>
+                    <div class="col-sm-4 col-md-4">
+                        <div class="bootstrap-timepicker">
+                            <div class="form-group">
+                                <label>종료시간</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon"> <i class="fa fa-clock-o"></i> </div>
+                                    <input type="text" class="form-control timepicker" id="endTime">
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- ./col -->
+                </div> <!-- ./row -->
 
-                    <li class="list-group-item">
-                        <b>구입일</b> <p id="stuffBuyDate" class="text-muted pull-right" style="font-weight: bold"></p>
-                    </li>
-
-                    <li class="list-group-item">
-                        <b>금액</b> <p id="stuffPrice" class="text-muted pull-right" style="font-weight: bold"></p>
-                    </li>
-
-                    <li class="list-group-item">
-                        <b>기타 메세지</b> <p id="stuffEtcMsg" class="text-muted pull-right" style="font-weight: bold"></p>
-                    </li>
-
-                    <li class="list-group-item">
-                        <b>소유자</b> <p id="stuffOwner" class="text-muted pull-right" style="font-weight: bold"></p>
-                    </li>
-
-                    <li class="list-group-item">
-                        <b>등록자</b> <p id="stuffRegUser" class="text-muted pull-right" style="font-weight: bold"></p>
-                    </li>
-
-                    <li class="list-group-item">
-                        <b>생성일</b> <p id="stuffCreateDate" class="text-muted pull-right" style="font-weight: bold"></p>
-                    </li>
-
-                    <li class="list-group-item">
-                        <b>수정일</b> <p id="stuffUpdateDate" class="text-muted pull-right" style="font-weight: bold"></p>
-                    </li>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-sm-6 col-md-6">
+                        <div class="form-group">
+                            &nbsp;<label for="select2Room">회의실</label>
+                            <select class="form-control select2" id="select2Room" style="width: 100%;">
+                                <option selected>회의실을 선택하세요</option>
+                                <option value="1">회의실 1</option>
+                                <option value="2">회의실 2</option>
+                                <option value="3">회의실 3</option>
+                            </select>
+                        </div>
+                    </div> <!-- ./col -->
+                    <div class="col-sm-6 col-md-6">
+                        <div class="form-group">
+                            &nbsp;<label for="title">참석자</label>
+                            <select class="form-control select2" multiple="multiple" id="select2User" style="width: 100%;">
+                                <option value="add_user">외부인 추가</option>
+                            </select>
+                        </div>
+                    </div> <!-- ./col -->
+                </div> <!-- ./row -->
 
 
-                    <li class="list-group-item" id="mAttachFile" style="margin-top: 20px;">
-                        <b>첨부파일</b>
-                        <table id="attachFileTable" class="table table-hover" style="margin-top: 20px;">
-                            <colgroup>
-                                <col width="60%"/>
-                                <col width="40%"/>
-                            </colgroup>
-                            <thead>
-                            <tr>
-                                <th>파일명</th>
-                                <th>용량</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </li>
-                </ul>
 
                 <div class="row" id="buttonItemView" style="margin-top: 30px;">
-                    <div class="col-sm-6 col-md-offset-1 col-md-4 text-center">
-                        <button type="button" class="btn btn-warning" onclick="click4Modify()" style="width: 100%;"> 수정 </button>
-                    </div>
-                    <div class="col-sm-6 col-md-offset-3 col-md-4 col-md-offset-1 text-center">
-                        <button type="button" class="btn btn-danger" onclick="click4Delete()" style="width: 100%;"> 삭제 </button>
+                    <div class="col-sm-12 col-md-12" style="padding-left: 25%; padding-right: 25%;">
+                        <button type="button" class="btn btn-success" onclick="click4Save()" style="width: 100%;"> 등록하기 </button>
                     </div>
                 </div>
             </div> <!-- ./modal-body -->

@@ -1,5 +1,6 @@
 package com.mhlab.br.jpa.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -18,6 +19,7 @@ import java.util.List;
 @Getter @Setter
 @Accessors(chain = true)
 @Entity
+@JsonIgnoreProperties({"pw"}) //암호의 경우 사용할 일이 없기 때문에 Json 변환에서 제외 처리를 한다.
 public class Account {
 
     @Id

@@ -1,0 +1,93 @@
+<div class="modal fade" id="stuffDataReadModal" tabindex="-1" role="dialog" aria-labelledby="stuffDataReadModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="stuffDataReadModalLabel"></h4>
+            </div> <!-- ./modal-header -->
+            <div class="modal-body">
+                <h4 class="box-title" style="margin-left: 3%;">자산 열람</h4>
+
+                <input id="mhStuffIdx" type="hidden">
+
+                <ul class="list-group list-group-unbordered" style="margin-left: 3%; margin-right: 3%;">
+                    <li class="list-group-item">
+                        <b>이름</b> <p id="stuffName" class="text-muted pull-right" style="font-weight: bold"></p>
+                    </li>
+
+                    <li class="list-group-item">
+                        <b>수량</b> <p id="stuffQuantity" class="text-muted pull-right" style="font-weight: bold"></p>
+                    </li>
+
+                    <li class="list-group-item">
+                        <b>상태</b> <p id="stuffStatus" class="text-muted pull-right" style="font-weight: bold"></p>
+                    </li>
+
+                    <li class="list-group-item">
+                        <b>타입</b> <p id="stuffType" class="text-muted pull-right" style="font-weight: bold"></p>
+                    </li>
+
+                    <li class="list-group-item">
+                        <b>시리얼번호</b> <p id="stuffSerial" class="text-muted pull-right" style="font-weight: bold"></p>
+                    </li>
+
+                    <li class="list-group-item">
+                        <b>구입일</b> <p id="stuffBuyDate" class="text-muted pull-right" style="font-weight: bold"></p>
+                    </li>
+
+                    <li class="list-group-item">
+                        <b>금액</b> <p id="stuffPrice" class="text-muted pull-right" style="font-weight: bold"></p>
+                    </li>
+
+                    <li class="list-group-item">
+                        <b>기타 메세지</b> <p id="stuffEtcMsg" class="text-muted pull-right" style="font-weight: bold"></p>
+                    </li>
+
+                    <li class="list-group-item">
+                        <b>소유자</b> <p id="stuffOwner" class="text-muted pull-right" style="font-weight: bold"></p>
+                    </li>
+
+                    <li class="list-group-item">
+                        <b>등록자</b> <p id="stuffRegUser" class="text-muted pull-right" style="font-weight: bold"></p>
+                    </li>
+
+                    <li class="list-group-item">
+                        <b>생성일</b> <p id="stuffCreateDate" class="text-muted pull-right" style="font-weight: bold"></p>
+                    </li>
+
+                    <li class="list-group-item">
+                        <b>수정일</b> <p id="stuffUpdateDate" class="text-muted pull-right" style="font-weight: bold"></p>
+                    </li>
+
+
+                    <li class="list-group-item" id="mAttachFile" style="margin-top: 20px;">
+                        <b>첨부파일</b>
+                        <table id="attachFileTable" class="table table-hover" style="margin-top: 20px;">
+                            <colgroup>
+                                <col width="60%"/>
+                                <col width="40%"/>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>파일명</th>
+                                <th>용량</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </li>
+                </ul>
+
+                <div class="row" id="buttonItemView" style="margin-top: 30px;">
+                    <div class="col-sm-6 col-md-offset-1 col-md-4 text-center">
+                        <button type="button" class="btn btn-warning" onclick="click4Modify()" style="width: 100%;"> 수정 </button>
+                    </div>
+                    <div class="col-sm-6 col-md-offset-3 col-md-4 col-md-offset-1 text-center">
+                        <button type="button" class="btn btn-danger" onclick="click4Delete()" style="width: 100%;"> 삭제 </button>
+                    </div>
+                </div>
+            </div> <!-- ./modal-body -->
+        </div> <!-- modal-content -->
+    </div> <!-- ./modal-dialog -->
+</div> <!-- Modal -->

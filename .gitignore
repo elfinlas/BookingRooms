@@ -263,4 +263,3 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 .gradle/
 src/main/resources/static/res/
-src/main/resources/static/lib/jQuery_3.3.1/dist/

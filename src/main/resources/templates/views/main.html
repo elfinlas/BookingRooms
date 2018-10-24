@@ -11,10 +11,128 @@
 
 
 <th:block layout:fragment="content_body">
-    <h1> Hello!!!121 </h1>
+    <div th:replace="fragments/common/loading"></div>
+    <header th:include="fragments/main/menu"></header>
+
+    <div class="content-wrapper">
+        <section class="content-header">
+            <!--<h1> 서비스 준비중 <small>사내 공용일정</small> </h1>-->
+        </section>
+
+        <section class="content">
+
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h4 class="box-title">18년 10월 21일 회의</h4>
+                        </div>
+
+                        <div class="box-body">
+                            <table class="table table-hover table-responsive">
+                                <colgroup>
+                                    <col width="40%">
+                                    <col width="20%">
+                                    <col width="10%">
+                                    <col width="15%">
+                                    <col width="15%">
+                                </colgroup>
+
+                                <tr>
+                                    <th>회의</th>
+                                    <th>회의실</th>
+                                    <th>등록자</th>
+                                    <th>참석인원</th>
+                                    <th>시간</th>
+                                </tr>
+
+                                <tr>
+                                    <td>오늘 인플루언스 회의입니다</td>
+                                    <td>내부 제1 사무실</td>
+                                    <td>홍문화</td>
+                                    <td>홍문화 외 5명</td>
+                                    <td>14:30 ~ 16:30</td>
+                                </tr>
+                            </table>
+                        </div> <!-- ./box-body -->
+                    </div> <!-- ./box -->
+                </div> <!-- ./col -->
+
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h4 class="box-title">주간 회의 일정</h4>
+                        </div>
+
+                        <div class="box-body">
+                            <table class="table table-hover table-responsive">
+                                <colgroup>
+                                    <col width="40%">
+                                    <col width="20%">
+                                    <col width="10%">
+                                    <col width="15%">
+                                    <col width="15%">
+                                </colgroup>
+
+                                <tr>
+                                    <th>회의</th>
+                                    <th>회의실</th>
+                                    <th>등록자</th>
+                                    <th>참석인원</th>
+                                    <th>시간</th>
+                                </tr>
+
+                                <tr>
+                                    <td>오늘 인플루언스 회의입니다</td>
+                                    <td>내부 제1 사무실</td>
+                                    <td>홍문화</td>
+                                    <td>홍문화 외 5명</td>
+                                    <td>14:30 ~ 16:30</td>
+                                </tr>
+                            </table>
+                        </div> <!-- ./box-body -->
+                    </div> <!-- ./box -->
+                </div> <!-- -->
+            </div> <!-- row -->
+
+            <div class="row" >
+                <!-- loop -->
+                <div class="col-sm-12 col-md-3 col-lg-3">
+
+                    <div id="doc_info_box" class="box box-default collapsed-box" data-widget="box-widget">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">회의실 01 - 총 3건</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                            </div>
+                        </div><!-- /.box-header -->
+                        <div class="box-body">
+                            <ul class="list-group list-group-unbordered">
+                                <li class="list-group-item">
+                                    <b>12:30 ~ 13:30</b> <p class="text-muted pull-right"> 인플루언스 테스트</p>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>14:20 ~ 16:30</b> <p class="text-muted pull-right">토큰뱅크 바디스 테스트 </p>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>17:30 19:20</b> <p class="text-muted pull-right">저녁 테스트</p>
+                                </li>
+                            </ul>
+                        </div> <!-- /.box-body -->
+                    </div> <!-- ./box -->
+
+                </div>
+            </div> <!-- ./row -->
+
+            <!-- Modal -->
+            <th:block th:include="fragments/meeting/add_modal"></th:block>
+
+        </section><!-- ./content -->
+    </div> <!-- ./content-wrapper -->
 </th:block>
 
 <th:block layout:fragment="custom_js">
+
     <script th:src="@{/js/main/main.js}"></script>
 </th:block>
 

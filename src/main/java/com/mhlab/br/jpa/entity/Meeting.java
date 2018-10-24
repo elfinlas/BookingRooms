@@ -1,5 +1,7 @@
 package com.mhlab.br.jpa.entity;
 
+import com.mhlab.br.config.BooleanToYesNoConverter;
+import com.mhlab.br.domain.enums.MeetingTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -42,13 +44,20 @@ public class Meeting {
     @Column(nullable = false)
     private LocalDateTime updateDate; //데이터 수정일
 
-    @Column()
-    private String joinOutMemeber; //회의 참석자 (외부인물)
+    @Column
+    @Convert(converter = BooleanToYesNoConverter.class)
+    private boolean isPublic; //공개 여부
+
+    @Column
+    @Enumerated(value = EnumType.STRING)
+    private MeetingTypeEnum meetingType; //회의 타입
+
 
     @OneToOne
     @JoinColumn(name = "room")
     private Room room; //회의실
 
     @OneToMany(mappedBy = "meeting")
-    private List<Account> joinCompanyMember; //회의 참석자 (내부인물)
+    private List<MeetingAttendMember> attendMemberList; //회의 참석자
+
 }

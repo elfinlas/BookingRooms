@@ -5,6 +5,17 @@
     <!-- 공용적으로 사용하는 Head 데이터 -->
     <th:block th:include="fragments/common/head"></th:block>
 
+    <!-- 회의 등록 시 -->
+    <link rel="stylesheet" th:href="@{/lib/AdminLTE_2.4.5/Plugins/select2/dist/css/select2.min.css}" />
+    <link rel="stylesheet" th:href="@{/lib/AdminLTE_2.4.5/Plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css}" /> <!-- DatePicker -->
+
+    <link rel="stylesheet" th:href="@{/lib/jQuery-Timepicker/jquery.timepicker.min.css}" /> <!-- jQuery Timepicker -->
+    <!--http://jonthornton.github.io/jquery-timepicker/-->
+
+    <!--<link rel="stylesheet" th:href="@{/lib/AdminLTE_2.4.5/Plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css}" /> &lt;!&ndash; bootstrap time picker &ndash;&gt;-->
+
+    <link rel="stylesheet" th:href="@{/css/common/common_main.css}" />
+
     <!-- Custom or page css  -->
     <th:block layout:fragment="custom_css"></th:block>
 </head>

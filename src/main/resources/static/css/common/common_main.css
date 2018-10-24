@@ -1,0 +1,22 @@
+@CHARSET "UTF-8";
+
+/*
+Sweet Alert2에서 크기가 작아질 때 문제 ->  https://github.com/sweetalert2/sweetalert2/issues/855
+ */
+.swal2-popup {
+    font-size: 1.5rem !important;
+}
+
+/*
+Timepicker 가 Sweet Alert에 가려지는 문제 해결
+ */
+.bootstrap-timepicker-widget.dropdown-menu {
+    z-index: 1050!important;
+}
+
+/*
+li.vaad {
+    color:white;
+}
+
+ */

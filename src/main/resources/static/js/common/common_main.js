@@ -72,9 +72,6 @@ function click4Save() {
         return;
     }
 
-    console.log("te = " + $('#isPrivate').is(":checked"));
-
-
 
 }
 

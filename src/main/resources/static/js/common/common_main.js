@@ -42,11 +42,49 @@ function initWithModal() {
 
 //회의 등록 Modal open
 function click4AddMeetingData() {
+    //회의 데이터를 가져온다.
+
+    //
+    $.ajax({
+        url: "/meeting/get/add_res",
+        type: "GET",
+        dataType: "text",
+        processData: false,
+        timeout:5000 //5 second timeout
+    }).done(function(jqXHR, textStatus){ //가입 성공
+        endLoading();
+        var resultCode = JSON.parse(jqXHR)['resultCode'];
+        var msg = JSON.parse(jqXHR)['msg'];
+
+        console.log("msg = "+ jqXHR)
+
+        /*
+        msg = {"resultCode":100,
+        "resultMsg":
+        {"accountList":[{"accountIdx":2,"id":"test1","name":"김철수","teamName":"개발 1실\n","createDate":"2018-10-21T06:18:46","updateDate":"2018-10-21T06:19:19"},
+        {"accountIdx":3,"id":"test2","name":"홍길동\n","teamName":"개발 1실","createDate":"2018-10-21T06:21:19","updateDate":"2018-10-21T06:22:10"},
+        {"accountIdx":4,"id":"test3","name":"안미영","teamName":"개발 2실","createDate":"2018-10-21T06:22:43","updateDate":"2018-10-21T06:22:40"},
+        {"accountIdx":5,"id":"test4","name":"김미영","teamName":"디자인 1팀","createDate":"2018-10-21T06:23:12","updateDate":"2018-10-21T06:23:09"}],
+        "roomList":[{"roomIdx":1,"name":"Room A","description":"테스트 회의실"},{"roomIdx":2,"name":"Room 2F B","description":"테스트 중앙 회의실"},
+        {"roomIdx":3,"name":"B-Tower 19 A","description":"테스트 B타워 19층\n"}]}}
+         */
+
+
+        // if(resultCode === 1050) { self.location="/board/archive/list"+makeUrl4ListCriteria(); }
+        // else { showSAlert('에러 발생', '개발자에게 문의하세요.' + resultCode , 'error'); }
+    }).fail(function(jqXHR, textStatus){
+        endLoading();
+        showSAlert('서버 에러', '서버에서 문제가 발생하였습니다.', 'error');
+        console.log("jqXHR = " + jqXHR);
+        console.log("textStatus = " + textStatus);
+    });
+
     $('#meetingDataAddModal').modal("toggle");
 }
 
 
 function click4Save() {
+    //Validation
     if($('#titleInput').val() === '') {
         showSAlert('제목 공백', '제목이 공백입니다.', 'error');
         return;
@@ -72,6 +110,28 @@ function click4Save() {
         return;
     }
 
+    var jsonObj = {'meetingIdx':0 };
+
+    $.ajax({
+        url: "----",
+        type: "POST",
+        contentType: "application/json; charset=UTF-8",
+        data: JSON.stringify(jsonObj),
+        dataType: "text",
+        processData: false,
+        timeout:5000 //5 second timeout
+    }).done(function(jqXHR, textStatus){ //가입 성공
+        endLoading();
+        var resultCode = JSON.parse(jqXHR)['resultCode'];
+
+        // if(resultCode === 1050) { self.location="/board/archive/list"+makeUrl4ListCriteria(); }
+        // else { showSAlert('에러 발생', '개발자에게 문의하세요.' + resultCode , 'error'); }
+    }).fail(function(jqXHR, textStatus){
+        endLoading();
+        showSAlert('서버 에러', '서버에서 문제가 발생하였습니다.', 'error');
+        console.log("jqXHR = " + jqXHR);
+        console.log("textStatus = " + textStatus);
+    });
 
 }
 

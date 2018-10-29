@@ -1,14 +1,13 @@
 package com.mhlab.br.controllers.views;
 
+import com.mhlab.br.domain.dto.MeetingDTO;
 import com.mhlab.br.domain.enums.JsonResponseEnum;
 import com.mhlab.br.domain.vo.JsonResponseVO;
 import com.mhlab.br.service.repos.AccountRepoService;
 import com.mhlab.br.service.repos.RoomRepoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,5 +45,12 @@ public class MeetingViewController {
         return new JsonResponseVO(JsonResponseEnum.MEETING_BEFORE_RES_SUCCESS, map);
     }
 
+
+    @PostMapping("add/data")
+    @ResponseBody
+    public JsonResponseVO postAddMeetingData(@RequestBody MeetingDTO dto) {
+        log.info("dto = "+ dto);
+        return new JsonResponseVO(JsonResponseEnum.MEETING_BEFORE_RES_SUCCESS, null);
+    }
 
 }

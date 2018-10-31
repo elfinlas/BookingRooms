@@ -43,6 +43,7 @@ public class MeetingViewController {
         Map<String, Object> map = new HashMap<>();
         map.put("accountList", accountRepoService.getAccountDTOListWithOutAdmin());
         map.put("roomList", roomRepoService.getAllRoomList());
+        log.info("map = " + map.toString());
         return new JsonResponseVO(JsonResponseEnum.MEETING_BEFORE_RES_SUCCESS, map);
     }
 

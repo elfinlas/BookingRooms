@@ -88,6 +88,7 @@ function click4AddMeetingData() {
 
 //저장
 function click4Save() {
+    //Validation
     if($('#titleInput').val() === '') {
         showSAlert('제목 공백', '제목이 공백입니다.', 'error');
         return;
@@ -117,32 +118,29 @@ function click4Save() {
 
     let json = {'meetingIdx':0, 'titleInput':$('#titleInput').val(), 'content':$('#contentInput').val(), 'startDate':$('#startDate').val(),
         'endDate':$('#endTime').val(), 'isPublic':$('#isPrivate').prop("checked"), 'room':$('#select2Room').val(), 'attend':$('#select2User').val() };
+    var jsonObj = {'meetingIdx':0 };
 
-    console.log("json = " + JSON.stringify(json));
+    $.ajax({
+        url: "----",
+        type: "POST",
+        contentType: "application/json; charset=UTF-8",
+        data: JSON.stringify(jsonObj),
+        dataType: "text",
+        processData: false,
+        timeout:5000 //5 second timeout
+    }).done(function(jqXHR, textStatus){ //가입 성공
+        endLoading();
+        var resultCode = JSON.parse(jqXHR)['resultCode'];
 
-    // $.ajax({
-    //     url: "/meeting/get/add_res",
-    //     type: "GET",
-    //     contentType: "application/json; charset=UTF-8",
-    //     dataType: "text",
-    //     processData: false,
-    //     timeout:5000 //5 second timeout
-    // }).done(function(jqXHR, textStatus){ //가입 성공
-    //     endLoading();
-    //     let resultCode = JSON.parse(jqXHR)['resultCode'];
-    //
-    //
-    //     // else { //정상적으로 값을 수신하지 못한 경우
-    //     //     showSAlert('서버 에러', '서버에서 문제가 발생하였습니다. ('+resultCode+')' , 'error');
-    //     // }
-    // }).fail(function(jqXHR, textStatus){
-    //     endLoading();
-    //     showSAlert('서버 에러', '서버에서 문제가 발생하였습니다.', 'error');
-    //     console.log("jqXHR = " + jqXHR);
-    //     console.log("textStatus = " + textStatus);
-    // });
-    // //모두 이상이 없다면 서버로 전송
-    // showSAlert('Good!', '시작과 종료시간이 동일합니다.', 'success');
+        // if(resultCode === 1050) { self.location="/board/archive/list"+makeUrl4ListCriteria(); }
+        // else { showSAlert('에러 발생', '개발자에게 문의하세요.' + resultCode , 'error'); }
+    }).fail(function(jqXHR, textStatus){
+        endLoading();
+        showSAlert('서버 에러', '서버에서 문제가 발생하였습니다.', 'error');
+        console.log("jqXHR = " + jqXHR);
+        console.log("textStatus = " + textStatus);
+    });
+
 }
 
 

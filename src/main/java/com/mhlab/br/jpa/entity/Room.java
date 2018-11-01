@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * Created by MHLab on 18/10/2018.
@@ -26,4 +27,10 @@ public class Room {
 
     @Column
     private String description;
+
+    @Column
+    private LocalDateTime createDate;
+
+    @Column
+    private LocalDateTime updateDate;
 }

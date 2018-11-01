@@ -23,7 +23,7 @@ public class Criteria {
     }
 
     /**
-     * 페이지의 값이 0이거나 이하인 경우엔 1로 설정ㄴ
+     * 페이지의 값이 0이거나 이하인 경우엔 1로 설정
      * @param page
      */
     public void setPage(int page) {

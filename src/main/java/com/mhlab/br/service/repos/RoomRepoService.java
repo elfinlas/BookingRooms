@@ -1,9 +1,13 @@
 package com.mhlab.br.service.repos;
 
+import com.mhlab.br.domain.pages.Criteria;
 import com.mhlab.br.jpa.entity.Room;
 import com.mhlab.br.jpa.persistence.RoomRepo;
+import com.mhlab.br.service.abstracts.AbstractListPageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +20,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class RoomRepoService {
+public class RoomRepoService extends AbstractListPageService {
 
     private RoomRepo roomRepo;
 
@@ -38,5 +42,21 @@ public class RoomRepoService {
         return roomRepo.findAll();
     }
 
+
+    /**
+     *
+     * @param criteria
+     * @return
+     */
+    public List<Room> getAllRoomPageList(Criteria criteria) {
+//        PageRequest pageRequest = getPageRequest(criteria.getPage(), criteria.getPerPageNum(), Sort.Direction.DESC, "createDate");
+//        log.info("getAll = " + pageRequest.toString());
+
+        PageRequest pageRequest = PageRequest.of(criteria.getPage(),criteria.getPerPageNum(), Sort.Direction.DESC, "createDate");
+        log.info("getAll = " + pageRequest.toString());
+
+        return roomRepo.findAllBy(pageRequest);
+        //return roomRepo.findAllBy(pageRequest);
+    }
 
 }

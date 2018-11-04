@@ -2,6 +2,7 @@ package com.mhlab.br.domain.dto;
 
 import com.mhlab.br.domain.enums.MeetingTypeEnum;
 import com.mhlab.br.jpa.entity.Room;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -27,12 +28,17 @@ public class MeetingDTO {
     private String content; //회의 내용
     private LocalDateTime startDate; //회의 시작 시간
     private LocalDateTime endDate; //회의 종료 시간
+    private Boolean isPublic; //공개 여부
     private LocalDateTime createDate; //데이터 생성일
     private LocalDateTime updateDate; //데이터 수정일
-    private boolean isPublic; //공개 여부
     private MeetingTypeEnum meetingType;
     private Room room; //회의실
     private List<Integer> attendMemberList;
+
+
+    //Client Only
+    private List<String> attendUserList;
+
     /*
     @OneToMany(mappedBy = "meeting")
     private List<MeetingAttendMember> attendMemberList; //회의 참석자

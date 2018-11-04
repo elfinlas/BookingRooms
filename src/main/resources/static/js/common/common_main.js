@@ -93,38 +93,53 @@ function click4Save() {
         showSAlert('제목 공백', '제목이 공백입니다.', 'error');
         return;
     }
-    else if($('#contentInput').val() === '') {
-        showSAlert('내용 공백', '내용이 공백입니다.', 'error');
-        return;
-    }
-    else if($('#startDate').val() === '') {
-        showSAlert('날짜 공백', '회의 날짜가 공백입니다.', 'error');
-        return;
-    }
-    else if($('#select2Room').prop('selectedIndex') === 0) {
-        showSAlert("회의실", "회의실을 선택하지 않았습니다.", "error");
-        return;
-    }
-    else if(isNullValue($('#select2User').val())) {
-        showSAlert('참석자', '참석자가 없습니다.', 'error');
-        return;
-    }
-    else if ($('#startTime').val() === $('#endTime').val()) {
-        showSAlert('시간', '시작과 종료시간이 동일합니다.', 'error');
-        return;
-    }
+    // else if($('#contentInput').val() === '') {
+    //     showSAlert('내용 공백', '내용이 공백입니다.', 'error');
+    //     return;
+    // }
+    // else if($('#startDate').val() === '') {
+    //     showSAlert('날짜 공백', '회의 날짜가 공백입니다.', 'error');
+    //     return;
+    // }
+    // else if($('#select2Room').prop('selectedIndex') === 0) {
+    //     showSAlert("회의실", "회의실을 선택하지 않았습니다.", "error");
+    //     return;
+    // }
+    // else if(isNullValue($('#select2User').val())) {
+    //     showSAlert('참석자', '참석자가 없습니다.', 'error');
+    //     return;
+    // }
+    // else if ($('#startTime').val() === $('#endTime').val()) {
+    //     showSAlert('시간', '시작과 종료시간이 동일합니다.', 'error');
+    //     return;
+    // }
 
     //startLoading();
 
-    let json = {'meetingIdx':0, 'titleInput':$('#titleInput').val(), 'content':$('#contentInput').val(), 'startDate':$('#startDate').val(),
-        'endDate':$('#endTime').val(), 'isPublic':$('#isPrivate').prop("checked"), 'room':$('#select2Room').val(), 'attend':$('#select2User').val() };
-    var jsonObj = {'meetingIdx':0 };
+    let json = {'meetingIdx':0, 'title':$('#titleInput').val(), 'content':$('#contentInput').val(), 'startDate':$('#startDate').datepicker("getDate"),
+        'endDate':$('#endTime').datepicker("getDate"), 'isPublic':$('#isPrivate').prop("checked"), 'room':{'roomIdx':$('#select2Room').val()}, 'attendUserList':$('#select2User').val() };
+    //var jsonObj = {'meetingIdx':0 };
+
+    /*
+    ===true?1:0
+     : dto = MeetingDTO(meetingIdx=0, title=null, content=dad, startDate=2018-11-01T15:01:48.746, endDate=0015-10-30T15:00, createDate=null, updateDate=null,
+     isPublic=false, meetingType=null, room=com.mhlab.br.jpa.entity.Room@725bc2b1, attendMemberList=null)
+
+     ["3","sdads-customadd-0","sds-customadd-0","dsd-customadd-0"]
+     $('#select2User').val()
+     */
+
+    for (let i=0; i<$('#select2User').val().length; i++) {
+        console.log("data = " + $('#select2User').val()[i])
+    }
+
+    console.log("json = " + JSON.stringify(json));
 
     $.ajax({
-        url: "----",
+        url: "/meeting/add/data",
         type: "POST",
         contentType: "application/json; charset=UTF-8",
-        data: JSON.stringify(jsonObj),
+        data: JSON.stringify(json),
         dataType: "text",
         processData: false,
         timeout:5000 //5 second timeout

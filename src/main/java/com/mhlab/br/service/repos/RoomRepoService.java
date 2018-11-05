@@ -49,14 +49,10 @@ public class RoomRepoService extends AbstractListPageService {
      * @return
      */
     public List<Room> getAllRoomPageList(Criteria criteria) {
-//        PageRequest pageRequest = getPageRequest(criteria.getPage(), criteria.getPerPageNum(), Sort.Direction.DESC, "createDate");
-//        log.info("getAll = " + pageRequest.toString());
-
         PageRequest pageRequest = PageRequest.of(criteria.getPage(),criteria.getPerPageNum(), Sort.Direction.DESC, "createDate");
-        log.info("getAll = " + pageRequest.toString());
-
+        log.info("pageRequest = " + pageRequest.toString());
         return roomRepo.findAllBy(pageRequest);
-        //return roomRepo.findAllBy(pageRequest);
+//        return roomRepo.findAllBy(PageRequest.of(criteria.getPage(),criteria.getPerPageNum(), Sort.Direction.DESC, "createDate"));
     }
 
 }

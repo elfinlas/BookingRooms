@@ -4,6 +4,12 @@
 <body th:fragment="mainBody" class="hold-transition skin-purple sidebar-mini">
 
     <div class="wrapper">
+        <!-- 로딩 추가 -->
+        <div th:replace="fragments/common/loading"></div>
+
+        <!-- 메뉴 추가 -->
+        <header th:include="fragments/main/menu"></header>
+
         <!-- Contents -->
         <th:block layout:fragment="content_body"></th:block>
 

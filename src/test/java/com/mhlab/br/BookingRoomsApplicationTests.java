@@ -27,51 +27,27 @@ public class BookingRoomsApplicationTests {
 	@Test
 	public void contextLoads() {
 
-		/*
-		2 - Room 2F B
-		3 - B-Tower 19 A
-		4 - Test Room1
-		1 - Room A
-		 */
-
-
-//		List<Room> list1 = roomRepo.findAllBy(PageRequest.of(1,2));
-//		for (Room room : list1) {
-//			log.info("room3 = " + room.getName());
-//		}
-//
-//		List<Room> list2 = roomRepo.findAllBy(PageRequest.of(0,3));
-//		for (Room room : list2) {
-//			log.info("room4 = " + room.getName());
-//		}
-
 		List<Room> list3 = roomRepo.findAllBy(PageRequest.of(0,3, Sort.Direction.DESC, "createDate"));
 		for (Room room : list3) {
 			log.info("room3 = " + room.getName());
 		}
 
-		List<Room> list4 = roomRepo.findAllBy(PageRequest.of(1,3, Sort.Direction.DESC, "createDate"));
-		for (Room room : list4) {
-			log.info("room4 = " + room.getName());
-		}
+		log.info("======================");
 
 		Criteria criteria = new Criteria();
 		criteria.setPage(0);
-		criteria.setPerPageNum(2);
+		criteria.setPerPageNum(3);
+
+		//log.info("criteria = " + criteria.toString());
+
+		log.info("======================");
 
 		List<Room> list5 = roomRepoService.getAllRoomPageList(criteria);
 		for (Room room : list5) {
 			log.info("room5 = " + room.getName());
 		}
 
-		/*
-		room3 = B-Tower 19 A - 3
-		room3 = Test Room1 - 4
-
-		room4 = Room A 1 -
-		room4 = Room 2F B 2 -
-		 */
-
+		log.info("======================");
 
 	}
 

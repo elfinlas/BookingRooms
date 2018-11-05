@@ -1,5 +1,6 @@
 package com.mhlab.br.service.data;
 
+import com.mhlab.br.service.repos.RoomRepoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,9 +15,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class RoomDataService {
 
+    private RoomRepoService roomRepoService;
 
     @Autowired
-    public RoomDataService() {
+    public RoomDataService(RoomRepoService roomRepoService) {
+        this.roomRepoService = roomRepoService;
+    }
+
+
+    public void saveData() {
 
     }
+
+
 }

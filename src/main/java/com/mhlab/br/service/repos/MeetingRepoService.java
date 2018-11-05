@@ -1,6 +1,8 @@
 package com.mhlab.br.service.repos;
 
 import com.mhlab.br.jpa.entity.Meeting;
+import com.mhlab.br.jpa.entity.MeetingMember;
+import com.mhlab.br.jpa.persistence.MeetingAttendMemberRepo;
 import com.mhlab.br.jpa.persistence.MeetingRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +21,13 @@ import java.time.LocalDateTime;
 public class MeetingRepoService {
 
     private MeetingRepo meetingRepo;
+    private MeetingAttendMemberRepo attendMemberRepo;
 
 
     @Autowired
-    public MeetingRepoService(MeetingRepo meetingRepo) {
+    public MeetingRepoService(MeetingRepo meetingRepo, MeetingAttendMemberRepo attendMemberRepo) {
         this.meetingRepo = meetingRepo;
+        this.attendMemberRepo = attendMemberRepo;
     }
 
 
@@ -35,14 +39,16 @@ public class MeetingRepoService {
 
     //////
 
-    public boolean saveData(Meeting data) {
+    public void saveData(Meeting data) {
         LocalDateTime now = LocalDateTime.now();
         data.setCreateDate(now);
         data.setUpdateDate(now);
+        meetingRepo.save(data);
 
-
-
-        return meetingRepo.save(data) != null;
+        //회의 참석 인원 저장
+        for (MeetingMember member: data.getAttendMemberList()) {
+            attendMemberRepo.save(member);
+        }
     }
 
 }

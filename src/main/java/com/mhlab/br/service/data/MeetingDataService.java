@@ -1,14 +1,15 @@
 package com.mhlab.br.service.data;
 
 import com.mhlab.br.domain.dto.MeetingDTO;
+import com.mhlab.br.domain.enums.JsonResponseEnum;
 import com.mhlab.br.domain.enums.MeetingTypeEnum;
+import com.mhlab.br.domain.vo.JsonResponseVO;
 import com.mhlab.br.jpa.entity.Account;
 import com.mhlab.br.jpa.entity.Meeting;
-import com.mhlab.br.jpa.entity.MeetingAttendMember;
+import com.mhlab.br.jpa.entity.MeetingMember;
 import com.mhlab.br.jpa.persistence.AccountRepo;
 import com.mhlab.br.service.repos.MeetingRepoService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,8 +35,12 @@ public class MeetingDataService {
     }
 
 
-
-    public boolean saveData(MeetingDTO dto) {
+    /**
+     * 회의 데이터 저장 메서드
+     * @param dto
+     * @return
+     */
+    public JsonResponseVO saveData(MeetingDTO dto) {
         Meeting meeting = new Meeting()
                 .setTitle(dto.getTitle())
                 .setContent(dto.getContent())
@@ -45,21 +50,23 @@ public class MeetingDataService {
                 .setMeetingType(MeetingTypeEnum.NORMAL)
                 .setRoom(dto.getRoom());
 
-        List<MeetingAttendMember> attendMemberList = new ArrayList<>();
+        List<MeetingMember> attendMemberList = new ArrayList<>();
 
         for (String user: dto.getAttendUserList()) {
-            MeetingAttendMember member = new MeetingAttendMember();
-            if (user.split("-").length>=1) { //추가된 사용자
-                member.setAttendOutMember(user.split("-")[0]);
-            }
+            MeetingMember member = new MeetingMember();
+
+            if(user.contains("-")) { member.setAttendOutMember(user.split("-")[0].trim()); }//추가된 사용자
             else { //기존 사용자
                 Account target = accountRepo.findByAccountIdx(Integer.parseInt(user));
                 member.setAttendCompanyMember(target);
             }
-            member.setMeeting(meeting);
+
+            member.setMeeting(meeting); //회의 참석 인원 데이터
             attendMemberList.add(member);
         }
         meeting.setAttendMemberList(attendMemberList);
-        return meetingRepoService.saveData(meeting);
+        meetingRepoService.saveData(meeting);
+
+        return new JsonResponseVO(JsonResponseEnum.MEETING_DATA_ADD_SUCCESS);
     }
 }

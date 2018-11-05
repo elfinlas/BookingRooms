@@ -118,22 +118,6 @@ function click4Save() {
 
     let json = {'meetingIdx':0, 'title':$('#titleInput').val(), 'content':$('#contentInput').val(), 'startDate':$('#startDate').datepicker("getDate"),
         'endDate':$('#endTime').datepicker("getDate"), 'isPublic':$('#isPrivate').prop("checked"), 'room':{'roomIdx':$('#select2Room').val()}, 'attendUserList':$('#select2User').val() };
-    //var jsonObj = {'meetingIdx':0 };
-
-    /*
-    ===true?1:0
-     : dto = MeetingDTO(meetingIdx=0, title=null, content=dad, startDate=2018-11-01T15:01:48.746, endDate=0015-10-30T15:00, createDate=null, updateDate=null,
-     isPublic=false, meetingType=null, room=com.mhlab.br.jpa.entity.Room@725bc2b1, attendMemberList=null)
-
-     ["3","sdads-customadd-0","sds-customadd-0","dsd-customadd-0"]
-     $('#select2User').val()
-     */
-
-    for (let i=0; i<$('#select2User').val().length; i++) {
-        console.log("data = " + $('#select2User').val()[i])
-    }
-
-    console.log("json = " + JSON.stringify(json));
 
     $.ajax({
         url: "/meeting/add/data",
@@ -145,10 +129,9 @@ function click4Save() {
         timeout:5000 //5 second timeout
     }).done(function(jqXHR, textStatus){ //가입 성공
         endLoading();
-        var resultCode = JSON.parse(jqXHR)['resultCode'];
-
-        // if(resultCode === 1050) { self.location="/board/archive/list"+makeUrl4ListCriteria(); }
-        // else { showSAlert('에러 발생', '개발자에게 문의하세요.' + resultCode , 'error'); }
+        let resultCode = JSON.parse(jqXHR)['resultCode'];
+        if (resultCode === 110) { location.reload(); }
+        else { showSAlert('에러 발생', '개발자에게 문의하세요.' + resultCode , 'error'); }
     }).fail(function(jqXHR, textStatus){
         endLoading();
         showSAlert('서버 에러', '서버에서 문제가 발생하였습니다.', 'error');

@@ -12,6 +12,8 @@ public enum JsonResponseEnum {
     MEETING_BEFORE_RES_SUCCESS(100, "Ok"),
     MEETING_BEFORE_RES_FAIL(-100, "Fail"),
 
+    MEETING_DATA_ADD_SUCCESS(110, "Success"),
+
     SYSTEM_TEST(99999, "Test Ok");
 
     private int code;

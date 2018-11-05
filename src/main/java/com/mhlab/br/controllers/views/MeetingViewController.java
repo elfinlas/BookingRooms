@@ -55,8 +55,7 @@ public class MeetingViewController {
     @ResponseBody
     public JsonResponseVO postAddMeetingData(@RequestBody MeetingDTO dto) {
         log.info("dto = "+ dto);
-        meetingDataService.saveData(dto);
-        return new JsonResponseVO(JsonResponseEnum.MEETING_BEFORE_RES_SUCCESS, null);
+        return meetingDataService.saveData(dto);
     }
 
 }

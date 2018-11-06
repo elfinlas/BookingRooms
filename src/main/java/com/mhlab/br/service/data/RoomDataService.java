@@ -1,5 +1,6 @@
 package com.mhlab.br.service.data;
 
+import com.mhlab.br.service.repos.RoomRepoService;
 import com.mhlab.br.domain.dto.MeetingDTO;
 import com.mhlab.br.domain.vo.JsonResponseVO;
 import com.mhlab.br.service.repos.RoomRepoService;
@@ -18,11 +19,19 @@ import org.springframework.stereotype.Service;
 public class RoomDataService {
 
     private RoomRepoService roomRepoService;
+    private RoomRepoService roomRepoService;
 
     public RoomDataService(RoomRepoService roomRepoService) {
         this.roomRepoService = roomRepoService;
     }
 
+    @Autowired
+    public RoomDataService(RoomRepoService roomRepoService) {
+        this.roomRepoService = roomRepoService;
+    }
+
+
+    public void saveData() {
 
 
     public boolean saveData(MeetingDTO dto) {

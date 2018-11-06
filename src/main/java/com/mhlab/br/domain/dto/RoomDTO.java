@@ -1,36 +1,27 @@
-package com.mhlab.br.jpa.entity;
+package com.mhlab.br.domain.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
- * Created by MHLab on 18/10/2018.
+ * 회의실 데이터를 담을 DTO
+ *
+ * Created by MHLab on 05/11/2018.
  */
 
 
 @Getter
 @Setter
 @Accessors(chain = true)
-@Entity
-public class Room {
+public class RoomDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int roomIdx;
-
-    @Column(nullable = false)
     private String name;
-
-    @Column
     private String description;
-
-    @Column
     private LocalDateTime createDate;
-
-    @Column
     private LocalDateTime updateDate;
+
 }

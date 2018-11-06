@@ -18,16 +18,16 @@ public class Criteria {
      * 기본 생성자이며, 기본 값을 설정해준다.
      */
     public Criteria() {
-        this.page = 1;
+        this.page = 0;
         this.perPageNum = 10;
     }
 
     /**
-     * 페이지의 값이 0이거나 이하인 경우엔 1로 설정ㄴ
+     * 페이지의 값이 0이거나 이하인 경우엔 0로 설정 (0 이 1페이지)
      * @param page
      */
     public void setPage(int page) {
-        this.page = page <=0 ? 1:page;
+        this.page = page <=0 ? 0:page;
     }
 
     public void setPerPageNum(int perPageNum) {

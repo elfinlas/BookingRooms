@@ -37,6 +37,14 @@ public interface AccountRepo extends JpaRepository<Account, Integer> {
     List<Account> findByIdIsNot(String userId);
 
 
+    /**
+     * 인덱스로 사용자를 가져오는 메서드
+     * @param accountIdx
+     * @return
+     */
+    Account findByAccountIdx(int accountIdx);
+
+
 
     /////////////////////////
     //     With Paging

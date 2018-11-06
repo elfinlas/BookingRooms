@@ -55,4 +55,12 @@ public class RoomRepoService extends AbstractListPageService {
 //        return roomRepo.findAllBy(PageRequest.of(criteria.getPage(),criteria.getPerPageNum(), Sort.Direction.DESC, "createDate"));
     }
 
+
+    /////
+
+
+    public boolean saveRoomData() {
+        return true;
+    }
+
 }

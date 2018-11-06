@@ -58,6 +58,6 @@ public class Meeting {
     private Room room; //회의실
 
     @OneToMany(mappedBy = "meeting")
-    private List<MeetingAttendMember> attendMemberList; //회의 참석자
+    private List<MeetingMember> attendMemberList; //회의 참석자
 
 }

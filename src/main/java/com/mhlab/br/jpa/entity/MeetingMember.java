@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Setter
 @Accessors(chain = true)
 @Entity
-public class MeetingAttendMember {
+public class MeetingMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,11 +26,11 @@ public class MeetingAttendMember {
     private String attendOutMember; //회의 참석한 외부 인력
 
     @ManyToOne
-    @JoinColumn(name = "accountIdx")
+    @JoinColumn(name = "accountIdx", foreignKey = @ForeignKey(name = "FK_ACCOUNT"))
     private Account attendCompanyMember; //회의 참석한 내부 인력
 
     @ManyToOne
-    @JoinColumn(name = "meetingIdx")
+    @JoinColumn(name = "meetingIdx", foreignKey = @ForeignKey(name = "FK_MEETING"))
     private Meeting meeting; //회의 데이터
 
 }

@@ -23,7 +23,6 @@ function initWithModal() {
         timeFormat: '(A) H:i',
         option:{ useSelect: true }
     }).timepicker('setTime', new Date());
-    //$('#startTime').timepicker('option', { useSelect: true });
 
     $('#endTime').timepicker({
         step: 15,
@@ -88,6 +87,7 @@ function click4AddMeetingData() {
 
 //저장
 function click4Save() {
+    //Validation
     if($('#titleInput').val() === '') {
         showSAlert('제목 공백', '제목이 공백입니다.', 'error');
         return;
@@ -113,36 +113,31 @@ function click4Save() {
         return;
     }
 
-    //startLoading();
+    startLoading();
 
-    let json = {'meetingIdx':0, 'titleInput':$('#titleInput').val(), 'content':$('#contentInput').val(), 'startDate':$('#startDate').val(),
-        'endDate':$('#endTime').val(), 'isPublic':$('#isPrivate').prop("checked"), 'room':$('#select2Room').val(), 'attend':$('#select2User').val() };
+    let json = {'meetingIdx':0, 'title':$('#titleInput').val(), 'content':$('#contentInput').val(), 'startDate':$('#startDate').datepicker("getDate"),
+        'endDate':$('#endTime').datepicker("getDate"), 'isPublic':$('#isPrivate').prop("checked"), 'room':{'roomIdx':$('#select2Room').val()}, 'attendUserList':$('#select2User').val() };
 
-    console.log("json = " + JSON.stringify(json));
+    $.ajax({
+        url: "/meeting/add/data",
+        type: "POST",
+        contentType: "application/json; charset=UTF-8",
+        data: JSON.stringify(json),
+        dataType: "text",
+        processData: false,
+        timeout:5000 //5 second timeout
+    }).done(function(jqXHR, textStatus){ //가입 성공
+        endLoading();
+        let resultCode = JSON.parse(jqXHR)['resultCode'];
+        if (resultCode === 110) { location.reload(); }
+        else { showSAlert('에러 발생', '개발자에게 문의하세요.' + resultCode , 'error'); }
+    }).fail(function(jqXHR, textStatus){
+        endLoading();
+        showSAlert('서버 에러', '서버에서 문제가 발생하였습니다.', 'error');
+        console.log("jqXHR = " + jqXHR);
+        console.log("textStatus = " + textStatus);
+    });
 
-    // $.ajax({
-    //     url: "/meeting/get/add_res",
-    //     type: "GET",
-    //     contentType: "application/json; charset=UTF-8",
-    //     dataType: "text",
-    //     processData: false,
-    //     timeout:5000 //5 second timeout
-    // }).done(function(jqXHR, textStatus){ //가입 성공
-    //     endLoading();
-    //     let resultCode = JSON.parse(jqXHR)['resultCode'];
-    //
-    //
-    //     // else { //정상적으로 값을 수신하지 못한 경우
-    //     //     showSAlert('서버 에러', '서버에서 문제가 발생하였습니다. ('+resultCode+')' , 'error');
-    //     // }
-    // }).fail(function(jqXHR, textStatus){
-    //     endLoading();
-    //     showSAlert('서버 에러', '서버에서 문제가 발생하였습니다.', 'error');
-    //     console.log("jqXHR = " + jqXHR);
-    //     console.log("textStatus = " + textStatus);
-    // });
-    // //모두 이상이 없다면 서버로 전송
-    // showSAlert('Good!', '시작과 종료시간이 동일합니다.', 'success');
 }
 
 

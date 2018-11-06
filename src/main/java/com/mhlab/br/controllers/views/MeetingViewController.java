@@ -1,14 +1,15 @@
 package com.mhlab.br.controllers.views;
 
+import com.mhlab.br.domain.dto.MeetingDTO;
 import com.mhlab.br.domain.enums.JsonResponseEnum;
 import com.mhlab.br.domain.vo.JsonResponseVO;
+import com.mhlab.br.service.data.MeetingDataService;
+import com.mhlab.br.service.data.RoomDataService;
 import com.mhlab.br.service.repos.AccountRepoService;
 import com.mhlab.br.service.repos.RoomRepoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,10 +27,13 @@ public class MeetingViewController {
 
     private AccountRepoService accountRepoService;
     private RoomRepoService roomRepoService;
+    private MeetingDataService meetingDataService;
 
-    public MeetingViewController(AccountRepoService accountRepoService, RoomRepoService roomRepoService) {
+
+    public MeetingViewController(AccountRepoService accountRepoService, RoomRepoService roomRepoService, MeetingDataService meetingDataService) {
         this.accountRepoService = accountRepoService;
         this.roomRepoService = roomRepoService;
+        this.meetingDataService = meetingDataService;
     }
 
 
@@ -43,9 +47,15 @@ public class MeetingViewController {
         Map<String, Object> map = new HashMap<>();
         map.put("accountList", accountRepoService.getAccountDTOListWithOutAdmin());
         map.put("roomList", roomRepoService.getAllRoomList());
-        log.info("map = " + map.toString());
         return new JsonResponseVO(JsonResponseEnum.MEETING_BEFORE_RES_SUCCESS, map);
     }
 
+
+    @PostMapping("add/data")
+    @ResponseBody
+    public JsonResponseVO postAddMeetingData(@RequestBody MeetingDTO dto) {
+        log.info("dto = "+ dto);
+        return meetingDataService.saveData(dto);
+    }
 
 }

@@ -23,7 +23,6 @@ function initWithModal() {
         timeFormat: '(A) H:i',
         option:{ useSelect: true }
     }).timepicker('setTime', new Date());
-    //$('#startTime').timepicker('option', { useSelect: true });
 
     $('#endTime').timepicker({
         step: 15,
@@ -93,28 +92,28 @@ function click4Save() {
         showSAlert('제목 공백', '제목이 공백입니다.', 'error');
         return;
     }
-    // else if($('#contentInput').val() === '') {
-    //     showSAlert('내용 공백', '내용이 공백입니다.', 'error');
-    //     return;
-    // }
-    // else if($('#startDate').val() === '') {
-    //     showSAlert('날짜 공백', '회의 날짜가 공백입니다.', 'error');
-    //     return;
-    // }
-    // else if($('#select2Room').prop('selectedIndex') === 0) {
-    //     showSAlert("회의실", "회의실을 선택하지 않았습니다.", "error");
-    //     return;
-    // }
-    // else if(isNullValue($('#select2User').val())) {
-    //     showSAlert('참석자', '참석자가 없습니다.', 'error');
-    //     return;
-    // }
-    // else if ($('#startTime').val() === $('#endTime').val()) {
-    //     showSAlert('시간', '시작과 종료시간이 동일합니다.', 'error');
-    //     return;
-    // }
+    else if($('#contentInput').val() === '') {
+        showSAlert('내용 공백', '내용이 공백입니다.', 'error');
+        return;
+    }
+    else if($('#startDate').val() === '') {
+        showSAlert('날짜 공백', '회의 날짜가 공백입니다.', 'error');
+        return;
+    }
+    else if($('#select2Room').prop('selectedIndex') === 0) {
+        showSAlert("회의실", "회의실을 선택하지 않았습니다.", "error");
+        return;
+    }
+    else if(isNullValue($('#select2User').val())) {
+        showSAlert('참석자', '참석자가 없습니다.', 'error');
+        return;
+    }
+    else if ($('#startTime').val() === $('#endTime').val()) {
+        showSAlert('시간', '시작과 종료시간이 동일합니다.', 'error');
+        return;
+    }
 
-    //startLoading();
+    startLoading();
 
     let json = {'meetingIdx':0, 'title':$('#titleInput').val(), 'content':$('#contentInput').val(), 'startDate':$('#startDate').datepicker("getDate"),
         'endDate':$('#endTime').datepicker("getDate"), 'isPublic':$('#isPrivate').prop("checked"), 'room':{'roomIdx':$('#select2Room').val()}, 'attendUserList':$('#select2User').val() };

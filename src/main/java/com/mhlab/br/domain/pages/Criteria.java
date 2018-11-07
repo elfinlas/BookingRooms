@@ -27,7 +27,7 @@ public class Criteria {
      * @param page
      */
     public void setPage(int page) {
-        this.page = page <=0 ? 0:page;
+        this.page = page <=0 ? 0:page-1;
     }
 
     public void setPerPageNum(int perPageNum) {

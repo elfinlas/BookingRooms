@@ -23,14 +23,14 @@ import java.util.Map;
 @Slf4j
 @Controller
 @RequestMapping("meeting/*")
-public class MeetingViewController {
+public class MeetingController {
 
     private AccountRepoService accountRepoService;
     private RoomRepoService roomRepoService;
     private MeetingDataService meetingDataService;
 
 
-    public MeetingViewController(AccountRepoService accountRepoService, RoomRepoService roomRepoService, MeetingDataService meetingDataService) {
+    public MeetingController(AccountRepoService accountRepoService, RoomRepoService roomRepoService, MeetingDataService meetingDataService) {
         this.accountRepoService = accountRepoService;
         this.roomRepoService = roomRepoService;
         this.meetingDataService = meetingDataService;

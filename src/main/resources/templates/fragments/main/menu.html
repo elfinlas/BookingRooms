@@ -34,17 +34,27 @@
     <section class="sidebar">
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">회의실</li>
+
+            <li>
+                <!-- @GetMapping("/meeting/time/{idx}/{date}") -->
+                <a href="/room/meeting/time/0">
+                    <i class="fa fa-th"></i>
+                    <span>회의실 사용현황</span>
+                </a>
+            </li>
+
+            <!-- 관리 측 -->
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-users"></i>
-                    <span>회의실 관리</span>
+                    <span>회의실 관리 (관리) </span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        <a href="/admin/users/list">
+                        <a href="/room/status/list">
                             <i class="fa fa-th"></i>
                             <span>회의실 히스토리</span>
                         </a>

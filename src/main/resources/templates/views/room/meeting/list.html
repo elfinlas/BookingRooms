@@ -1,10 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
+
+
+<th:block layout:fragment="head_title">
+    <title>BookingRooms - 회의실 현황</title>
+</th:block>
+
+<th:block layout:fragment="custom_css">
+
+    <link rel="stylesheet" th:href="@{/lib/TimetableJs_0.8.3/css/timetablejs.css}" /> <!-- Timetable -->
+
+    <style>
+
+    </style>
+
+</th:block>
+
+
+<th:block layout:fragment="content_body">
+
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1> 회의실 사용 현황</h1>
+        </section>
+
+        <section class="content">
+
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="timetable"></div>
+                </div>
+            </div>
+
+
+        </section><!-- ./content -->
+    </div> <!-- ./content-wrapper -->
+</th:block>
+
+<th:block layout:fragment="custom_js">
+    <script th:src="@{/lib/TimetableJs_0.8.3/js/timetable.js}"></script>
+
+    <script th:src="@{/js/room/meeting/list.js}"></script>
+</th:block>
+
 </html>

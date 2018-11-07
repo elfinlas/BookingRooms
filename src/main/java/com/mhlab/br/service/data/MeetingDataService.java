@@ -1,19 +1,26 @@
 package com.mhlab.br.service.data;
 
 import com.mhlab.br.domain.dto.MeetingDTO;
+import com.mhlab.br.domain.dto.RoomDTO;
+import com.mhlab.br.domain.dto.RoomInMeetingDTO;
 import com.mhlab.br.domain.enums.JsonResponseEnum;
 import com.mhlab.br.domain.enums.MeetingTypeEnum;
 import com.mhlab.br.domain.vo.JsonResponseVO;
 import com.mhlab.br.jpa.entity.Account;
 import com.mhlab.br.jpa.entity.Meeting;
 import com.mhlab.br.jpa.entity.MeetingMember;
+import com.mhlab.br.jpa.entity.Room;
 import com.mhlab.br.jpa.persistence.AccountRepo;
 import com.mhlab.br.service.repos.MeetingRepoService;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 회의록 데이터를 처리하는 서비스 객체
@@ -25,13 +32,37 @@ import java.util.List;
 @Service
 public class MeetingDataService {
 
-
+    private ModelMapper modelMapper;
     private MeetingRepoService meetingRepoService;
     private AccountRepo accountRepo;
 
-    public MeetingDataService(MeetingRepoService meetingRepoService, AccountRepo accountRepo) {
+    public MeetingDataService(ModelMapper modelMapper, MeetingRepoService meetingRepoService, AccountRepo accountRepo) {
+        this.modelMapper = modelMapper;
         this.meetingRepoService = meetingRepoService;
         this.accountRepo = accountRepo;
+    }
+
+
+
+    //
+    public JsonResponseVO getMeetingData4Room(LocalDate date, List<Room> roomList) {
+        LocalDateTime start = LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(), 0,0,0);
+        LocalDateTime end = LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(), 23,59,59);
+        List<RoomDTO> roomDTOList = roomList.stream()
+                .map(room -> modelMapper.map(room, RoomDTO.class))
+                .collect(Collectors.toList());
+
+        List<MeetingDTO> meetingDTOList = meetingRepoService.getMeeting4Room(roomList, start, end);
+
+        log.info("start = " + start);
+        log.info("end = " + end);
+        log.info("meetingDTOList = " + meetingDTOList.size());
+
+        RoomInMeetingDTO dto = new RoomInMeetingDTO()
+                .setRoomList(roomDTOList)
+                .setMeetingList(meetingRepoService.getMeeting4Room(roomList, start, end));
+
+        return new JsonResponseVO(JsonResponseEnum.ROOM_MEETING_DATA_GET_SUCCESS, dto);
     }
 
 

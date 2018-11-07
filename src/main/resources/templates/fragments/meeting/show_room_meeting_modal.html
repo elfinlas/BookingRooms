@@ -1,12 +1,12 @@
-<div class="modal fade" id="meetingDataAddModal" tabindex="-1" role="dialog" aria-labelledby="meetingDataAddModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id="showRoomInMeetingModal" tabindex="-1" role="dialog" aria-labelledby="showRoomInMeetingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                <h4 class="modal-title" id="meetingDataAddModalLabel"></h4>
+                <h4 class="modal-title" id="showRoomInMeetingModalLabel"></h4>
             </div> <!-- ./modal-header -->
             <div class="modal-body">
-                <h4 class="box-title">회의 등록</h4>
+                <h4 class="box-title">회의 정보</h4>
 
                 <input id="mhStuffIdx" type="hidden">
 
@@ -15,13 +15,13 @@
                     <div class="col-sm-9 col-md-9">
                         <div class="form-group">
                             <label for="titleInput">회의 제목</label>
-                            <input type="text" class="form-control" id="titleInput" placeholder="제목을 입력하세요.">
+                            <input type="text" class="form-control" id="titleInput" readonly="readonly">
                         </div>
                     </div> <!-- ./col -->
                     <div class="col-sm-3 col-md-3">
-                        <div class="form-group" style="margin-top: 25px;">
+                        <div class="form-group" style="margin-top: 25px;" disabled="disable">
                             <div class="checkbox">
-                                <label> <input type="checkbox" id="isPrivate"> 비 공개 회의 </label>
+                                <label> <input type="checkbox" id="isPrivate" disabled> 비 공개 회의 </label>
                             </div>
                         </div>
                     </div> <!-- ./col -->
@@ -29,10 +29,10 @@
 
                 <div class="form-group" style="margin-top: 15px;">
                     <label for="contentInput">내용</label>
-                    <textarea class="form-control" id="contentInput" rows="3" style="resize: none;" placeholder="제목을 입력하세요."></textarea>
+                    <textarea class="form-control" id="contentInput" rows="7" style="resize: none;" readonly="readonly"></textarea>
                 </div>
 
-                <div class="row" style="margin-top: 10px;">
+                <div class="row" style="margin-top: 25px;">
                     <div class="col-sm-12 col-md-4">
                         <div class="form-group">
                             <label>시작일</label>
@@ -40,7 +40,7 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input type="text" class="form-control pull-right" id="startDate">
+                                <input type="text" class="form-control pull-right" id="startDate" readonly="readonly">
                             </div>
                         </div>
                     </div> <!-- ./col -->
@@ -50,7 +50,7 @@
                                 <label>시작시간</label>
                                 <div class="input-group">
                                     <div class="input-group-addon"> <i class="fa fa-clock-o"></i> </div>
-                                    <input type="text" class="form-control timepicker" id="startTime">
+                                    <input type="text" class="form-control timepicker" id="startTime" readonly="readonly">
                                 </div>
                             </div>
                         </div>
@@ -62,39 +62,14 @@
                                 <label>종료시간</label>
                                 <div class="input-group">
                                     <div class="input-group-addon"> <i class="fa fa-clock-o"></i> </div>
-                                    <input type="text" class="form-control timepicker" id="endTime">
+                                    <input type="text" class="form-control timepicker" id="endTime" readonly="readonly">
                                 </div>
                             </div>
                         </div>
                     </div> <!-- ./col -->
                 </div> <!-- ./row -->
 
-                <div class="row" style="margin-top: 10px;">
-                    <div class="col-sm-6 col-md-5">
-                        <div class="form-group">
-                            &nbsp;<label for="select2Room">회의실</label>
-                            <select class="form-control select2" id="select2Room" style="width: 100%;">
-                                <option selected>회의실을 선택하세요</option>
-                            </select>
-                        </div>
-                    </div> <!-- ./col -->
-                    <div class="col-sm-6 col-md-7">
-                        <div class="form-group">
-                            &nbsp;<label for="select2User">참석자</label>
-                            <select class="form-control select2" multiple="multiple" id="select2User" style="width: 100%;">
-                                <option value="add_user">외부인 추가</option>
-                            </select>
-                        </div>
-                    </div> <!-- ./col -->
-                </div> <!-- ./row -->
 
-
-
-                <div class="row" id="buttonItemView" style="margin-top: 30px;">
-                    <div class="col-sm-12 col-md-12" style="padding-left: 25%; padding-right: 25%;">
-                        <button type="button" class="btn btn-success" onclick="click4Save()" style="width: 100%;"> 등록하기 </button>
-                    </div>
-                </div>
             </div> <!-- ./modal-body -->
         </div> <!-- modal-content -->
     </div> <!-- ./modal-dialog -->

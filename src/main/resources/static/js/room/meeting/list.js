@@ -4,25 +4,68 @@
  * Created by MHLab on 06/11/2018.
  */
 
+//전역변수
+var timetable;
+
 $(document).ready(function () {
+    initWithTimeTable();
+    getServerData();
+});
 
-    //@GetMapping("get/data/meeting/time")
 
-    let json = {'roomList':[1,2,3,4,5,6]};
+function getServerData() {
 
-    ////@GetMapping("get/data/meeting/time")
+    startLoading();
     $.ajax({
-        url: '/room/get/data/meeting/time',
+        url: '/room/get/data/meeting/time/a/'+moment(new Date()).format('YYYY-MM-DD'),
         type: 'GET',
         contentType: 'application/json; charset=UTF-8',
-        data: JSON.stringify(json),
         dataType: 'text',
         processData: false,
         timeout:5000 //5 second timeout
     }).done(function(jqXHR, textStatus){ //가입 성공
         endLoading();
-        let resultCode = JSON.parse(jqXHR)['resultCode'];
-        if (resultCode === 201 || resultCode === 202 ) { location.reload(); }
+        if (JSON.parse(jqXHR)['resultCode'] === 210) { //성공한 경우
+            let resultMsg = JSON.parse(jqXHR)['resultMsg']; //데이터
+
+            //회의실 데이터
+            timetable.addLocations(resultMsg['roomList'].map(data => data['name']));
+
+            for (let i=0; i<resultMsg['meetingList'].length; i++) {
+                //시작 시간과 종료 시간을 가져오는 로직
+                let tmpStartTime = resultMsg['meetingList'][i]['startDate'];
+                let tmpEndTime = resultMsg['meetingList'][i]['endDate'];
+
+                let startTime = new Date(Number(tmpStartTime.split('T')[0].split('-')[0]), Number(tmpStartTime.split('T')[0].split('-')[1]), Number(tmpStartTime.split('T')[0].split('-')[2]),
+                    Number(tmpStartTime.split('T')[1].split(':')[0]), Number(tmpStartTime.split('T')[1].split(':')[1]), 0);
+
+                let endTime = new Date(Number(tmpEndTime.split('T')[0].split('-')[0]), Number(tmpEndTime.split('T')[0].split('-')[1]), Number(tmpEndTime.split('T')[0].split('-')[2]),
+                    Number(tmpEndTime.split('T')[1].split(':')[0]), Number(tmpEndTime.split('T')[1].split(':')[1]), 0);
+
+                let option = {url:'#', class:'',
+                    data:{
+                        meetingIdx: resultMsg['meetingList'][i]['meetingIdx'], meetingTitle: resultMsg['meetingList'][i]['title'],
+                        meetingContent: resultMsg['meetingList'][i]['content'], meetingStart: startTime, meetingEnd: endTime
+                    },
+                    onClick: function(event, timetable, clickEvent) {
+                        showAttribute(event['options']['data']);
+
+                        $('#titleInput').val(resultMsg['meetingList'][i]['title']);
+                        $('#contentInput').val(resultMsg['meetingList'][i]['content']);
+                        $('#startDate').val(moment(startTime).format('YYYY년 MM월 DD일'));
+                        $('#startTime').val(moment(startTime).format('HH시 mm분'));
+                        $('#endTime').val(moment(endTime).format('HH시 mm분'));
+
+                        $('#showRoomInMeetingModal').modal("toggle");
+                    }
+                };
+
+                //등록한 정보를 토대로 정보 등록
+                timetable.addEvent(resultMsg['meetingList'][i]['title'], resultMsg['meetingList'][i]['room']['name'], startTime, endTime, option);
+            }
+            var renderer = new Timetable.Renderer(timetable);
+            renderer.draw('.timetable'); // any css selector
+        }
         else { showSAlert('에러 발생', '개발자에게 문의하세요.' + resultCode , 'error'); }
     }).fail(function(jqXHR, textStatus){
         endLoading();
@@ -30,27 +73,11 @@ $(document).ready(function () {
         console.log("jqXHR = " + jqXHR);
         console.log("textStatus = " + textStatus);
     });
+}
 
 
-
-    var options = {
-        url: '#', // makes the event clickable
-        class: 'vip', // additional css class
-        data: { // each property will be added to the data-* attributes of the DOM node for this event
-            id: 4,
-            ticketType: 'VIP'
-        },
-        onClick: function(event, timetable, clickEvent) {
-            showAttribute(event['options']['data']);
-        } // custom click handler, which is passed the event object and full timetable as context
-    };
-
-
-
-    var timetable = new Timetable();
+//Timetable 초기화 함수
+function initWithTimeTable() {
+    timetable = new Timetable();
     timetable.setScope(0, 23);
-    timetable.addLocations(['Silent Disco', 'Nile', 'Len Room', 'Maas Room']);
-    timetable.addEvent('Frankadelic', 'Nile', new Date(2018,11,6,10,45), new Date(2018,11,6,18,45), options);
-    var renderer = new Timetable.Renderer(timetable);
-    renderer.draw('.timetable'); // any css selector
-});
+}

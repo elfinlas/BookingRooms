@@ -1,11 +1,14 @@
 package com.mhlab.br.controllers.views;
 
 import com.mhlab.br.domain.dto.RoomDTO;
+import com.mhlab.br.domain.dto.RoomInMeetingDTO;
 import com.mhlab.br.domain.enums.JsonResponseEnum;
 import com.mhlab.br.domain.pages.Criteria;
 import com.mhlab.br.domain.pages.SearchCriteria;
 import com.mhlab.br.domain.vo.JsonResponseVO;
+import com.mhlab.br.jpa.entity.Meeting;
 import com.mhlab.br.jpa.entity.Room;
+import com.mhlab.br.service.data.MeetingDataService;
 import com.mhlab.br.service.data.RoomDataService;
 import com.mhlab.br.service.repos.RoomRepoService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,11 +35,13 @@ public class RoomController {
 
     private RoomRepoService roomRepoService;
     private RoomDataService roomDataService;
+    private MeetingDataService meetingDataService;
 
 
-    public RoomController(RoomRepoService roomRepoService, RoomDataService roomDataService) {
+    public RoomController(RoomRepoService roomRepoService, RoomDataService roomDataService, MeetingDataService meetingDataService) {
         this.roomRepoService = roomRepoService;
         this.roomDataService = roomDataService;
+        this.meetingDataService = meetingDataService;
     }
 
     /**
@@ -84,14 +89,11 @@ public class RoomController {
         return roomDataService.getData4Idx(idx);
     }
 
-    @ResponseBody
-    @GetMapping("get/data/meeting/time")
-    public JsonResponseVO getRoomInMeetingData(@RequestBody Map<String, List<Integer>> roomList) {
 
-        for (int i: roomList.get("roomList")) {
-            log.info("i = " + i);
-        }
-        return new JsonResponseVO(JsonResponseEnum.ROOM_MEETING_DATA_GET_SUCCESS);
+    @ResponseBody
+    @GetMapping("get/data/meeting/time/{room}/{time}")
+    public JsonResponseVO getRoomInMeetingData(@PathVariable(name = "room") String roomStr, @PathVariable(name = "time") String timeStr) {
+        return meetingDataService.getMeetingData4Room(LocalDate.parse(timeStr), roomDataService.getData4RoomStr(roomStr));
     }
 
     /**

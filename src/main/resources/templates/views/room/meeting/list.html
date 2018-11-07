@@ -27,11 +27,33 @@
         <section class="content">
 
             <div class="row">
+                <div class="col-md-8 col-lg-10">
+                </div>
+
+                <div class="col-sm-12 col-md-4 col-lg-2">
+                    <div class="input-group">
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" class="form-control pull-right" id="startDate">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-success btn-flat">검색</button>
+                            </span>
+                        </div>
+                    </div> <!-- ./input-group -->
+                </div> <!-- ./col -->
+            </div> <!-- ./row -->
+
+            <div class="row" style="margin-top: 20px;">
                 <div class="col-sm-12 col-md-12 col-lg-12">
                     <div class="timetable"></div>
                 </div>
             </div>
 
+
+            <!-- Modal -->
+            <th:block th:include="fragments/meeting/show_room_meeting_modal"></th:block>
 
         </section><!-- ./content -->
     </div> <!-- ./content-wrapper -->

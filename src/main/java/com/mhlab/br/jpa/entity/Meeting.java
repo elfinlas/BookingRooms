@@ -1,5 +1,6 @@
 package com.mhlab.br.jpa.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mhlab.br.config.BooleanToYesNoConverter;
 import com.mhlab.br.domain.enums.MeetingTypeEnum;
 import lombok.Getter;

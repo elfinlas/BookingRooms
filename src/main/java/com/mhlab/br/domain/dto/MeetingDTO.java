@@ -33,14 +33,9 @@ public class MeetingDTO {
     private LocalDateTime updateDate; //데이터 수정일
     private MeetingTypeEnum meetingType;
     private Room room; //회의실
-    private List<Integer> attendMemberList;
-
 
     //Client Only
     private List<String> attendUserList;
 
-    /*
-    @OneToMany(mappedBy = "meeting")
-    private List<MeetingMember> attendMemberList; //회의 참석자
-     */
+
 }

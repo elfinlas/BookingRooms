@@ -3,7 +3,7 @@
  */
 
 function initWithModal() {
-
+    let nowDate = new Date();
     $('#meetingDataAddModal').on('shown.bs.modal', function() {
         $(document).off('focusin.modal');
     });
@@ -14,22 +14,24 @@ function initWithModal() {
         'language': 'ko',
         'setDate': new Date(),
         'autoclose': true
-    }).datepicker("setDate", new Date());
+    }).datepicker("setDate", nowDate);
+
 
     //Timepicker
     $('#startTime').timepicker({
-        step: 15,
+        step: 5,
         scrollDefault: 'now',
         timeFormat: '(A) H:i',
         option:{ useSelect: true }
-    }).timepicker('setTime', new Date());
+    }).timepicker('setTime', nowDate);
 
     $('#endTime').timepicker({
-        step: 15,
+        step: 5,
         scrollDefault: 'now',
         timeFormat: '(A) H:i',
         option:{ useSelect: true }
-    }).timepicker('setTime', new Date());
+    }).timepicker('setTime', nowDate);
+
 
     $('#select2Room').select2({  });
 
@@ -115,8 +117,14 @@ function click4Save() {
 
     startLoading();
 
-    let json = {'meetingIdx':0, 'title':$('#titleInput').val(), 'content':$('#contentInput').val(), 'startDate':$('#startDate').datepicker("getDate"),
-        'endDate':$('#endTime').datepicker("getDate"), 'isPublic':$('#isPrivate').prop("checked"), 'room':{'roomIdx':$('#select2Room').val()}, 'attendUserList':$('#select2User').val() };
+    let today = new Date();
+    let startTime = new Date(today.getFullYear(),today.getMonth(),today.getDate(),
+        Number($('#startTime').val().split(' ')[1].split(":")[0]),Number($('#startTime').val().split(' ')[1].split(":")[1]),0,0);
+    let endTime = new Date(today.getFullYear(),today.getMonth(),today.getDate(),
+        Number($('#endTime').val().split(' ')[1].split(":")[0]),Number($('#endTime').val().split(' ')[1].split(":")[1]),0,0);
+
+    let json = {'meetingIdx':0, 'title':$('#titleInput').val(), 'content':$('#contentInput').val(), 'startDate':startTime,
+        'endDate':endTime, 'isPublic':$('#isPrivate').prop("checked"), 'room':{'roomIdx':$('#select2Room').val()}, 'attendUserList':$('#select2User').val() };
 
     $.ajax({
         url: "/meeting/add/data",
@@ -137,7 +145,6 @@ function click4Save() {
         console.log("jqXHR = " + jqXHR);
         console.log("textStatus = " + textStatus);
     });
-
 }
 
 

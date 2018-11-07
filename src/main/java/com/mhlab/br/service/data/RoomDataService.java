@@ -8,6 +8,10 @@ import com.mhlab.br.service.repos.RoomRepoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * 회의실 데이터를 처리하는 서비스 객체
  *
@@ -23,6 +27,22 @@ public class RoomDataService {
     public RoomDataService(RoomRepoService roomRepoService) {
         this.roomRepoService = roomRepoService;
     }
+
+
+    ////////////////////////
+    //
+    ////////////////////////
+
+    public List<Room> getData4RoomStr(String roomStr) {
+        if (roomStr.toLowerCase().equals("a")) { return roomRepoService.getAllRoomList(); }
+        else {
+            return Arrays.stream(roomStr.split(","))
+                    .map(Integer::parseInt)
+                    .map(idx -> roomRepoService.getRoomData4Idx(idx)).
+                            collect(Collectors.toList());
+        }
+    }
+
 
     /**
      * 인덱스에 맞는 회의실 데이터를 가져오는 메서드

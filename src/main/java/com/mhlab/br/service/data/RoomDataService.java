@@ -1,5 +1,6 @@
 package com.mhlab.br.service.data;
 
+import com.mhlab.br.domain.dto.MeetingDTO;
 import com.mhlab.br.domain.dto.RoomDTO;
 import com.mhlab.br.domain.enums.JsonResponseEnum;
 import com.mhlab.br.domain.vo.JsonResponseVO;
@@ -33,6 +34,16 @@ public class RoomDataService {
     //
     ////////////////////////
 
+    /**
+     * 인덱스에 맞는 회의실 데이터를 가져오는 메서드
+     * @param idx
+     * @return
+     */
+    public JsonResponseVO getData4Idx(int idx) {
+        return new JsonResponseVO(JsonResponseEnum.ROOM_DATA_GET_SUCCESS, roomRepoService.getRoomData4Idx(idx));
+    }
+
+
     public List<Room> getData4RoomStr(String roomStr) {
         if (roomStr.toLowerCase().equals("a")) { return roomRepoService.getAllRoomList(); }
         else {
@@ -49,9 +60,7 @@ public class RoomDataService {
      * @param idx
      * @return
      */
-    public JsonResponseVO getData4Idx(int idx) {
-        return new JsonResponseVO(JsonResponseEnum.ROOM_DATA_GET_SUCCESS, roomRepoService.getRoomData4Idx(idx));
-    }
+
 
 
     /**

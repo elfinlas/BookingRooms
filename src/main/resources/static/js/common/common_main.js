@@ -117,6 +117,7 @@ function click4Save() {
 
     startLoading();
 
+    //회의 시작 시간과 종료시간을 가져오는 로직
     let today = new Date();
     let startTime = new Date(today.getFullYear(),today.getMonth(),today.getDate(),
         Number($('#startTime').val().split(' ')[1].split(":")[0]),Number($('#startTime').val().split(' ')[1].split(":")[1]),0,0);

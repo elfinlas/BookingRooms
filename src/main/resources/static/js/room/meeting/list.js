@@ -8,16 +8,32 @@
 var timetable;
 
 $(document).ready(function () {
-    initWithTimeTable();
-    getServerData();
+    let now = new Date();
+    //Date picker
+    $('#searchDate').datepicker({
+        'format': 'yyyy년 mm월 dd일',
+        'language': 'ko',
+        'setDate': new Date(),
+        'autoclose': true
+    }).datepicker("setDate", now);
+
+    $('#title_date').text(moment(now).format('YYYY년 MM월 DD일'));
+
+    getServerData('a', now);
 });
 
 
-function getServerData() {
+function click4Search() {
+    $('#title_date').text(moment($('#searchDate').datepicker('getDate')).format('YYYY년 MM월 DD일'));
+    getServerData('a', $('#searchDate').datepicker('getDate'))
+}
 
+
+//회의 정보를 가져오는 메서드
+function getServerData(room, date) {
     startLoading();
     $.ajax({
-        url: '/room/get/data/meeting/time/a/'+moment(new Date()).format('YYYY-MM-DD'),
+        url: '/room/get/data/meeting/time/' + room + '/'+ moment(date).format('YYYY-MM-DD'),
         type: 'GET',
         contentType: 'application/json; charset=UTF-8',
         dataType: 'text',
@@ -25,8 +41,10 @@ function getServerData() {
         timeout:5000 //5 second timeout
     }).done(function(jqXHR, textStatus){ //가입 성공
         endLoading();
+
         if (JSON.parse(jqXHR)['resultCode'] === 210) { //성공한 경우
             let resultMsg = JSON.parse(jqXHR)['resultMsg']; //데이터
+            initWithTimeTable(); //Timetable을 초기화 수행
 
             //회의실 데이터
             timetable.addLocations(resultMsg['roomList'].map(data => data['name']));

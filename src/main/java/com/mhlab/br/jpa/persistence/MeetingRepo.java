@@ -29,11 +29,23 @@ public interface MeetingRepo extends JpaRepository<Meeting, Integer> {
      */
     List<Meeting> findByRoom(Room room);
 
-
-    //List<ScheduleData> findByStartDateAfterAndEndDateBeforeOrderByStartDate(LocalDateTime startDate, LocalDateTime endDate);
-
+    /**
+     * 특정 회의실에 시작, 종료 시간에 맞는 데이터를 가져오는 메서드
+     * @param room
+     * @param startDate
+     * @param endDate
+     * @return
+     */
     List<Meeting> findByRoomAndStartDateAfterAndEndDateBeforeOrderByStartDate(Room room, LocalDateTime startDate, LocalDateTime endDate);
 
+
+    /**
+     * 특정 시작 및 종료시간에 포함되는 데이터를 가져오는 메서드
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    List<Meeting> findByStartDateAfterAndEndDateBeforeOrderByStartDate(LocalDateTime startDate, LocalDateTime endDate);
 
 
     /////////////////////////

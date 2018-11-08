@@ -10,6 +10,7 @@ import com.mhlab.br.service.repos.RoomRepoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,11 +52,34 @@ public class MeetingController {
     }
 
 
+    /**
+     * 회의 데이터 추가
+     * @param dto
+     * @return
+     */
     @PostMapping("add/data")
     @ResponseBody
     public JsonResponseVO postAddMeetingData(@RequestBody MeetingDTO dto) {
         log.info("dto = "+ dto);
         return meetingDataService.saveData(dto);
+    }
+
+    /**
+     * 회의 일정 칼릭터 화면
+     * @return
+     */
+    @GetMapping("calendar")
+    public ModelAndView getCalendarView() {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("views/meeting/calendar");
+        return mv;
+    }
+
+
+    @ResponseBody
+    @GetMapping("get/calendar/{start}/{end}")
+    public JsonResponseVO getCalendarStartEnd(@PathVariable(name = "start") String startStr, @PathVariable(name = "end") String endStr ) {
+        return meetingDataService.getMeetingData4Calendar(startStr, endStr);
     }
 
 }

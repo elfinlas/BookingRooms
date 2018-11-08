@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,26 +45,36 @@ public class MeetingDataService {
     }
 
 
-
-    //
+    /**
+     * 회의실 별 회의 데이터를 가져오는 메서드
+     * @param date
+     * @param roomList
+     * @return
+     */
     public JsonResponseVO getMeetingData4Room(LocalDate date, List<Room> roomList) {
+        //조회 시작, 종료 시간을 가져온다.
         LocalDateTime start = LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(), 0,0,0);
         LocalDateTime end = LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(), 23,59,59);
         List<RoomDTO> roomDTOList = roomList.stream()
                 .map(room -> modelMapper.map(room, RoomDTO.class))
                 .collect(Collectors.toList());
-
-        List<MeetingDTO> meetingDTOList = meetingRepoService.getMeeting4Room(roomList, start, end);
-
-        log.info("start = " + start);
-        log.info("end = " + end);
-        log.info("meetingDTOList = " + meetingDTOList.size());
-
         RoomInMeetingDTO dto = new RoomInMeetingDTO()
                 .setRoomList(roomDTOList)
                 .setMeetingList(meetingRepoService.getMeeting4Room(roomList, start, end));
-
         return new JsonResponseVO(JsonResponseEnum.ROOM_MEETING_DATA_GET_SUCCESS, dto);
+    }
+
+    /**
+     * 회의 데이터를 일정별로 가져오는 메서드
+     * @param startStr
+     * @param endStr
+     * @return
+     */
+    public JsonResponseVO getMeetingData4Calendar(String startStr, String endStr) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime startDate = LocalDateTime.parse(startStr, formatter);
+        LocalDateTime endDate = LocalDateTime.parse(endStr, formatter);
+        return new JsonResponseVO(JsonResponseEnum.MEETING_CAL_DATA_GET_SUCCESS, meetingRepoService.getMeeting4DuringStartEnd(startDate, endDate));
     }
 
 
@@ -78,10 +90,11 @@ public class MeetingDataService {
                 .setStartDate(dto.getStartDate())
                 .setEndDate(dto.getEndDate())
                 .setPublic(dto.getIsPublic())
+                //.setPublic(dto.isPublic())
                 .setMeetingType(MeetingTypeEnum.NORMAL)
+                .setCreateAccount(accountRepo.getOne(2)) //임시용 코드
                 .setRoom(dto.getRoom());
-
-        List<MeetingMember> attendMemberList = new ArrayList<>();
+        List<MeetingMember> attendMemberList = new ArrayList<>(); //참석인원을 담을 객체
 
         for (String user: dto.getAttendUserList()) {
             MeetingMember member = new MeetingMember();
@@ -97,7 +110,6 @@ public class MeetingDataService {
         }
         meeting.setAttendMemberList(attendMemberList);
         meetingRepoService.saveData(meeting);
-
         return new JsonResponseVO(JsonResponseEnum.MEETING_DATA_ADD_SUCCESS);
     }
 }

@@ -91,9 +91,9 @@ public class RoomController {
 
 
     @ResponseBody
-    @GetMapping("get/data/meeting/time/{room}/{time}")
-    public JsonResponseVO getRoomInMeetingData(@PathVariable(name = "room") String roomStr, @PathVariable(name = "time") String timeStr) {
-        return meetingDataService.getMeetingData4Room(LocalDate.parse(timeStr), roomDataService.getData4RoomStr(roomStr));
+    @GetMapping("get/data/meeting/time/{room}/{date}")
+    public JsonResponseVO getRoomInMeetingData(@PathVariable(name = "room") String roomStr, @PathVariable(name = "date") String dateStr) {
+        return meetingDataService.getMeetingData4Room(LocalDate.parse(dateStr), roomDataService.getData4RoomStr(roomStr));
     }
 
     /**

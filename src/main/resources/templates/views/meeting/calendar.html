@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
+
+
+<th:block layout:fragment="head_title">
+    <title>BookingRooms - 회의 현황</title>
+</th:block>
+
+<th:block layout:fragment="custom_css">
+    <link rel="stylesheet" th:href="@{/lib/Fullcalendar-3.9.0/fullcalendar.min.css}" /> <!-- FullCalendar -->
+
+</th:block>
+
+
+<th:block layout:fragment="content_body">
+
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1> 회의 현황</h1>
+        </section>
+
+        <section class="content">
+
+            <!--<div class="row">-->
+                <!--<div class="col-md-8 col-lg-10">-->
+                <!--</div>-->
+
+                <!--<div class="col-sm-12 col-md-4 col-lg-2">-->
+                    <!--<div class="input-group">-->
+                        <!--<div class="input-group date">-->
+                            <!--<div class="input-group-addon">-->
+                                <!--<i class="fa fa-calendar"></i>-->
+                            <!--</div>-->
+                            <!--<input type="text" class="form-control pull-right" id="searchDate">-->
+                            <!--<span class="input-group-btn">-->
+                                <!--<button type="button" class="btn bg-purple btn-flat" onclick="click4Search()">검색</button>-->
+                            <!--</span>-->
+                        <!--</div>-->
+                    <!--</div> &lt;!&ndash; ./input-group &ndash;&gt;-->
+                <!--</div> &lt;!&ndash; ./col &ndash;&gt;-->
+            <!--</div> &lt;!&ndash; ./row &ndash;&gt;-->
+
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div id='calendar'></div>
+                </div>
+            </div>
+
+            <div id="loadingSpin4Calendar" class="overlay" hidden="hidden">
+                <i class="fa fa-refresh fa-spin"></i>
+            </div>
+
+
+            <!-- Modal -->
+            <th:block th:include="fragments/meeting/modal"></th:block>
+            <!--<th:block th:include="fragments/meeting/read_modal"></th:block>-->
+
+        </section><!-- ./content -->
+    </div> <!-- ./content-wrapper -->
+</th:block>
+
+<th:block layout:fragment="custom_js">
+    <script th:src="@{/lib/Fullcalendar-3.9.0/fullcalendar.min.js}"></script>
+    <script th:src="@{/lib/Fullcalendar-3.9.0/locale/ko.js}"></script>
+
+    <script th:src="@{/js/meeting/calendar.js}"></script>
+</th:block>
+
+</html>

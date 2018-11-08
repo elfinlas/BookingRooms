@@ -1,6 +1,5 @@
 package com.mhlab.br.jpa.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mhlab.br.config.BooleanToYesNoConverter;
 import com.mhlab.br.domain.enums.MeetingTypeEnum;
 import lombok.Getter;
@@ -57,6 +56,10 @@ public class Meeting {
     @OneToOne
     @JoinColumn(name = "room")
     private Room room; //회의실
+
+    @OneToOne
+    @JoinColumn(name = "account")
+    private Account createAccount; //회의 등록자
 
     @OneToMany(mappedBy = "meeting")
     private List<MeetingMember> attendMemberList; //회의 참석자

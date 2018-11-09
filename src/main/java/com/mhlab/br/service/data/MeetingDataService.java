@@ -112,4 +112,18 @@ public class MeetingDataService {
         meetingRepoService.saveData(meeting);
         return new JsonResponseVO(JsonResponseEnum.MEETING_DATA_ADD_SUCCESS);
     }
+
+
+    /**
+     * 회의 데이터를 삭제하는 메서드
+     * @param meetingIdx
+     * @return
+     */
+    public JsonResponseVO deleteMeetingData(int meetingIdx) {
+        meetingRepoService.deleteData(meetingIdx);
+        return new JsonResponseVO(JsonResponseEnum.MEETING_DATA_DELETE_SUCCESS);
+    }
+
+
+
 }

@@ -64,6 +64,13 @@ public class MeetingController {
         return meetingDataService.saveData(dto);
     }
 
+
+    @PostMapping("delete/data/{idx}")
+    public JsonResponseVO postDeleteMeetingData(@PathVariable("idx") Integer idx) {
+        return meetingDataService.deleteMeetingData(idx);
+    }
+
+
     /**
      * 회의 일정 칼릭터 화면
      * @return

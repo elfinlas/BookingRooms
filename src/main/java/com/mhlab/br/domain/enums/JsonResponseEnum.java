@@ -13,6 +13,8 @@ public enum JsonResponseEnum {
     MEETING_BEFORE_RES_FAIL(-100, "Fail"),
 
     MEETING_DATA_ADD_SUCCESS(110, "Success"), //회의 데이터 등록 성공
+    MEETING_DATA_UPDATE_SUCCESS(111, "Success"),
+    MEETING_DATA_DELETE_SUCCESS(112, "Success"),
 
     MEETING_CAL_DATA_GET_SUCCESS(120, "Success"), //회의 시작, 종료 시간의 데이터 조회 성공
 

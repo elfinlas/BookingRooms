@@ -7,24 +7,96 @@ $(document).ready(function () {
     $('#select2Room').select2({ });
     $('#select2User').select2({ });
 
-    $('#buttonViewAdd').hide(); //버튼 뷰 감춘다.
+    $('#buttonViewAdd').hide(); //일반 저장 버튼 뷰 감춘다.
+
+    //Date picker
+    $('#startDate').datepicker({
+        'format': 'yyyy년 mm월 dd일',
+        'language': 'ko',
+        'setDate': new Date(),
+        'autoclose': true
+    }).datepicker("setDate", new Date());
+    $('#startDate').prop('disabled', true); //picker가 뜨는 것을 막아준다.
+
+
+    //Timepicker
+    $('#startTime').timepicker({
+        step: 5,
+        scrollDefault: 'now',
+        timeFormat: '(A) H:i',
+        option:{ useSelect: true }
+    }).timepicker('setTime', new Date());
+
+
+    $('#endTime').timepicker({
+        step: 5,
+        scrollDefault: 'now',
+        timeFormat: '(A) H:i',
+        option:{ useSelect: true }
+    }).timepicker('setTime', new Date());
 
     initWithCalendar();
 });
 
+
 //수정
 function click4Modify() {
-    //수정 처리에 필요한 작업 진행
-    $('#titleInput').prop('readonly', false);
-    $('#isPrivate').prop('disabled', false);
-    $('#contentInput').prop('readonly', false);
+    startLoading();
+    //모달을 띄우기 전 서버로부터 데이터를 수신한다.
+    $.ajax({
+        url: "/meeting/get/add_res",
+        type: "GET",
+        contentType: "application/json; charset=UTF-8",
+        dataType: "text",
+        processData: false,
+        timeout:5000 //5 second timeout
+    }).done(function(jqXHR, textStatus){ //가입 성공
+        endLoading();
+        let resultCode = JSON.parse(jqXHR)['resultCode'];
+        let accountList = JSON.parse(jqXHR)['resultMsg']['accountList'];
+        let roomList = JSON.parse(jqXHR)['resultMsg']['roomList'];
 
+        if (resultCode === 100) {
+            //데이터를 추가하기 전에 두 데이터를 초기화 한다.
+            // $('#select2Room').find('option').remove().end().append('<option selected>회의실을 선택하세요</option>');
+            // $('#select2User').find('option').remove().end().append('<option value="add_user">외부인 추가</option>');
 
+            //참석자 추가 부분은 등록해둔다.
+            $('#select2User').append('<option value=add_user>외부인 추가</option>');
 
+            //참석자 데이터 추가
+            for (let i=0; i<accountList.length; i++) {
+                if (String($('#select2User').val()).split(",").indexOf(String(accountList[i]['accountIdx'])) === -1) { //등록이 안되어 있는 경우
+                    $('#select2User').append('<option value='+accountList[i]['accountIdx']+'>'+ accountList[i]['name'] + ' / ' + accountList[i]['teamName'] +'</option>');
+                }
+                $('#select2User').trigger('change');
+            }
 
-    $('#buttonViewAdd').show();
-    $('#buttonViewRead').hide();
+            //회의실 리스트
+            for (let i=0; i<roomList.length; i++) {
+                if (String($('#select2Room').val()).split(",").indexOf(String(roomList[i]['roomIdx'])) === -1) { //등록이 안되어 있는 경우
+                    $('#select2Room').append('<option value='+roomList[i]['roomIdx']+'>'+ roomList[i]['name'] + '</option>');
+                }
+                $('#select2Room').trigger('change');
+            }
+
+            //수정 처리 부분에 따른 작업
+            showModal4Update();
+        }
+        else { //정상적으로 값을 수신하지 못한 경우
+            showSAlert('서버 에러', '서버에서 문제가 발생하였습니다. ('+resultCode+')' , 'error');
+        }
+    }).fail(function(jqXHR, textStatus){
+        endLoading();
+        showSAlert('서버 에러', '서버에서 문제가 발생하였습니다.', 'error');
+        console.log("jqXHR = " + jqXHR);
+        console.log("textStatus = " + textStatus);
+    });
 }
+
+
+
+
 
 
 //삭제
@@ -102,7 +174,6 @@ function initWithCalendar() {
                     var events = []; //달력에 표시될 이벤트를 저장할 배열
                     for (let i=0; i<resultMsg.length; i++) {
                         let meetingData = resultMsg[i];
-                        //showAttribute(resultMsg[i]);
 
                         events.push({
                             idx:meetingData['meetingIdx'],
@@ -129,6 +200,7 @@ function initWithCalendar() {
 
         },
         eventClick: function(calEvent, jsEvent, view) { //이벤트 클릭 함수
+            showModal4Read(); //열람 시 모달을 초기화 해준다.
             //모달 데이터 셋업
             $('#meetingIdx').val(calEvent.idx);
             $('#titleInput').val(calEvent.title);

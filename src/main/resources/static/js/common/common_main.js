@@ -25,6 +25,7 @@ function initWithModal() {
         option:{ useSelect: true }
     }).timepicker('setTime', nowDate);
 
+
     $('#endTime').timepicker({
         step: 5,
         scrollDefault: 'now',

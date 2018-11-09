@@ -113,4 +113,27 @@ public class MeetingRepoService {
         }
     }
 
+
+    /**
+     * 회의 데이터를 삭제하는 메서드
+     * @param idx
+     */
+    public void deleteData(int idx) {
+        deleteData(meetingRepo.getOne(idx));
+    }
+
+
+    /**
+     * 회의 데이터를 삭제하는 메서드
+     * @param data
+     */
+    public void deleteData(Meeting data) {
+        //회의 참석 인원 데이터를 삭제해 준다.
+        for (MeetingMember meetingMember: data.getAttendMemberList()) {
+            attendMemberRepo.delete(meetingMember);
+        }
+
+        //회의 데이터 삭제
+        meetingRepo.delete(data);
+    }
 }

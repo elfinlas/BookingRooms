@@ -57,14 +57,22 @@ public class MeetingController {
      * @param dto
      * @return
      */
-    @PostMapping("add/data")
     @ResponseBody
+    @PostMapping("add/data")
     public JsonResponseVO postAddMeetingData(@RequestBody MeetingDTO dto) {
         log.info("dto = "+ dto);
         return meetingDataService.saveData(dto);
     }
 
 
+
+    @ResponseBody
+    @PostMapping("update/data")
+    public JsonResponseVO postUpdateMeetingData(@RequestBody MeetingDTO dto) {
+        return null;
+    }
+
+    @ResponseBody
     @PostMapping("delete/data/{idx}")
     public JsonResponseVO postDeleteMeetingData(@PathVariable("idx") Integer idx) {
         return meetingDataService.deleteMeetingData(idx);

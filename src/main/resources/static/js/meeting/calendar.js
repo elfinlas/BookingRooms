@@ -95,10 +95,6 @@ function click4Modify() {
 }
 
 
-
-
-
-
 //삭제
 function click4Delete() {
     swal({
@@ -114,7 +110,7 @@ function click4Delete() {
         if (result.value) {
             startLoading(); //처리 결과가 길어지기 때문에
             $.ajax({
-                url: "/room/delete/data/"+$('#roomIdx').val(), //////////////
+                url: "/meeting/delete/data/"+$('#meetingIdx').val(),
                 type: "POST",
                 contentType: "application/json; charset=UTF-8",
                 dataType: "text",
@@ -123,7 +119,7 @@ function click4Delete() {
             }).done(function(jqXHR, textStatus){ //가입 성공
                 endLoading();
                 let resultCode = JSON.parse(jqXHR)['resultCode'];
-                if (resultCode === 203) { location.reload(); } //////////////////
+                if (resultCode === 112) { location.reload(); } //////////////////
                 else { //정상적으로 값을 수신하지 못한 경우
                     showSAlert('서버 에러', '서버에서 문제가 발생하였습니다. ('+resultCode+')' , 'error');
                 }

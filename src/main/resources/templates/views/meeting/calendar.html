@@ -17,29 +17,15 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1> 회의 현황</h1>
+
+            <div class="box-tools pull-right">
+                <button type="button" class="btn bg-purple" onclick="click4AddMeetingData()" style="margin-right: 5px;">
+                    <i class="fa fa-plus-square" aria-hidden="true"> &nbsp; 회의 등록</i>
+                </button>
+            </div>
         </section>
 
         <section class="content">
-
-            <!--<div class="row">-->
-                <!--<div class="col-md-8 col-lg-10">-->
-                <!--</div>-->
-
-                <!--<div class="col-sm-12 col-md-4 col-lg-2">-->
-                    <!--<div class="input-group">-->
-                        <!--<div class="input-group date">-->
-                            <!--<div class="input-group-addon">-->
-                                <!--<i class="fa fa-calendar"></i>-->
-                            <!--</div>-->
-                            <!--<input type="text" class="form-control pull-right" id="searchDate">-->
-                            <!--<span class="input-group-btn">-->
-                                <!--<button type="button" class="btn bg-purple btn-flat" onclick="click4Search()">검색</button>-->
-                            <!--</span>-->
-                        <!--</div>-->
-                    <!--</div> &lt;!&ndash; ./input-group &ndash;&gt;-->
-                <!--</div> &lt;!&ndash; ./col &ndash;&gt;-->
-            <!--</div> &lt;!&ndash; ./row &ndash;&gt;-->
-
             <div class="row" style="margin-top: 20px;">
                 <div class="col-sm-12 col-md-12 col-lg-12">
                     <div id='calendar'></div>
@@ -50,10 +36,8 @@
                 <i class="fa fa-refresh fa-spin"></i>
             </div>
 
-
             <!-- Modal -->
             <th:block th:include="fragments/meeting/modal"></th:block>
-            <!--<th:block th:include="fragments/meeting/read_modal"></th:block>-->
 
         </section><!-- ./content -->
     </div> <!-- ./content-wrapper -->

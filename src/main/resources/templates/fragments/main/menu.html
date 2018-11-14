@@ -13,9 +13,9 @@
 
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
-                <li>
-                    <a href="javascript:void(0);" onclick="click4AddMeetingData()" data-toggle="control-sidebar"><i class="fa fa-lg fa-plus-square-o"></i> &nbsp; 회의등록 </a>
-                </li>
+                <!--<li>-->
+                    <!--<a href="javascript:void(0);" onclick="click4AddMeetingData()" data-toggle="control-sidebar"><i class="fa fa-lg fa-plus-square-o"></i> &nbsp; 회의등록 </a>-->
+                <!--</li>-->
             </ul>
 
             <!--<ul class="nav navbar-nav">-->
@@ -33,6 +33,21 @@
 <aside class="main-sidebar">
     <section class="sidebar">
         <ul class="sidebar-menu" data-widget="tree">
+            <li class="header">회의</li>
+            <li>
+                <a href="/meeting/calendar">
+                    <i class="fa fa-th"></i>
+                    <span>월간 회의 일정</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/meeting/list">
+                    <i class="fa fa-th"></i>
+                    <span>전체 회의</span>
+                </a>
+            </li>
+
             <li class="header">회의실</li>
 
             <li>
@@ -42,12 +57,6 @@
                 </a>
             </li>
 
-            <li>
-                <a href="/meeting/calendar">
-                    <i class="fa fa-th"></i>
-                    <span>회의 일정</span>
-                </a>
-            </li>
 
             <!-- 관리 측 -->
             <li class="treeview">

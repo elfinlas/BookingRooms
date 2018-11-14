@@ -1,22 +1,15 @@
 package com.mhlab.br.service.repos;
 
-import com.mhlab.br.domain.dto.AccountDTO;
-import com.mhlab.br.domain.dto.MeetingDTO;
-import com.mhlab.br.domain.dto.MeetingMemberDTO;
+import com.mhlab.br.domain.pages.Criteria;
+import com.mhlab.br.domain.pages.PageMaker;
 import com.mhlab.br.jpa.entity.Meeting;
-import com.mhlab.br.jpa.entity.MeetingMember;
 import com.mhlab.br.jpa.entity.Room;
-import com.mhlab.br.jpa.persistence.MeetingAttendMemberRepo;
 import com.mhlab.br.jpa.persistence.MeetingRepo;
+import com.mhlab.br.service.abstracts.AbstractListPageService;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.AbstractConverter;
-import org.modelmapper.Converter;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
-import org.modelmapper.internal.Errors;
-import org.modelmapper.spi.ConditionalConverter;
-import org.modelmapper.spi.MappingContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,19 +24,41 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class MeetingRepoService {
+public class MeetingRepoService extends AbstractListPageService {
 
-    private ModelMapper modelMapper;
     private MeetingRepo meetingRepo;
-    private MeetingAttendMemberRepo attendMemberRepo;
 
 
     @Autowired
-    public MeetingRepoService(ModelMapper modelMapper, MeetingRepo meetingRepo, MeetingAttendMemberRepo attendMemberRepo) {
-        this.modelMapper = modelMapper;
+    public MeetingRepoService(MeetingRepo meetingRepo) {
         this.meetingRepo = meetingRepo;
-        this.attendMemberRepo = attendMemberRepo;
     }
+
+    //////////////////////////////
+    //        Get Paging
+    //////////////////////////////
+
+
+    /**
+     * 회의 데이터 전체를 페이징으로 가져오는 메서드
+     * @param criteria
+     * @return
+     */
+    public List<Meeting> getAllMeetingPageList(Criteria criteria) {
+        return meetingRepo.findAllBy(PageRequest.of(criteria.getPage(), criteria.getPerPageNum(), Sort.Direction.DESC, "createDate"));
+    }
+
+
+    /**
+     * 회의 데이터의 PageMaker 객체를 가져오는 메서드
+     * @param criteria
+     * @return
+     */
+    public PageMaker getPageMaker(Criteria criteria) {
+        return getPageMaker(meetingRepo.countAllBy(), criteria);
+    }
+
+
 
 
     //////////////////////////////
@@ -51,17 +66,14 @@ public class MeetingRepoService {
     //////////////////////////////
 
     /**
-     * 특정 회의실에서 진행한 회의 데이터를 가져오는 메서드
-     * @param roomList
+     * idx로 하나 가져오는 메서드
+     * @param idx
      * @return
      */
-    public List<MeetingDTO> getMeeting4Room(List<Room> roomList) {
-        return roomList.stream()
-                .map(room -> meetingRepo.findByRoom(room))
-                .flatMap(List::stream)
-                .map(meeting -> modelMapper.map(meeting, MeetingDTO.class))
-                .collect(Collectors.toList());
+    public Meeting getMeeting4Idx(int idx) {
+        return meetingRepo.getOne(idx);
     }
+
 
     /**
      * 특정 회의실에서 진행 및 시작, 종료 시간에 맞는 데이터를 가져오는 메서드
@@ -70,13 +82,13 @@ public class MeetingRepoService {
      * @param end
      * @return
      */
-    public List<MeetingDTO> getMeeting4Room(List<Room> roomList, LocalDateTime start, LocalDateTime end) {
+    public List<Meeting> getMeeting4Room(List<Room> roomList, LocalDateTime start, LocalDateTime end) {
         return roomList.stream()
                 .map(room -> meetingRepo.findByRoomAndStartDateAfterAndEndDateBeforeOrderByStartDate(room, start, end))
                 .flatMap(List::stream)
-                .map(meeting -> modelMapper.map(meeting, MeetingDTO.class))
                 .collect(Collectors.toList());
     }
+
 
     /**
      * 회의 시작 및 종료 시간에 맞는 데이터를 가져오는 메서드
@@ -84,33 +96,29 @@ public class MeetingRepoService {
      * @param end
      * @return
      */
-    public List<MeetingDTO> getMeeting4DuringStartEnd(LocalDateTime start, LocalDateTime end) {
-        return meetingRepo.findByStartDateAfterAndEndDateBeforeOrderByStartDate(start, end).stream()
-                .map(meeting -> {
-                    meeting.getAttendMemberList().stream().map(meetingMember -> {
-                        MeetingMemberDTO dto = modelMapper.map(meetingMember, MeetingMemberDTO.class);
-                        dto.setAttendCompanyMember(modelMapper.map(meetingMember.getAttendCompanyMember(), AccountDTO.class));
-                        return dto;
-                    });
-                    return modelMapper.map(meeting, MeetingDTO.class);
-                })
-                .collect(Collectors.toList());
+    public List<Meeting> getMeeting4DuringStartEnd(LocalDateTime start, LocalDateTime end) {
+        return meetingRepo.findByStartDateAfterAndEndDateBeforeOrderByStartDate(start, end);
     }
 
     /**
      * 데이터를 저장하는 메서드
      * @param data
      */
-    public void saveData(Meeting data) {
+    public Meeting saveData(Meeting data) {
         LocalDateTime now = LocalDateTime.now();
         data.setCreateDate(now);
         data.setUpdateDate(now);
         meetingRepo.save(data);
+        return data;
+    }
 
-        //회의 참석 인원 저장
-        for (MeetingMember member: data.getAttendMemberList()) {
-            attendMemberRepo.save(member);
-        }
+    /**
+     * 데이터를 수정하는 메서드
+     * @param data
+     */
+    public void updateData(Meeting data) {
+        data.setUpdateDate(LocalDateTime.now());
+        meetingRepo.save(data);
     }
 
 
@@ -128,11 +136,6 @@ public class MeetingRepoService {
      * @param data
      */
     public void deleteData(Meeting data) {
-        //회의 참석 인원 데이터를 삭제해 준다.
-        for (MeetingMember meetingMember: data.getAttendMemberList()) {
-            attendMemberRepo.delete(meetingMember);
-        }
-
         //회의 데이터 삭제
         meetingRepo.delete(data);
     }

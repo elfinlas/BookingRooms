@@ -2,6 +2,7 @@ package com.mhlab.br.jpa.persistence;
 
 import com.mhlab.br.jpa.entity.Meeting;
 import com.mhlab.br.jpa.entity.Room;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -21,13 +22,6 @@ public interface MeetingRepo extends JpaRepository<Meeting, Integer> {
     /////////////////////////
     //    WithOut Paging
     /////////////////////////
-
-    /**
-     *
-     * @param room
-     * @return
-     */
-    List<Meeting> findByRoom(Room room);
 
     /**
      * 특정 회의실에 시작, 종료 시간에 맞는 데이터를 가져오는 메서드
@@ -51,4 +45,18 @@ public interface MeetingRepo extends JpaRepository<Meeting, Integer> {
     /////////////////////////
     //     With Paging
     /////////////////////////
+
+    /**
+     * 회의 데이터 전체를 가져오는 메서드
+     * @param pageable
+     * @return
+     */
+    List<Meeting> findAllBy(Pageable pageable);
+
+    /**
+     * 회의 데이터 전체 카운트 값
+     * @return
+     */
+    int countAllBy();
+
 }

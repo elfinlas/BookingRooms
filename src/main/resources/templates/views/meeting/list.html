@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
+
+
+<th:block layout:fragment="head_title">
+    <title>BookingRooms - 전체 회의 현황</title>
+</th:block>
+
+<th:block layout:fragment="custom_css">
+
+</th:block>
+
+
+<th:block layout:fragment="content_body">
+
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1> 전체 회의 현황</h1>
+
+            <div class="box-tools pull-right">
+                <button type="button" class="btn bg-purple" onclick="click4AddMeetingData()" style="margin-right: 5px; margin-bottom: 15px;">
+                    <i class="fa fa-plus-square" aria-hidden="true"> &nbsp; 회의 등록</i>
+                </button>
+            </div>
+        </section>
+
+        <section class="content">
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="box">
+                        <div class="box-header with-border">
+
+                        </div>
+
+                        <div class="box-body">
+                            <table class="table table-hover table-responsive">
+                                <colgroup>
+                                    <col width="5%">
+                                    <col width="30%">
+                                    <col width="15%">
+                                    <col width="15%">
+                                    <col width="15%">
+                                    <col width="10%">
+                                    <col width="10%">
+                                </colgroup>
+
+                                <tr>
+                                    <th>no</th>
+                                    <th>회의제목</th>
+                                    <th>회의실</th>
+                                    <th>진행일자</th>
+                                    <th>시간</th>
+                                    <th>상태</th>
+                                    <th>공개</th>
+                                </tr>
+
+                                <tr th:each="meeting, index : ${meetingList}">
+                                    <td th:text="${index.index+1}"></td>
+                                    <td>
+                                        <a href="javascript:void(0)" th:text="${meeting.getTitle()}" th:onclick="'click4Item(' + ${meeting.getMeetingIdx()} + ')'"></a>
+                                    </td>
+                                    <td th:text="${meeting.getRoom().getName()}"></td>
+                                    <td th:text="${#temporals.format(meeting.getStartDate(), 'yy년 MM월 dd일')}"></td>
+                                    <td>
+                                        <span th:text="${#temporals.format(meeting.getStartDate(), 'HH시 mm분')}"> </span> ~
+                                        <span th:text="${#temporals.format(meeting.getEndDate(), 'HH시 mm분')}"> </span>
+                                    </td>
+                                    <td>
+                                        <span th:if="${meeting.getStartDate().isBefore(nowToday)}"
+                                                class="badge bg-red">지난 회의</span>
+                                        <span th:unless="${meeting.getStartDate().isBefore(nowToday)}"
+                                              class="badge bg-green">진행 전</span>
+                                    </td>
+                                    <td>
+                                        <span th:if="${meeting.isPublic}"
+                                              class="badge bg-green">공개</span>
+                                        <span th:unless="${meeting.isPublic}"
+                                              class="badge bg-red">비공개</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div> <!-- ./box-body -->
+
+                        <div class="box-footer"  style="text-align: center; margin-top: 20px;">
+                            <ul class="pagination pagination-sm no-margin" sd:pagination="pager">
+                                <li th:if="${pageMaker.isPrev()}" th:class="activie">
+                                    <a href="/meeting/list" th:attrappend="href=${pageMaker.makeUrl4SearchPage(pageMaker.getCriteria().getPage())}"><span aria-hidden="true">&laquo;</span></a>
+                                </li>
+                                <li th:unless="${pageMaker.isPrev()}" th:class="disabled">
+                                    <a href="/meeting/list" th:attrappend="href=${pageMaker.makeUrl4SearchPage(pageMaker.getCriteria().getPage())}"><span aria-hidden="true">&laquo;</span></a>
+                                </li>
+
+                                <th:block th:each="i : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
+                                    <li>
+                                        <a href="/meeting/list" th:attrappend="href=${pageMaker.makeUrl4SearchPage(i)}" th:text="${i}"></a>
+                                    </li>
+                                </th:block>
+
+                                <li th:if="${pageMaker.isNext()}" th:class="activie">
+                                    <a href="/meeting/list" th:attrappend="href=${pageMaker.makeUrl4SearchPage(pageMaker.getCriteria().getPage())}"><span aria-hidden="true">&raquo;</span></a>
+                                </li>
+                                <li th:unless="${pageMaker.isNext()}" th:class="disabled">
+                                    <a href="/meeting/list" th:attrappend="href=${pageMaker.makeUrl4SearchPage(pageMaker.getCriteria().getPage())}"><span aria-hidden="true">&raquo;</span></a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div> <!-- ./box -->
+                </div> <!-- ./col -->
+            </div> <!-- ./row -->
+
+
+            <!-- Modal -->
+            <th:block th:include="fragments/meeting/modal"></th:block>
+
+        </section><!-- ./content -->
+    </div> <!-- ./content-wrapper -->
+</th:block>
+
+<th:block layout:fragment="custom_js">
+    <script th:src="@{/js/common/modal_meeting.js?v=181113_01}"></script>
+    <script th:src="@{/js/meeting/list.js}"></script>
+</th:block>
+
+</html>

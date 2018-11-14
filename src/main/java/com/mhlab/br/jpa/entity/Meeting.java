@@ -57,6 +57,10 @@ public class Meeting {
     @JoinColumn(name = "room")
     private Room room; //회의실
 
+    @OneToOne
+    @JoinColumn(name = "account")
+    private Account createAccount; //회의 등록자
+
     @OneToMany(mappedBy = "meeting")
     private List<MeetingMember> attendMemberList; //회의 참석자
 

@@ -1,6 +1,7 @@
 package com.mhlab.br.domain.pages;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
@@ -9,6 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  */
 
 
+@Slf4j
 @Getter
 public class PageMaker {
     //외부 주입 필요
@@ -30,15 +32,21 @@ public class PageMaker {
         this.criteria = criteria;
 
         //마지막 페이지 구하는 식
-        this.endPage  = (int) (Math.ceil(criteria.getPage() / (double)pagingCnt) * pagingCnt); //마지막 페이지 구하는 식
+        this.endPage  = (int) (Math.ceil((criteria.getPage()==0?1:criteria.getPage()) / (double)pagingCnt) * pagingCnt); //마지막 페이지 구하는 식
         this.startPage = (endPage - pagingCnt) + 1; //시작 페이지
+
+//        this.endPage  = (int) (Math.ceil(criteria.getPage() / (double)pagingCnt) * pagingCnt); //마지막 페이지 구하는 식
+//        this.startPage = (endPage - pagingCnt) + 1; //시작 페이지
 
         int tmpLastPageNum = (int) (Math.ceil(this.totalCount / (double) criteria.getPerPageNum())); //마지막 페이지 숫자를 구함
 
         if(endPage>tmpLastPageNum) { endPage = tmpLastPageNum; } //마지막 페이지가 기존에 구한 endPage보다 클 경우 재 산정
 
-        this.prev = this.startPage == 1 ? false : true; //1페이지 일 경우 false 로 처리
-        this.next = this.endPage * criteria.getPerPageNum() >= totalCount ? false : true; //마지막 페이지가 최종 값과 비슷하거나 클 경우 false 처리
+        this.prev = this.startPage != 1; //1페이지 일 경우 false 로 처리
+        this.next = this.endPage * criteria.getPerPageNum() < totalCount; //마지막 페이지가 최종 값과 비슷하거나 클 경우 false 처리
+
+//        this.prev = this.startPage == 1 ? false : true; //1페이지 일 경우 false 로 처리
+//        this.next = this.endPage * criteria.getPerPageNum() >= totalCount ? false : true; //마지막 페이지가 최종 값과 비슷하거나 클 경우 false 처리
     }
 
 

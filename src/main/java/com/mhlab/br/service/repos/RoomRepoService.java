@@ -1,6 +1,8 @@
 package com.mhlab.br.service.repos;
 
+import com.mhlab.br.domain.dto.RoomDTO;
 import com.mhlab.br.domain.pages.Criteria;
+import com.mhlab.br.domain.pages.PageMaker;
 import com.mhlab.br.jpa.entity.Room;
 import com.mhlab.br.jpa.persistence.RoomRepo;
 import com.mhlab.br.service.abstracts.AbstractListPageService;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -34,6 +37,16 @@ public class RoomRepoService extends AbstractListPageService {
     //          Get
     //////////////////////////////
 
+
+    /**
+     * 하나의 데이터를 가져오는 메서드
+     * @param idx
+     * @return
+     */
+    public Room getRoomData4Idx(int idx) {
+        return roomRepo.findById(idx).orElse(new Room());
+    }
+
     /**
      * 모든 회의실 정보를 가져오는 메서드
      * @return
@@ -49,18 +62,51 @@ public class RoomRepoService extends AbstractListPageService {
      * @return
      */
     public List<Room> getAllRoomPageList(Criteria criteria) {
-        PageRequest pageRequest = PageRequest.of(criteria.getPage(),criteria.getPerPageNum(), Sort.Direction.DESC, "createDate");
-        log.info("pageRequest = " + pageRequest.toString());
-        return roomRepo.findAllBy(pageRequest);
-//        return roomRepo.findAllBy(PageRequest.of(criteria.getPage(),criteria.getPerPageNum(), Sort.Direction.DESC, "createDate"));
+        return roomRepo.findAllBy(PageRequest.of(criteria.getPage(),criteria.getPerPageNum(), Sort.Direction.DESC, "createDate"));
+    }
+
+    /**
+     * 
+     * @param criteria
+     * @return
+     */
+    public PageMaker getPageMaker(Criteria criteria) {
+        return getPageMaker(roomRepo.countAllBy(), criteria);
     }
 
 
-    /////
+    /**
+     * 데이터를 저장하는 메서드
+     * @param data
+     * @return
+     */
+    public boolean saveRoomData(Room data) {
+        LocalDateTime now = LocalDateTime.now();
+        data.setCreateDate(now);
+        data.setUpdateDate(now);
+        return roomRepo.save(data) != null;
+    }
+
+    /**
+     * 데이터 업데이트 메서드
+     * @param dto
+     * @return
+     */
+    public boolean updateRoomData(RoomDTO dto) {
+        Room data = getRoomData4Idx(dto.getRoomIdx());
+        data.setName(dto.getName());
+        data.setDescription(dto.getDescription());
+        data.setUpdateDate(LocalDateTime.now());
+        return roomRepo.save(data) != null;
+    }
 
 
-    public boolean saveRoomData() {
-        return true;
+    /**
+     * 데이터 삭제 메서드
+     * @param idx
+     */
+    public void deleteRoomData(int idx) {
+        roomRepo.deleteById(idx);
     }
 
 }

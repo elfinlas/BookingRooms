@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
+
 
 <th:block layout:fragment="head_title">
     <title>BookingRooms - 회의실 현황</title>
@@ -14,14 +15,85 @@
 
     <div class="content-wrapper">
         <section class="content-header">
-            <h1 회의실 현황 </h1>
+            <h1> 회의실 현황</h1>
         </section>
 
         <section class="content">
 
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h4 class="box-title">전체 회의실</h4>
 
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-sm bg-purple" onclick="click4Add()" style="margin-right: 5px;">
+                                    <i class="fa fa-plus-square" aria-hidden="true"> &nbsp; 회의실 등록</i>
+                                </button>
+                            </div>
+                        </div>
 
+                        <div class="box-body">
+                            <table class="table table-hover table-responsive">
+                                <colgroup>
+                                    <col width="10%">
+                                    <col width="30%">
+                                    <col width="30%">
+                                    <col width="15%">
+                                    <col width="15%">
+                                </colgroup>
 
+                                <tr>
+                                    <th>no</th>
+                                    <th>회의실</th>
+                                    <th>설명</th>
+                                    <th>등록일</th>
+                                    <th>수정일</th>
+                                </tr>
+
+                                <tr th:each="room, index : ${roomList}">
+                                    <td th:text="${index.index+1}"></td>
+                                    <td>
+                                        <a href="javascript:void(0)" th:text="${room.getName()}" th:onclick="'click4Item(' + ${room.getRoomIdx()} + ')'"></a>
+                                    </td>
+                                    <td th:text="${room.getDescription()}"></td>
+                                    <td th:text="${#temporals.format(room.getCreateDate(), 'yy-MM-dd HH:mm')}"></td>
+                                    <td th:text="${#temporals.format(room.getUpdateDate(), 'yy-MM-dd HH:mm')}"></td>
+                                </tr>
+                            </table>
+                        </div> <!-- ./box-body -->
+
+                        <div class="box-footer"  style="text-align: center; margin-top: 20px;">
+                            <ul class="pagination pagination-sm no-margin" sd:pagination="pager">
+                                <li th:if="${pageMaker.isPrev()}" th:class="activie">
+                                    <a href="/room/status/list" th:attrappend="href=${pageMaker.makeUrl4SearchPage(pageMaker.getCriteria().getPage())}"><span aria-hidden="true">&laquo;</span></a>
+                                </li>
+                                <li th:unless="${pageMaker.isPrev()}" th:class="disabled">
+                                    <a href="/room/status/list" th:attrappend="href=${pageMaker.makeUrl4SearchPage(pageMaker.getCriteria().getPage())}"><span aria-hidden="true">&laquo;</span></a>
+                                </li>
+
+                                <th:block th:each="i : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
+                                    <li>
+                                        <a href="/room/status/list" th:attrappend="href=${pageMaker.makeUrl4SearchPage(i)}" th:text="${i}"></a>
+                                    </li>
+                                </th:block>
+
+                                <li th:if="${pageMaker.isNext()}" th:class="activie">
+                                    <a href="/room/status/list" th:attrappend="href=${pageMaker.makeUrl4SearchPage(pageMaker.getCriteria().getPage())}"><span aria-hidden="true">&raquo;</span></a>
+                                </li>
+                                <li th:unless="${pageMaker.isNext()}" th:class="disabled">
+                                    <a href="/room/status/list" th:attrappend="href=${pageMaker.makeUrl4SearchPage(pageMaker.getCriteria().getPage())}"><span aria-hidden="true">&raquo;</span></a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div> <!-- ./box -->
+                </div> <!-- ./col -->
+
+            </div> <!-- row -->
+
+            <!-- Modal -->
+            <th:block th:include="fragments/room/add_modal"></th:block>
 
         </section><!-- ./content -->
     </div> <!-- ./content-wrapper -->
@@ -29,7 +101,7 @@
 
 <th:block layout:fragment="custom_js">
 
-    <script th:src="@{/js/main/main.js}"></script>
+    <script th:src="@{/js/room/status/list.js}"></script>
 </th:block>
 
 </html>

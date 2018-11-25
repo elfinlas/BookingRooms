@@ -13,6 +13,7 @@ import com.mhlab.br.jpa.entity.Room;
 import com.mhlab.br.jpa.persistence.AccountRepo;
 import com.mhlab.br.jpa.persistence.MeetingAttendMemberRepo;
 import com.mhlab.br.service.repos.MeetingRepoService;
+import com.mhlab.br.service.repos.RoomRepoService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -36,6 +37,15 @@ import java.util.stream.Collectors;
 @Service
 public class MeetingDataService {
 
+    //시간 체크 사용 변수
+    private static final int START_END_PASS = 0; //이상없음
+    private static final int START_SAME = 1; //시작 시간 동일
+    private static final int END_SAME = 2; //종료 시간 동일
+    private static final int START_DURING = 3; //시작 시간이 겹침
+    private static final int END_DURING = 4; //종료 시간이 겹침
+    private static final int START_END_INCLUDE = 5; //시작 종료 시간이 포함됨
+
+    //
     private ModelMapper modelMapper;
     private MeetingRepoService meetingRepoService;
     private AccountRepo accountRepo;
@@ -93,7 +103,7 @@ public class MeetingDataService {
         List<RoomDTO> roomDTOList = roomList.stream()
                 .map(room -> modelMapper.map(room, RoomDTO.class))
                 .collect(Collectors.toList());
-        List<MeetingDTO> meetingDTOList = meetingRepoService.getMeeting4Room(roomList, start, end).stream()
+        List<MeetingDTO> meetingDTOList = meetingRepoService.getMeeting4RoomList(roomList, start, end).stream()
                 .map(meeting -> modelMapper.map(meeting, MeetingDTO.class))
                 .collect(Collectors.toList());
         RoomInMeetingDTO dto = new RoomInMeetingDTO()
@@ -133,6 +143,10 @@ public class MeetingDataService {
      * @return
      */
     public JsonResponseVO saveData(MeetingDTO dto) {
+        //시간을 체크해본다.
+        int timeResultCode = checkMeetingTime(dto.getRoom(), dto.getStartDate(), dto.getEndDate());
+        if (timeResultCode != START_END_PASS) { return makeTimeErrorJsonVo(timeResultCode); }
+
         Meeting meeting = new Meeting()
                 .setTitle(dto.getTitle())
                 .setContent(dto.getContent())
@@ -171,6 +185,10 @@ public class MeetingDataService {
      * @return
      */
     public JsonResponseVO updateData(MeetingDTO dto) {
+        //시간을 체크해본다.
+        int timeResultCode = checkMeetingTime(dto.getRoom(), dto.getStartDate(), dto.getEndDate());
+        if (timeResultCode != START_END_PASS) { return makeTimeErrorJsonVo(timeResultCode); }
+
         Meeting meeting = meetingRepoService.getMeeting4Idx(dto.getMeetingIdx());
         meeting.setTitle(dto.getTitle())
                 .setContent(dto.getContent())
@@ -234,5 +252,39 @@ public class MeetingDataService {
     }
 
 
+    /**
+     * 회의 시작 시간 및 종료시간 중복을 확인해주는 메서드
+     * @param room
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    private int checkMeetingTime(Room room, LocalDateTime startDate, LocalDateTime endDate) {
+        LocalDateTime targetStartDate = LocalDateTime.of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth(), 0,0,0); //회의실 조회 시작일
+        LocalDateTime targetEndDate = LocalDateTime.of(endDate.getYear(), endDate.getMonth(), endDate.getDayOfMonth(), 23,59,59); //회의실 조회 종료일
+
+        for (Meeting meeting : meetingRepoService.getMeeting4Room(room, targetStartDate, targetEndDate)) { //순회하며 점검
+            if (startDate.isEqual(meeting.getStartDate())) { return START_SAME; }
+            else if (endDate.isEqual(meeting.getEndDate())) { return END_SAME; }
+            else if (startDate.isAfter(meeting.getStartDate()) && startDate.isBefore(meeting.getEndDate()) ) { return START_DURING; }
+            else if (endDate.isAfter(meeting.getStartDate()) && endDate.isBefore(meeting.getEndDate()) ) { return END_DURING; }
+            else if (meeting.getStartDate().isAfter(startDate) && meeting.getEndDate().isBefore(endDate)) { return START_END_INCLUDE; }
+        }
+        return START_END_PASS;
+    }
+
+    /**
+     * 시간 확인 에러에 대한 Json 반환 값을 만들어주는 메서드
+     * @param code
+     * @return
+     */
+    private JsonResponseVO makeTimeErrorJsonVo(int code) {
+        if (code == START_SAME) { return new JsonResponseVO(JsonResponseEnum.MEETING_DATA_ADD_FAIL_SAME_START_TIME); }
+        else if (code == END_SAME) { return new JsonResponseVO(JsonResponseEnum.MEETING_DATA_ADD_FAIL_SAME_END_TIME); }
+        else if (code == START_DURING) { return new JsonResponseVO(JsonResponseEnum.MEETING_DATA_ADD_FAIL_START_TIME); }
+        else if (code == END_DURING) { return new JsonResponseVO(JsonResponseEnum.MEETING_DATA_ADD_FAIL_END_TIME); }
+        else if (code == START_END_INCLUDE) { return new JsonResponseVO(JsonResponseEnum.MEETING_DATA_ADD_FAIL_INCLUDE_TIME); }
+        return null;
+    }
 
 }

@@ -13,6 +13,11 @@ public enum JsonResponseEnum {
     MEETING_BEFORE_RES_FAIL(-100, "Fail"),
 
     MEETING_DATA_ADD_SUCCESS(110, "Success"), //회의 데이터 등록 성공
+    MEETING_DATA_ADD_FAIL_SAME_START_TIME(-110, "Same start time"),
+    MEETING_DATA_ADD_FAIL_SAME_END_TIME(-111, "Same end time"),
+    MEETING_DATA_ADD_FAIL_START_TIME(-112, "Start time error"),
+    MEETING_DATA_ADD_FAIL_END_TIME(-113, "End time error"),
+    MEETING_DATA_ADD_FAIL_INCLUDE_TIME(-114, "Include time error"),
     MEETING_DATA_UPDATE_SUCCESS(111, "Success"),
     MEETING_DATA_DELETE_SUCCESS(112, "Success"),
     MEETING_DATA_GET_SUCCESS(113, "Success"),

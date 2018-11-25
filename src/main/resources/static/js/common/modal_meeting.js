@@ -358,6 +358,11 @@ function saveUpdateData() {
         endLoading();
         let resultCode = JSON.parse(jqXHR)['resultCode'];
         if (resultCode === 110 || resultCode === 111) { location.reload(); }
+        else if (resultCode === -110) { showSAlert('등록 불가', '선택한 회의실에 시작시간이 동일한 회의가 있습니다.', 'error'); }
+        else if (resultCode === -111) { showSAlert('등록 불가', '선택한 회의실에 종료시간이 동일한 회의가 있습니다.', 'error'); }
+        else if (resultCode === -112) { showSAlert('등록 불가', '선택한 회의실에 시작시간이 중복된 회의가 있습니다.', 'error'); }
+        else if (resultCode === -113) { showSAlert('등록 불가', '선택한 회의실에 종료시간이 중복된 회의가 있습니다.', 'error'); }
+        else if (resultCode === -114) { showSAlert('등록 불가', '선택한 회의실에 이미 중복된 회의가 있습니다.', 'error'); }
         else { showSAlert('에러 발생', '개발자에게 문의하세요.' + resultCode , 'error'); }
     }).fail(function(jqXHR, textStatus){
         endLoading();

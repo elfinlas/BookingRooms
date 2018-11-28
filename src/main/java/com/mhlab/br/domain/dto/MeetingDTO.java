@@ -1,6 +1,7 @@
 package com.mhlab.br.domain.dto;
 
 import com.mhlab.br.domain.enums.MeetingTypeEnum;
+import com.mhlab.br.jpa.entity.Account;
 import com.mhlab.br.jpa.entity.MeetingMember;
 import com.mhlab.br.jpa.entity.Room;
 import lombok.AccessLevel;
@@ -36,6 +37,7 @@ public class MeetingDTO {
     private LocalDateTime updateDate; //데이터 수정일
     private MeetingTypeEnum meetingType;
     private Room room; //회의실
+    private Account createAccount; //회의 등록자
 
     //Client Only
     private List<String> attendUserList;

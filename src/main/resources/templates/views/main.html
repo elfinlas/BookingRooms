@@ -23,35 +23,49 @@
                 <div class="col-sm-12 col-md-6 col-lg-6">
                     <div class="box">
                         <div class="box-header with-border">
-                            <h4 class="box-title">18년 10월 21일 회의</h4>
+                            <h4 class="box-title"> <span th:text="${#temporals.format(today, 'yy년 MM월 dd일 E요일')}"></span> 회의 일정 </h4>
                         </div>
 
                         <div class="box-body">
-                            <table class="table table-hover table-responsive">
-                                <colgroup>
-                                    <col width="40%">
-                                    <col width="20%">
-                                    <col width="10%">
-                                    <col width="15%">
-                                    <col width="15%">
-                                </colgroup>
+                            <th:block th:if="${todayList.size() == 0}">
+                                <h2 class="page-header">오늘 회의 일정이 없습니다.</h2>
+                            </th:block>
 
-                                <tr>
-                                    <th>회의</th>
-                                    <th>회의실</th>
-                                    <th>등록자</th>
-                                    <th>참석인원</th>
-                                    <th>시간</th>
-                                </tr>
+                            <th:block th:unless="${todayList.size() == 0}">
+                                <table class="table table-hover table-responsive">
+                                    <colgroup>
+                                        <col width="50%">
+                                        <col width="20%">
+                                        <col width="15%">
+                                        <col width="15%">
+                                    </colgroup>
 
-                                <tr>
-                                    <td>오늘 인플루언스 회의입니다</td>
-                                    <td>내부 제1 사무실</td>
-                                    <td>홍문화</td>
-                                    <td>홍문화 외 5명</td>
-                                    <td>14:30 ~ 16:30</td>
-                                </tr>
-                            </table>
+                                    <tr>
+                                        <th>회의</th>
+                                        <th>회의실</th>
+                                        <th>참석인원</th>
+                                        <th>시간</th>
+                                    </tr>
+
+                                    <tr th:each="data : ${todayList}">
+                                        <td>
+                                            <a href="javascript:void(0)" th:text="${data.getTitle()}" th:onclick="'click4Item(' + ${data.getMeetingIdx()} + ')'"></a>
+                                        </td>
+                                        <td th:text="${data.getRoom().getName()}"></td>
+                                        <td>
+                                            <span th:if="${data.getAttendUserList().size() == 1}"
+                                                th:text="${data.getAttendUserList().get(0)}"></span>
+                                            <span th:unless="${data.getAttendUserList().size() == 1}"
+                                                  th:text="${data.getAttendUserList().get(0)} + ' 외 ' + ${data.getAttendUserList().size()-1} + ' 명'"></span>
+                                        </td>
+                                        <td>
+                                            <span th:text="${#temporals.format(data.getStartDate(), 'HH:mm')} + ' ~ ' +  ${#temporals.format(data.getEndDate(), 'HH:mm')} ">
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </th:block>
+
                         </div> <!-- ./box-body -->
                     </div> <!-- ./box -->
                 </div> <!-- ./col -->
@@ -63,74 +77,63 @@
                         </div>
 
                         <div class="box-body">
-                            <table class="table table-hover table-responsive">
-                                <colgroup>
-                                    <col width="40%">
-                                    <col width="20%">
-                                    <col width="10%">
-                                    <col width="15%">
-                                    <col width="15%">
-                                </colgroup>
+                            <th:block th:if="${todayList.size() == 0}">
+                                <h2 class="page-header">이번 주 회의 일정이 없습니다.</h2>
+                            </th:block>
 
-                                <tr>
-                                    <th>회의</th>
-                                    <th>회의실</th>
-                                    <th>등록자</th>
-                                    <th>참석인원</th>
-                                    <th>시간</th>
-                                </tr>
+                            <th:block th:unless="${todayList.size() == 0}">
+                                <table class="table table-hover table-responsive">
+                                    <colgroup>
+                                        <col width="10%">
+                                        <col width="40%">
+                                        <col width="20%">
+                                        <col width="15%">
+                                        <col width="15%">
+                                    </colgroup>
 
-                                <tr>
-                                    <td>오늘 인플루언스 회의입니다</td>
-                                    <td>내부 제1 사무실</td>
-                                    <td>홍문화</td>
-                                    <td>홍문화 외 5명</td>
-                                    <td>14:30 ~ 16:30</td>
-                                </tr>
-                            </table>
+                                    <tr>
+                                        <th>일자</th>
+                                        <th>회의</th>
+                                        <th>회의실</th>
+                                        <th>참석인원</th>
+                                        <th>시간</th>
+                                    </tr>
+
+                                    <tr th:each="data : ${weekList}">
+                                        <td th:text="${#temporals.format(data.getStartDate(), 'MM월 dd일')}"></td>
+                                        <td>
+                                            <a href="javascript:void(0)" th:text="${data.getTitle()}" th:onclick="'click4Item(' + ${data.getMeetingIdx()} + ')'"></a>
+                                        </td>
+                                        <td th:text="${data.getRoom().getName()}"></td>
+                                        <td>
+                                            <span th:if="${data.getAttendUserList().size() == 1}"
+                                                  th:text="${data.getAttendUserList().get(0)}"></span>
+                                            <span th:unless="${data.getAttendUserList().size() == 1}"
+                                                  th:text="${data.getAttendUserList().get(0)} + ' 외 ' + ${data.getAttendUserList().size()-1} + ' 명'"></span>
+                                        </td>
+                                        <td>
+                                            <span th:text="${#temporals.format(data.getStartDate(), 'HH:mm')} + ' ~ ' +  ${#temporals.format(data.getEndDate(), 'HH:mm')} ">
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </th:block>
+
                         </div> <!-- ./box-body -->
                     </div> <!-- ./box -->
                 </div> <!-- -->
             </div> <!-- row -->
 
-            <div class="row" >
-                <!-- loop -->
-                <div class="col-sm-12 col-md-3 col-lg-3">
-
-                    <div id="doc_info_box" class="box box-default collapsed-box" data-widget="box-widget">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">회의실 01 - 총 3건</h3>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
-                            </div>
-                        </div><!-- /.box-header -->
-                        <div class="box-body">
-                            <ul class="list-group list-group-unbordered">
-                                <li class="list-group-item">
-                                    <b>12:30 ~ 13:30</b> <p class="text-muted pull-right"> 인플루언스 테스트</p>
-                                </li>
-                                <li class="list-group-item">
-                                    <b>14:20 ~ 16:30</b> <p class="text-muted pull-right">토큰뱅크 바디스 테스트 </p>
-                                </li>
-                                <li class="list-group-item">
-                                    <b>17:30 19:20</b> <p class="text-muted pull-right">저녁 테스트</p>
-                                </li>
-                            </ul>
-                        </div> <!-- /.box-body -->
-                    </div> <!-- ./box -->
-
-                </div>
-            </div> <!-- ./row -->
-
             <!-- Modal -->
-            <th:block th:include="fragments/meeting/add_modal"></th:block>
+            <th:block th:include="fragments/meeting/modal"></th:block>
+
 
         </section><!-- ./content -->
     </div> <!-- ./content-wrapper -->
 </th:block>
 
 <th:block layout:fragment="custom_js">
-
+    <script th:src="@{/js/common/modal_meeting.js?v=181113_01}"></script>
     <script th:src="@{/js/main/main.js}"></script>
 </th:block>
 

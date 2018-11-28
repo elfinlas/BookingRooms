@@ -18,12 +18,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.time.temporal.TemporalAdjusters;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -58,6 +58,9 @@ public class MeetingDataService {
         this.attendMemberRepo = attendMemberRepo;
     }
 
+    //////////////////////////
+    //          Get
+    //////////////////////////
 
     /**
      * 회의 데이터를 페이징으로 가져오는 메서드
@@ -88,8 +91,6 @@ public class MeetingDataService {
         return new JsonResponseVO(JsonResponseEnum.MEETING_DATA_GET_SUCCESS, modelMapper.map(meetingRepoService.getMeeting4Idx(index), MeetingDTO.class));
     }
 
-
-
     /**
      * 회의실 별 회의 데이터를 가져오는 메서드
      * @param date
@@ -112,7 +113,6 @@ public class MeetingDataService {
         return new JsonResponseVO(JsonResponseEnum.ROOM_MEETING_DATA_GET_SUCCESS, dto);
     }
 
-
     /**
      * 회의 데이터를 일정별로 가져오는 메서드
      * @param startStr
@@ -123,19 +123,63 @@ public class MeetingDataService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime startDate = LocalDateTime.parse(startStr, formatter);
         LocalDateTime endDate = LocalDateTime.parse(endStr, formatter);
-        List<MeetingDTO> meetingDTOList = meetingRepoService.getMeeting4DuringStartEnd(startDate, endDate).stream()
-                .map(meeting -> {
-                    meeting.getAttendMemberList().stream().map(meetingMember -> {
-                        MeetingMemberDTO dto = modelMapper.map(meetingMember, MeetingMemberDTO.class);
-                        dto.setAttendCompanyMember(modelMapper.map(meetingMember.getAttendCompanyMember(), AccountDTO.class));
-                        return dto;
-                    });
-                    return modelMapper.map(meeting, MeetingDTO.class);
-                })
-                .collect(Collectors.toList());
-        return new JsonResponseVO(JsonResponseEnum.MEETING_CAL_DATA_GET_SUCCESS, meetingDTOList);
+        return new JsonResponseVO(JsonResponseEnum.MEETING_CAL_DATA_GET_SUCCESS, getMeetingData4Date(startDate, endDate));
     }
 
+    /**
+     * 오늘 회의 데이터를 가져오는 메서드
+     * @return
+     */
+    public List<MeetingDTO> getMeetingData4Today() {
+        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime startDate = LocalDateTime.of(today.getYear(), today.getMonth(), today.getDayOfMonth(), 0,0,0);
+        LocalDateTime endDate = LocalDateTime.of(today.getYear(), today.getMonth(), today.getDayOfMonth(), 23,59,59);
+        return getMeetingData4DateWithMemberStr(startDate, endDate);
+    }
+
+    /**
+     * 이번 주 회의 데이터를 가져오는 메서드
+     * @return
+     */
+    public List<MeetingDTO> getMeetingData4Week() {
+        LocalDateTime monday = LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.FRIDAY)).plusDays(3); //월요일
+        LocalDateTime friday = LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.FRIDAY)).plusDays(7); //금요일
+        LocalDateTime startDate = LocalDateTime.of(monday.getYear(), monday.getMonth(), monday.getDayOfMonth(), 0,0,0);
+        LocalDateTime endDate = LocalDateTime.of(friday.getYear(), friday.getMonth(), friday.getDayOfMonth(), 23,59,59);
+        return getMeetingData4DateWithMemberStr(startDate, endDate);
+    }
+
+    /**
+     * 전달된 기간에 회의 데이터를 가져오는 메서드
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    private List<MeetingDTO> getMeetingData4Date(LocalDateTime startDate, LocalDateTime endDate) {
+        return meetingRepoService.getMeeting4DuringStartEnd(startDate, endDate).stream()
+                .map(meeting -> modelMapper.map(meeting, MeetingDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 전달된 기간에 회의 데이터를 가져오며, 참석인원을 String 으로 변환해서 넣어주는 메서드
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    private List<MeetingDTO> getMeetingData4DateWithMemberStr(LocalDateTime startDate, LocalDateTime endDate) {
+        List<MeetingDTO> meetingList = getMeetingData4Date(startDate, endDate);
+        for (MeetingDTO meeting : meetingList) {
+            meeting.setAttendUserList(meeting.getAttendMemberList().stream()
+                    .map(meetingMember -> meetingMember.getAttendOutMember()==null?meetingMember.getAttendCompanyMember().getName():meetingMember.getAttendOutMember())
+                    .collect(Collectors.toList()));
+        }
+        return meetingList;
+    }
+
+    //////////////////////////
+    //      Save Update
+    //////////////////////////
 
     /**
      * 회의 데이터 저장 메서드
@@ -144,7 +188,7 @@ public class MeetingDataService {
      */
     public JsonResponseVO saveData(MeetingDTO dto) {
         //시간을 체크해본다.
-        int timeResultCode = checkMeetingTime(dto.getRoom(), dto.getStartDate(), dto.getEndDate());
+        int timeResultCode = checkMeetingTime(dto, dto.getStartDate(), dto.getEndDate());
         if (timeResultCode != START_END_PASS) { return makeTimeErrorJsonVo(timeResultCode); }
 
         Meeting meeting = new Meeting()
@@ -186,7 +230,7 @@ public class MeetingDataService {
      */
     public JsonResponseVO updateData(MeetingDTO dto) {
         //시간을 체크해본다.
-        int timeResultCode = checkMeetingTime(dto.getRoom(), dto.getStartDate(), dto.getEndDate());
+        int timeResultCode = checkMeetingTime(dto, dto.getStartDate(), dto.getEndDate());
         if (timeResultCode != START_END_PASS) { return makeTimeErrorJsonVo(timeResultCode); }
 
         Meeting meeting = meetingRepoService.getMeeting4Idx(dto.getMeetingIdx());
@@ -235,6 +279,10 @@ public class MeetingDataService {
     }
 
 
+    //////////////////////////
+    //         Delete
+    //////////////////////////
+
     /**
      * 회의 데이터를 삭제하는 메서드
      * @param meetingIdx
@@ -252,18 +300,23 @@ public class MeetingDataService {
     }
 
 
+    //////////////////////////
+    //      Support
+    //////////////////////////
+
     /**
      * 회의 시작 시간 및 종료시간 중복을 확인해주는 메서드
-     * @param room
      * @param startDate
      * @param endDate
      * @return
      */
-    private int checkMeetingTime(Room room, LocalDateTime startDate, LocalDateTime endDate) {
+    private int checkMeetingTime(MeetingDTO meetingDTO, LocalDateTime startDate, LocalDateTime endDate) {
         LocalDateTime targetStartDate = LocalDateTime.of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth(), 0,0,0); //회의실 조회 시작일
         LocalDateTime targetEndDate = LocalDateTime.of(endDate.getYear(), endDate.getMonth(), endDate.getDayOfMonth(), 23,59,59); //회의실 조회 종료일
 
-        for (Meeting meeting : meetingRepoService.getMeeting4Room(room, targetStartDate, targetEndDate)) { //순회하며 점검
+        for (Meeting meeting : meetingRepoService.getMeeting4Room(meetingDTO.getRoom(), targetStartDate, targetEndDate)) { //순회하며 점검
+            if (meeting.getMeetingIdx() == meetingDTO.getMeetingIdx()) { continue; } //만약 업데이트의 경우 넘겨준다.
+
             if (startDate.isEqual(meeting.getStartDate())) { return START_SAME; }
             else if (endDate.isEqual(meeting.getEndDate())) { return END_SAME; }
             else if (startDate.isAfter(meeting.getStartDate()) && startDate.isBefore(meeting.getEndDate()) ) { return START_DURING; }

@@ -8,6 +8,7 @@ $(document).ready(function () {
     initWithModal(); //모달 초기화
 });
 
+//아이템을 클릭했을 때
 function click4Item(index) {
     startLoading();
     $.ajax({

@@ -1,6 +1,5 @@
 package com.mhlab.br.service.data;
 
-import com.mhlab.br.domain.dto.MeetingDTO;
 import com.mhlab.br.domain.dto.RoomDTO;
 import com.mhlab.br.domain.enums.JsonResponseEnum;
 import com.mhlab.br.domain.vo.JsonResponseVO;
@@ -54,15 +53,6 @@ public class RoomDataService {
         }
     }
 
-
-    /**
-     * 인덱스에 맞는 회의실 데이터를 가져오는 메서드
-     * @param idx
-     * @return
-     */
-
-
-
     /**
      * 회의실 데이터를 추가하는 메서드
      * @param dto
@@ -76,7 +66,6 @@ public class RoomDataService {
         return new JsonResponseVO(JsonResponseEnum.ROOM_DATA_ADD_SUCCESS);
     }
 
-
     /**
      *
      * @param dto
@@ -86,7 +75,6 @@ public class RoomDataService {
         roomRepoService.updateRoomData(dto);
         return new JsonResponseVO(JsonResponseEnum.ROOM_DATA_UPDATE_SUCCESS);
     }
-
 
     /**
      *

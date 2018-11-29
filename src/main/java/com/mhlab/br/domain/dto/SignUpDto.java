@@ -1,0 +1,18 @@
+package com.mhlab.br.domain.dto;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+/**
+ * Created by MHLab on 2018. 7. 3..
+ */
+
+@Getter
+@Setter
+@Accessors(chain = true)
+public class SignUpDto {
+    private String signUpId; //사용자 ID
+    private String signUpName; //사용자 이름
+    private String signUpPw; //사용자 암호
+}

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/login">
+
+<head>
+    <!--Meta Data-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+
+    <title>Login</title>
+
+    <link rel="stylesheet" th:href="@{/lib/AdminLTE_2.4.5/plugins/bootstrap/dist/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/lib/SweetAlert2-7.24.3/sweetalert2.min.css}" />
+    <link rel="stylesheet" th:href="@{/lib/AdminLTE_2.4.5/plugins/font-awesome/css/font-awesome.min.css}" />
+
+    <!-- Css custom -->
+    <link rel="stylesheet" th:href="@{/css/common/loading.css}" />
+    <link rel="stylesheet" th:href="@{/css/common/common_main.css}" />
+
+    <link rel="stylesheet" th:href="@{/css/users/login.css}" />
+</head>
+
+
+<th:block layout:fragment="content_body">
+    <div th:replace="fragments/common/loading"></div>
+    <!--<input id="server_msg" th:value="${msg}" type="hidden"/>-->
+
+    <div id="back">
+        <canvas id="canvas" class="canvas-back"></canvas>
+        <div class="backRight">
+        </div>
+        <div class="backLeft">
+        </div>
+    </div>
+
+    <div id="slideBox">
+        <div class="topLayer">
+            <div class="left">
+                <div class="content">
+                    <h2>Sign Up</h2>
+                    <div class="form-element form-stack">
+                        <label for="su_id" class="form-label">User Id</label>
+                        <input id="su_id" type="text" name="text" placeholder="로그인에 사용할 ID를 입력하세요.">
+                    </div>
+                    <div class="form-element form-stack">
+                        <label for="su_name" class="form-label">Username</label>
+                        <input id="su_name" type="text" name="username" placeholder="사용자 이름을 입력하세요.">
+                    </div>
+                    <div class="form-element form-stack">
+                        <label for="su_pw" class="form-label">Password</label>
+                        <input id="su_pw" type="password" name="password" placeholder="로그인에 사용할 암호를 입력하세요.">
+                    </div>
+                    <div class="form-element form-stack">
+                        <label for="su_pw_valid" class="form-label">Again Password</label>
+                        <input id="su_pw_valid" type="password" name="password" placeholder="암호를 다시 입력하세요.">
+                    </div>
+                    <div class="form-element form-submit">
+                        <button id="signUp" class="signup" type="button" name="signup" onclick="click4SignUp()">Sign up</button>
+                        <button id="goLeft" class="signup off">Log In</button>
+                    </div>
+
+                    <!--<form id="form-signup" method="post"> &lt;!&ndash; signup &ndash;&gt;-->
+                        <!---->
+                    <!--</form>-->
+                </div>
+            </div>
+            <div class="right">
+                <div class="content">
+                    <h2>Service Login</h2>
+
+                    <div>
+                        <div class="form-element form-stack">
+                            <label for="userId" class="form-label">User Id</label>
+                            <input id="userId" type="text" name="username" placeholder="Your id">
+                        </div>
+                        <div class="form-element form-stack">
+                            <label for="userPw" class="form-label">Password</label>
+                            <input id="userPw" type="password" name="password" placeholder="Password" onkeypress="caps_lock(event)">
+                        </div>
+                        <div class="form-element form-stack">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>
+                                        <input type="checkbox" id="keepId"> &nbsp; &nbsp; ID 저장하기
+                                    </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>
+                                        <input type="checkbox" id="keepLogin"> &nbsp; &nbsp; 로그인 상태 유지
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-element form-submit">
+                            <button id="logIn" class="login" type="button" name="login" onclick="click4Login()">Log In</button>
+                            <button id="goRight" class="login off">Sign Up</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+
+<!-- Add on Js  -->
+<th:block layout:fragment="custom_js">
+    <script th:src="@{/lib/paper-js/paper-full.js}"></script>
+    <script th:src="@{/lib/Js-Cookie-2.2.0/js.cookie.js}"></script>
+    <script th:src="@{/js/user/login.js}"></script>
+</th:block>
+</html>

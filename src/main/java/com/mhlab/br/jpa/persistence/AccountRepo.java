@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Account Entity를 처리하는 리포지토리 객체
@@ -14,6 +15,12 @@ import java.util.List;
 @Repository
 public interface AccountRepo extends JpaRepository<Account, Integer> {
 
+    /**
+     * 사용자 id로 계정 정보를 찾는 메서드
+     * @param id
+     * @return
+     */
+    Account findById(String id);
 
     /**
      * 로그인 처리를 위해 사용하는 메서드
@@ -21,7 +28,7 @@ public interface AccountRepo extends JpaRepository<Account, Integer> {
      * @param pw
      * @return
      */
-    Account findByIdAndPw(String id, String pw);
+    Optional<Account> findByIdAndPw(String id, String pw);
 
 
 

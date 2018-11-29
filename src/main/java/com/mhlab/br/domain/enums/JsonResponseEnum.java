@@ -8,6 +8,13 @@ package com.mhlab.br.domain.enums;
 
 public enum JsonResponseEnum {
 
+    //Login
+    LOGIN_SUCCESS(10, "success"),
+    LOGIN_SUCCESS_ADMIN(11, "success"),
+    LOGIN_FAIL(-10, "fail"), //계정 또는 암호가 틀린 경우
+    LOGIN_FAIL_USE_SYSTEM(-11, "This account is not activate."), //System 계정을 사용하여 로그인 시도한 경우
+    LOGIN_FAIL_STAND_BY(-12, "This account status is stand by."),
+
     //Meeting
     MEETING_BEFORE_RES_SUCCESS(100, "Ok"),
     MEETING_BEFORE_RES_FAIL(-100, "Fail"),

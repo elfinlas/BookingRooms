@@ -74,6 +74,30 @@ public class AccountDataService {
         else { return new JsonResponseVO(JsonResponseEnum.LOGIN_FAIL);  }
     }
 
+    public JsonResponseVO login4AutoLogin(HttpServletRequest request,HttpServletResponse response, String token) {
+        //만약 토큰이 존재하는 경우 기존 토큰은 삭제 한다.
+        String targetId = accountRepoService.getAutoLoginData4Token(token).map(autoLogin -> {
+            accountRepoService.deleteAutoLoginData(autoLogin);
+            return autoLogin.getId();
+        }).orElse("");
+
+        if (!targetId.equals("")) {
+            //새로운 토큰을 생성한다.
+            Cookie alCookie = makeAutoLoginCookie();
+
+            //디비에 자동 로그인 정보를 저장한다.
+            AutoLogin autoLogin = new AutoLogin()
+                    .setId(targetId)
+                    .setIdentifier(request.getSession().getId())
+                    .setToken(alCookie.getValue());
+            accountRepoService.saveAutoLoginData(autoLogin);
+
+            //새로 갱신된 토큰을 전송
+            response.addCookie(alCookie);
+            return login(request.getSession(), accountRepoService.getAccountData4Id(targetId));
+        }
+        else { return new JsonResponseVO(JsonResponseEnum.LOGIN_FAIL); } //로그인 실패 시 -> 처리 보강해야 함
+    }
 
     /**
      *
@@ -124,7 +148,6 @@ public class AccountDataService {
         return alTokenCookie;
     }
 
-
     //로그아웃
     public JsonResponseVO logout(HttpServletRequest request, HttpServletResponse response) {
         Account targetAccount = SessionHelper.getSessionDataInAccount(request.getSession());
@@ -151,5 +174,4 @@ public class AccountDataService {
         }
         else { return new JsonResponseVO(JsonResponseEnum.LOGOUT_FAIL); } //세션에 로그인 정보가 없는 경우
     }
-
 }

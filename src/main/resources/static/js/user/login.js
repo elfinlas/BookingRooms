@@ -65,7 +65,7 @@ function click4Login() {
 function click4SignUp() {
     if(validData4SignUp()) {
         startLoading();
-        var jsonObj = {'signUpId':$('#su_id').val(), 'signUpName':$('#su_name').val(), 'signUpPw':$('#su_pw').val() }; //Create JSON Object
+        let jsonObj = {'signUpId':$('#su_id').val(), 'signUpName':$('#su_name').val(), 'teamName':$('#su_team').val(), 'signUpPw':$('#su_pw').val() }; //Create JSON Object
 
         $.ajax({
             url: '/users/signup',
@@ -81,7 +81,7 @@ function click4SignUp() {
             if(resultCode === 20) {
                 clean4SignUpInput();
                 $("#goLeft").click();
-                showSAlert('가입 성공', '회원 등록이 완료되었습니다.<br>등록 승인 시 활동이 가능합니다.', 'success');
+                showSAlert('가입 성공', '회원 등록이 완료되었습니다.', 'success');
             }
             else if(resultCode === -20) { showSAlert('가입 실패','이미 사용하고 있는 계정 ID 입니다.','error'); }
             else if(resultCode === -21) { showSAlert('가입 실패','시스템에서 사용하는 계정 ID 입니다.','error'); }
@@ -107,6 +107,10 @@ function validData4SignUp() {
     }
     else if(isNullValue($('#su_name').val())) {
         showSAlert('사용자 이름 공백', '사용자 이름를 입력하세요.', 'error');
+        return false;
+    }
+    else if(isNullValue($('#su_team').val())) {
+        showSAlert('부서명 공백', '부서명을 입력하세요.', 'error');
         return false;
     }
     else if(isNullValue($('#su_pw').val())) {
@@ -157,7 +161,6 @@ $('#userId').keyup(function(){
 });
 
 
-
 function clean4LoginInput() {
     $('#userId').val("");
     $('#userPw').val("");
@@ -166,6 +169,7 @@ function clean4LoginInput() {
 function clean4SignUpInput() {
     $('#su_id').val("");
     $('#su_name').val("");
+    $('#su_team').val("");
     $('#su_pw').val("");
     $('#su_pw_valid').val("");
 }

@@ -15,6 +15,11 @@ public enum JsonResponseEnum {
     LOGIN_FAIL_USE_SYSTEM(-11, "This account is not activate."), //System 계정을 사용하여 로그인 시도한 경우
     LOGIN_FAIL_STAND_BY(-12, "This account status is stand by."),
 
+    ////Sign Up
+    SIGN_UP_SUCCESS(20, "success"),
+    SIGN_UP_FAIL_EXIST_ID(-20, "Exist account id."),
+    SIGN_UP_FAIL_USE_SYSTEM_ID(-21, "This account is not activate."),
+
     //Meeting
     MEETING_BEFORE_RES_SUCCESS(100, "Ok"),
     MEETING_BEFORE_RES_FAIL(-100, "Fail"),

@@ -1,12 +1,14 @@
 package com.mhlab.br.service.data;
 
 import com.mhlab.br.domain.dto.LoginDTO;
+import com.mhlab.br.domain.dto.SignUpDto;
 import com.mhlab.br.domain.enums.JsonResponseEnum;
 import com.mhlab.br.domain.vo.JsonResponseVO;
 import com.mhlab.br.jpa.entity.Account;
 import com.mhlab.br.jpa.entity.AutoLogin;
 import com.mhlab.br.service.repos.AccountRepoService;
 import com.mhlab.br.utils.CommonUtils;
+import com.mhlab.br.utils.SecurityUtils;
 import com.mhlab.br.utils.SessionHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 
 /**
  * 계정 데이터를 처리하는 서비스 객체
@@ -68,6 +71,30 @@ public class AccountDataService {
             return login(request.getSession(), account);
         }
         else { return new JsonResponseVO(JsonResponseEnum.LOGIN_FAIL);  }
+    }
+
+
+    /**
+     *
+     * @param dto
+     * @return
+     */
+    public JsonResponseVO signUpAccountData(SignUpDto dto) {
+        if (accountRepoService.getAccountData4Id(dto.getSignUpId()) != null ) {
+            return new JsonResponseVO(JsonResponseEnum.SIGN_UP_FAIL_EXIST_ID);
+        }
+        else if (dto.getSignUpId().contains("admin") || dto.getSignUpId().contains("system")) { //시스템 사용 체크
+            return new JsonResponseVO(JsonResponseEnum.SIGN_UP_FAIL_USE_SYSTEM_ID);
+        }
+        else {
+            Account targetAccount = new Account()
+                    .setId(dto.getSignUpId())
+                    .setName(dto.getSignUpName())
+                    .setPw(SecurityUtils.encryptData4SHA(dto.getSignUpPw()))
+                    .setTeamName(dto.getTeamName());
+            accountRepoService.saveAccountData(targetAccount);
+            return new JsonResponseVO(JsonResponseEnum.SIGN_UP_SUCCESS);
+        }
     }
 
 

@@ -14,5 +14,6 @@ import lombok.experimental.Accessors;
 public class SignUpDto {
     private String signUpId; //사용자 ID
     private String signUpName; //사용자 이름
+    private String teamName; //부서명
     private String signUpPw; //사용자 암호
 }

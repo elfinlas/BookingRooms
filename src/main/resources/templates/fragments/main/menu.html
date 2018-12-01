@@ -18,13 +18,13 @@
                 <!--</li>-->
             </ul>
 
-            <!--<ul class="nav navbar-nav">-->
-                <!--<li class="dropdown user user-menu">-->
-                    <!--<a href="javascript:void(0)" > &lt;!&ndash; class="dropdown-toggle" data-toggle="dropdown" &ndash;&gt;-->
-                        <!--<span class="hidden-xs">Alexander Pierce</span>-->
-                    <!--</a>-->
-                <!--</li>-->
-            <!--</ul>-->
+            <ul class="nav navbar-nav">
+                <li class="dropdown user user-menu">
+                    <a href="javascript:void(0)" > <!-- class="dropdown-toggle" data-toggle="dropdown" -->
+                        <span class="hidden-xs" th:text="${''+session.Account.getName() + '님 반갑습니다.'}"></span>
+                    </a>
+                </li>
+            </ul>
         </div>
     </nav>
 </header>
@@ -78,6 +78,9 @@
                     </li>
                 </ul>
             </li> <!-- ./treeview -->
+
+            <li class="header" style="color: white;">System</li>
+            <li><a href="javascript:logout()"><i class="fa fa-circle-o text-red"></i> <span>Logout</span></a></li>
 
         </ul>
     </section>

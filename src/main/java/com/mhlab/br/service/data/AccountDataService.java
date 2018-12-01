@@ -13,6 +13,7 @@ import com.mhlab.br.utils.SessionHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -111,7 +112,6 @@ public class AccountDataService {
         else { return new JsonResponseVO(JsonResponseEnum.LOGIN_SUCCESS); }
     }
 
-
     /**
      * (내부용) 자동 로그인 쿠키를 만들어주는 메서드
      * @return
@@ -122,6 +122,34 @@ public class AccountDataService {
         alTokenCookie.setPath("/");
         alTokenCookie.setMaxAge(60*60*24*7);
         return alTokenCookie;
+    }
+
+
+    //로그아웃
+    public JsonResponseVO logout(HttpServletRequest request, HttpServletResponse response) {
+        Account targetAccount = SessionHelper.getSessionDataInAccount(request.getSession());
+        if(targetAccount != null) {
+            //자동 로그인 상태 체크
+            Cookie alCookie = WebUtils.getCookie(request, AUTO_LOGIN_TOKEN_KEY);
+
+            if(alCookie != null) { //자동 로그인인 경우 자동 로그인에 사용된 값은 삭제해준다.
+                //토큰이 존재하는 경우 삭제 처리를 한다.
+                accountRepoService.getAutoLoginData4Token(alCookie.getValue())
+                        .ifPresent(autoLogin -> accountRepoService.deleteAutoLoginData(autoLogin));
+
+                //자동 로그인 쿠기를 무효화 시킨다.
+                Cookie invalidCookie = new Cookie(AUTO_LOGIN_TOKEN_KEY, null);
+                invalidCookie.setPath("/");
+                invalidCookie.setMaxAge(0);
+
+                response.addCookie(invalidCookie);
+            }
+
+            //세션을 무효화 시킨다.
+            request.getSession().invalidate();
+            return new JsonResponseVO(JsonResponseEnum.LOGOUT_SUCCESS);
+        }
+        else { return new JsonResponseVO(JsonResponseEnum.LOGOUT_FAIL); } //세션에 로그인 정보가 없는 경우
     }
 
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -60,6 +61,14 @@ public class AccountRepoService {
         return accountRepo.findById(accountId);
     }
 
+    /**
+     * 자동 로그인 토큰으로 데이터를 찾는 메서드
+     * @param token
+     * @return
+     */
+    public Optional<AutoLogin> getAutoLoginData4Token(String token) {
+        return autoLoginRepo.findByToken(token);
+    }
 
 
     //////////////////////////////
@@ -99,5 +108,16 @@ public class AccountRepoService {
     }
 
 
+    ///////////////////////////////////
+    //        Delete Data
+    ///////////////////////////////////
+
+    /**
+     * 전달된 데이터를 삭제하는 메서드
+     * @param targetAutoLogin
+     */
+    public void deleteAutoLoginData(AutoLogin targetAutoLogin) {
+        autoLoginRepo.delete(targetAutoLogin);
+    }
 
 }

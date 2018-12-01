@@ -82,6 +82,13 @@ public class AccountRepoService {
     //  Save And Update Data
     ///////////////////////////////////
 
+    public void saveAccountData(Account account) {
+        LocalDateTime now = LocalDateTime.now();
+        account.setCreateDate(now)
+                .setUpdateDate(now);
+        accountRepo.save(account);
+    }
+
     /**
      * AutoLogin Data를 저장해주는 메서드
      * @param autoLogin
@@ -90,5 +97,7 @@ public class AccountRepoService {
         autoLogin.setCreateDate(LocalDateTime.now());
         autoLoginRepo.save(autoLogin);
     }
+
+
 
 }

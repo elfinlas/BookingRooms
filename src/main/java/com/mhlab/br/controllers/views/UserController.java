@@ -1,6 +1,7 @@
 package com.mhlab.br.controllers.views;
 
 import com.mhlab.br.domain.dto.LoginDTO;
+import com.mhlab.br.domain.dto.SignUpDto;
 import com.mhlab.br.domain.vo.JsonResponseVO;
 import com.mhlab.br.service.data.AccountDataService;
 import com.mhlab.br.utils.SessionHelper;
@@ -50,4 +51,12 @@ public class UserController {
     public JsonResponseVO loginPost(HttpServletRequest request, HttpServletResponse response, @RequestBody LoginDTO dto) {
         return accountDataService.login4NonAutoLogin(request, response, dto);
     }
+
+
+    @PostMapping("signup")
+    @ResponseBody
+    public JsonResponseVO post4SignUp(@RequestBody SignUpDto dto) {
+        return accountDataService.signUpAccountData(dto);
+    }
+
 }

@@ -52,6 +52,11 @@ public class UserController {
         return accountDataService.login4NonAutoLogin(request, response, dto);
     }
 
+    @PostMapping("logout")
+    @ResponseBody
+    public JsonResponseVO logout(HttpServletRequest request, HttpServletResponse response) {
+        return accountDataService.logout(request, response);
+    }
 
     @PostMapping("signup")
     @ResponseBody

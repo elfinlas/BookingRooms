@@ -20,6 +20,10 @@ public enum JsonResponseEnum {
     SIGN_UP_FAIL_EXIST_ID(-20, "Exist account id."),
     SIGN_UP_FAIL_USE_SYSTEM_ID(-21, "This account is not activate."),
 
+    ////Logout
+    LOGOUT_SUCCESS(30, "success"),
+    LOGOUT_FAIL(-30, "fail"),
+
     //Meeting
     MEETING_BEFORE_RES_SUCCESS(100, "Ok"),
     MEETING_BEFORE_RES_FAIL(-100, "Fail"),

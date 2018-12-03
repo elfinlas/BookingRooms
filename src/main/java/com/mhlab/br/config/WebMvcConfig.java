@@ -29,7 +29,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/js/**", "/css/**", "/lib/**"); //로그인 쪽은 예외처리를 한다.
 
         registry.addInterceptor(autoLoginInterceptor)
-                .addPathPatterns("/users/login");
+                .addPathPatterns("/users/login"); //로그인 쪽은 예외처리를 한다.
     }
 
 }

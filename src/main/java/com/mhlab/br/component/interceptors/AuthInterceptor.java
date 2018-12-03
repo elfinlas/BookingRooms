@@ -57,13 +57,13 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
      * @return
      */
     private boolean checkAnnotation4Admin(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        log.info("a = " + handler.getClass().getName());
-
-
-        HandlerMethod method = (HandlerMethod)handler;
-        AdminOnly adminOnlyAnnotation = method.getMethodAnnotation(AdminOnly.class);
-        if (adminOnlyAnnotation != null && adminOnlyAnnotation.isAdminOnly()) { //관리자 체크 여부를 확인하는 어노테이션이 있는 경우
-            return SessionHelper.getSessionDataInAccount(request.getSession()).getId().equals("admin");
+        if (handler instanceof HandlerMethod) {
+            HandlerMethod method = (HandlerMethod)handler;
+            AdminOnly adminOnlyAnnotation = method.getMethodAnnotation(AdminOnly.class);
+            if (adminOnlyAnnotation != null && adminOnlyAnnotation.isAdminOnly()) { //관리자 체크 여부를 확인하는 어노테이션이 있는 경우
+                return SessionHelper.getSessionDataInAccount(request.getSession()).getId().equals("admin");
+            }
+            return true;
         }
         return true;
     }

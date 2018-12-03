@@ -48,7 +48,7 @@ function click4Login() {
             clean4LoginInput();
             var resultCode = JSON.parse(jqXHR).resultCode;
             if(resultCode === 10) { self.location = '/'; }
-            else if(resultCode === 11) { self.location = '/admin/'; }
+            else if(resultCode === 11) { self.location = '/'; }
             else if(resultCode === -10) { showSAlert('로그인 실패', 'Id 또는 암호가 틀립니다.', 'error'); }
             else if(resultCode === -11) { showSAlert('로그인 실패', '비 활성화 계정입니다.', 'error'); }
             else if(resultCode === -12) { showSAlert('가입 대기', '해당 계정은 가입대기 상태입니다.', 'error'); }

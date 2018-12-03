@@ -1,8 +1,11 @@
 package com.mhlab.br.service.data;
 
+import com.mhlab.br.domain.dto.AccountDTO;
 import com.mhlab.br.domain.dto.LoginDTO;
 import com.mhlab.br.domain.dto.SignUpDto;
 import com.mhlab.br.domain.enums.JsonResponseEnum;
+import com.mhlab.br.domain.pages.Criteria;
+import com.mhlab.br.domain.pages.PageMaker;
 import com.mhlab.br.domain.vo.JsonResponseVO;
 import com.mhlab.br.jpa.entity.Account;
 import com.mhlab.br.jpa.entity.AutoLogin;
@@ -11,6 +14,7 @@ import com.mhlab.br.utils.CommonUtils;
 import com.mhlab.br.utils.SecurityUtils;
 import com.mhlab.br.utils.SessionHelper;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.WebUtils;
@@ -20,6 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 계정 데이터를 처리하는 서비스 객체
@@ -34,11 +40,37 @@ public class AccountDataService {
     public static final String AUTO_LOGIN_TOKEN_KEY = "BKAutoLoginToken";
 
     private AccountRepoService accountRepoService;
+    private ModelMapper modelMapper;
 
-    public AccountDataService(AccountRepoService accountRepoService) {
+    public AccountDataService(AccountRepoService accountRepoService, ModelMapper modelMapper) {
         this.accountRepoService = accountRepoService;
+        this.modelMapper = modelMapper;
     }
 
+
+    /////////////////////////
+    //  Get Data
+    /////////////////////////
+
+    /**
+     * 전체 사용자 리스트를 페이징 해서 가져오는 메서드
+     * @param criteria
+     * @return
+     */
+    public List<AccountDTO> getAllAccountPageList(Criteria criteria) {
+        return accountRepoService.getAllAccountPageList(criteria).stream()
+                .map(account -> modelMapper.map(account, AccountDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * PageMaker를 반환하는 메서드
+     * @param criteria
+     * @return
+     */
+    public PageMaker getPageMaker(Criteria criteria) {
+        return accountRepoService.getPageMaker(criteria);
+    }
 
     /////////////////////////
     //  Login & Logout

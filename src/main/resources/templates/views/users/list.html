@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
+
+
+<th:block layout:fragment="head_title">
+    <title>BookingRooms - 사용자 현황</title>
+</th:block>
+
+<th:block layout:fragment="custom_css">
+
+</th:block>
+
+
+<th:block layout:fragment="content_body">
+
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1> 사용자 현황</h1>
+        </section>
+
+        <section class="content">
+
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h4 class="box-title">전체 사용자</h4>
+
+                            <div class="box-tools pull-right">
+                                <!--<button type="button" class="btn btn-sm bg-purple" onclick="click4Add()" style="margin-right: 5px;">-->
+                                    <!--<i class="fa fa-plus-square" aria-hidden="true"> &nbsp; 회의실 등록</i>-->
+                                <!--</button>-->
+                            </div>
+                        </div>
+
+                        <div class="box-body">
+                            <table class="table table-hover table-responsive">
+                                <colgroup>
+                                    <col width="5%">
+                                    <col width="25%">
+                                    <col width="25%">
+                                    <col width="15%">
+                                    <col width="20%">
+                                    <col width="10%">
+                                </colgroup>
+
+                                <tr>
+                                    <th>no</th>
+                                    <th>ID</th>
+                                    <th>이름</th>
+                                    <th>부서</th>
+                                    <th>등록일</th>
+                                    <th>기타</th>
+                                </tr>
+
+                                <tr th:each="account, index : ${userList}">
+                                    <td th:text="${index.index+1}"></td>
+                                    <td th:text="${account.getId()}"></td>
+                                    <td th:text="${account.getName()}"></td>
+                                    <td th:text="${account.getTeamName()}"></td>
+                                    <td th:text="${#temporals.format(account.getCreateDate(), 'yy-MM-dd HH:mm')}"></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div> <!-- ./box-body -->
+
+                        <div class="box-footer"  style="text-align: center; margin-top: 20px;">
+                            <ul class="pagination pagination-sm no-margin" sd:pagination="pager">
+                                <li th:if="${pageMaker.isPrev()}" th:class="activie">
+                                    <a href="/users/list" th:attrappend="href=${pageMaker.makeUrl4SearchPage(pageMaker.getCriteria().getPage())}"><span aria-hidden="true">&laquo;</span></a>
+                                </li>
+                                <li th:unless="${pageMaker.isPrev()}" th:class="disabled">
+                                    <a href="/users/list" th:attrappend="href=${pageMaker.makeUrl4SearchPage(pageMaker.getCriteria().getPage())}"><span aria-hidden="true">&laquo;</span></a>
+                                </li>
+
+                                <th:block th:each="i : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
+                                    <li>
+                                        <a href="/users/list" th:attrappend="href=${pageMaker.makeUrl4SearchPage(i)}" th:text="${i}"></a>
+                                    </li>
+                                </th:block>
+
+                                <li th:if="${pageMaker.isNext()}" th:class="activie">
+                                    <a href="/users/list" th:attrappend="href=${pageMaker.makeUrl4SearchPage(pageMaker.getCriteria().getPage())}"><span aria-hidden="true">&raquo;</span></a>
+                                </li>
+                                <li th:unless="${pageMaker.isNext()}" th:class="disabled">
+                                    <a href="/users/list" th:attrappend="href=${pageMaker.makeUrl4SearchPage(pageMaker.getCriteria().getPage())}"><span aria-hidden="true">&raquo;</span></a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div> <!-- ./box -->
+                </div> <!-- ./col -->
+
+            </div> <!-- row -->
+
+        </section><!-- ./content -->
+    </div> <!-- ./content-wrapper -->
+</th:block>
+
+<th:block layout:fragment="custom_js">
+
+    <script th:src="@{/js/user/list.js}"></script>
+</th:block>
+
+</html>

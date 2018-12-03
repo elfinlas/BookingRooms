@@ -43,8 +43,13 @@ public class RoomDataService {
     }
 
 
+    /**
+     *
+     * @param roomStr
+     * @return
+     */
     public List<Room> getData4RoomStr(String roomStr) {
-        if (roomStr.toLowerCase().equals("a")) { return roomRepoService.getAllRoomList(); }
+        if (roomStr.toLowerCase().equals("a")) { return roomRepoService.getAllRoomList(); } //a 인 경우 전체 가져옴
         else {
             return Arrays.stream(roomStr.split(","))
                     .map(Integer::parseInt)
@@ -52,6 +57,9 @@ public class RoomDataService {
                             collect(Collectors.toList());
         }
     }
+
+
+
 
     /**
      * 회의실 데이터를 추가하는 메서드

@@ -1,13 +1,16 @@
 package com.mhlab.br.controllers.views;
 
+import com.mhlab.br.component.annotations.AdminOnly;
 import com.mhlab.br.domain.dto.LoginDTO;
 import com.mhlab.br.domain.dto.SignUpDto;
+import com.mhlab.br.domain.pages.SearchCriteria;
 import com.mhlab.br.domain.vo.JsonResponseVO;
 import com.mhlab.br.service.data.AccountDataService;
 import com.mhlab.br.utils.SessionHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,13 +24,22 @@ import java.io.IOException;
 @Slf4j
 @Controller
 @RequestMapping(value = "users/*")
-@CrossOrigin(origins = "http://localhost:8888")
 public class UserController {
 
     private AccountDataService accountDataService;
 
     public UserController(AccountDataService accountDataService) {
         this.accountDataService = accountDataService;
+    }
+
+    @AdminOnly
+    @GetMapping("list")
+    public ModelAndView getUserList(@ModelAttribute SearchCriteria criteria) {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("views/users/list");
+        mv.addObject("userList", accountDataService.getAllAccountPageList(criteria));
+        mv.addObject("pageMaker", accountDataService.getPageMaker(criteria));
+        return mv;
     }
 
     @GetMapping("login")

@@ -16,12 +16,12 @@ function click4Option(idx, name, teamName) {
 
 
 function click4PwReset() {
-    showAlert('암호 초기화','계정 암호를 초기화하겠습니까?', '초기화', '/user/update/account/reset/pw/'+$('#accountIdx').val());
+    showAlert('암호 초기화','계정 암호를 초기화하겠습니까?', '초기화', '/users/update/account/reset/pw/'+$('#accountIdx').val());
 }
 
 
 function click4UserDelete() {
-    showAlert('계정 삭제','계정을 삭제하겠습니까?', '삭제', '/users/delete/account/delete/' + $('#accountIdx').val());
+    showAlert('계정 삭제','계정을 삭제하겠습니까?', '삭제', '/users/delete/account/' + $('#accountIdx').val());
 }
 
 function click4UserInfo() {

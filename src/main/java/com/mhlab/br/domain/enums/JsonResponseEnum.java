@@ -33,8 +33,11 @@ public enum JsonResponseEnum {
     ACCOUNT_DELETE_FAIL(-50, "fail"),
 
     //UPDATE Account Info
-    ACCOUNT_INFO_UPDATE_SUCCESS(60, "success"),
-    ACCOUNT_INFO_UPDATE_FAIL(-60, "fail"),
+    ACCOUNT_INFO_ADMIN_UPDATE_SUCCESS(60, "success"),
+    ACCOUNT_INFO_ADMIN_UPDATE_FAIL(-60, "fail"),
+    ACCOUNT_PW_UPDATE_SUCCESS(61, "success"),
+    ACCOUNT_PW_UPDATE_FAIL_WRONG(-61, "Before password is fail."),
+    ACCOUNT_PW_UPDATE_FAIL_VALID(-62, "Change password valid fail."),
 
     //Meeting
     MEETING_BEFORE_RES_SUCCESS(100, "Ok"),

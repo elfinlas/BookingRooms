@@ -1,6 +1,7 @@
 package com.mhlab.br.service.data;
 
 import com.mhlab.br.domain.dto.AccountDTO;
+import com.mhlab.br.domain.dto.ChangePwDTO;
 import com.mhlab.br.domain.dto.LoginDTO;
 import com.mhlab.br.domain.dto.SignUpDto;
 import com.mhlab.br.domain.enums.JsonResponseEnum;
@@ -17,7 +18,6 @@ import com.mhlab.br.utils.SecurityUtils;
 import com.mhlab.br.utils.SessionHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.WebUtils;
 
@@ -25,7 +25,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -212,9 +211,25 @@ public class AccountDataService {
         else { return new JsonResponseVO(JsonResponseEnum.LOGOUT_FAIL); } //세션에 로그인 정보가 없는 경우
     }
 
+    /**
+     * 사용자 암호 정보를 변경하는 메서드
+     * @param account
+     * @return
+     */
+    public JsonResponseVO changeAccountPw(Account account, ChangePwDTO dto) {
+        if (!account.getPw().equals(SecurityUtils.encryptData4SHA(dto.getBeforePw()))) { //기존 암호와 동일하지 않은 경우
+            return new JsonResponseVO(JsonResponseEnum.ACCOUNT_PW_UPDATE_FAIL_WRONG);
+        }
+        else if (!dto.getAfterPw().equals(dto.getValidPw())) { //검증 암호가 틀린 경우
+            return new JsonResponseVO(JsonResponseEnum.ACCOUNT_PW_UPDATE_FAIL_VALID);
+        }
+        account.setPw(SecurityUtils.encryptData4SHA(dto.getAfterPw()));
+        accountRepoService.updateAccountData(account);
+        return new JsonResponseVO(JsonResponseEnum.ACCOUNT_PW_UPDATE_SUCCESS);
+    }
 
     /**
-     * 비밀번호 초기화 메서드
+     * 비밀번호 초기화 메서드 (관리자용)
      * @param accountIdx
      * @return
      */
@@ -226,7 +241,7 @@ public class AccountDataService {
     }
 
     /**
-     * 계정 삭제 처리 메서드
+     * 계정 삭제 처리 메서드 (관리자용)
      * @param accountIdx
      * @return
      */
@@ -247,7 +262,7 @@ public class AccountDataService {
 
 
     /**
-     * 사용자 계정 정보를 업데이트 하는 메서드
+     * 사용자 계정 정보를 업데이트 하는 메서드 (관리자용)
      * @param dto
      * @return
      */
@@ -256,6 +271,6 @@ public class AccountDataService {
         target.setName(dto.getSignUpName());
         target.setTeamName(dto.getTeamName());
         accountRepoService.updateAccountData(target);
-        return new JsonResponseVO(JsonResponseEnum.ACCOUNT_INFO_UPDATE_SUCCESS);
+        return new JsonResponseVO(JsonResponseEnum.ACCOUNT_INFO_ADMIN_UPDATE_SUCCESS);
     }
 }

@@ -75,6 +75,41 @@ function logout() {
 }
 
 
+function showMyInfoModal() {
+    $('#myInfoModal').modal("toggle");
+}
+
 function updateMyInfo() {
 
+    if (isNullValue($('#before_pw').val()) || isNullValue($('#after_pw').val()) || isNullValue($('#again_pw').val()) ) {
+        showSAlert('공백', '입력란에 빈 필드가 있습니다.', 'error');
+        return;
+    }
+    else if ($('#after_pw').val() !== $('#again_pw').val()) { //
+        showSAlert('변경 에러', '변경할 암호와 검증용 암호가 틀립니다.', 'error');
+        return;
+    }
+
+    let jsonObj = {'beforePw':$('#before_pw').val(), 'afterPw':$('#after_pw').val(), 'validPw':$('#again_pw').val()}; //Create JSON Object
+
+    startLoading();
+    $.ajax({
+        url: "/users/update/account/pw",
+        type: "POST",
+        data: JSON.stringify(jsonObj),
+        contentType: "application/json; charset=UTF-8",
+        dataType: "text",
+        timeout:5000 //5 second timeout
+    }).done(function(jqXHR, textStatus){ //가입 성공
+        endLoading();
+        let result = JSON.parse(jqXHR);
+        if(result.resultCode === 61) { self.location = "/"; }
+        else if(result.resultCode === -61) { showSAlert('변경 에러', '기존 암호가 틀립니다.', 'error'); }
+        else if(result.resultCode === -62) { showSAlert('변경 에러', '변경할 암호와 검증용 암호가 틀립니다.', 'error'); }
+    }).fail(function(jqXHR, textStatus){
+        endLoading();
+        showSAlert('서버 에러', '서버에서 문제가 발생하였습니다.', 'error');
+        console.log("jqXHR = " + jqXHR);
+        console.log("textStatus = " + textStatus);
+    });
 }

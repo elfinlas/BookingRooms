@@ -13,6 +13,9 @@
         <!-- Contents -->
         <th:block layout:fragment="content_body"></th:block>
 
+        <!-- MyInfo Modal -->
+        <th:block th:include="fragments/common/my_info_modal"></th:block>
+
         <!-- Footer -->
         <th:block th:include="fragments/main/footer"></th:block>
     </div>
@@ -34,11 +37,6 @@
 
     <!-- jQuery Timepicker -->
     <script th:src="@{/lib/jQuery-Timepicker/jquery.timepicker.min.js}"></script>
-
-
-
-    <!-- bootstrap time picker -->
-    <!--<script th:src="@{/lib/AdminLTE_2.4.5/Plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js}"></script>-->
 
     <script th:src="@{/js/common/common_main.js}"></script>
 

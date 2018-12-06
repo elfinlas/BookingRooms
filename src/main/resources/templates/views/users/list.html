@@ -59,7 +59,14 @@
                                     <td th:text="${account.getName()}"></td>
                                     <td th:text="${account.getTeamName()}"></td>
                                     <td th:text="${#temporals.format(account.getCreateDate(), 'yy-MM-dd HH:mm')}"></td>
-                                    <td></td>
+                                    <td>
+                                        <button type='button' class='btn btn-xs btn-danger'
+                                                th:data1="${account.getAccountIdx()}"
+                                                th:data2="${account.getName()}"
+                                                onclick="click4Option(this.getAttribute('data1'), this.getAttribute('data2') )">
+                                            <i class='fa fa-pencil-square'></i>
+                                        </button>
+                                    </td>
                                 </tr>
                             </table>
                         </div> <!-- ./box-body -->
@@ -93,9 +100,38 @@
 
             </div> <!-- row -->
 
+            <!-- -->
+            <div class="modal fade" id="userControlModal" tabindex="-1" role="dialog" aria-labelledby="userControlModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title" id="userControlModalLabel">사용자 관리</h4>
+                        </div> <!-- ./modal-header -->
+                        <div class="modal-body">
+                            <!--<h4 class="box-title">사용자 관리</h4>-->
+
+                            <input id="accountIdx" type="hidden">
+
+                            <div class="row" id="buttonViewRead" style="margin-top: 30px;">
+                                <div class="col-sm-6 col-md-6 text-center">
+                                    <button type="button" class="btn btn-warning" onclick="click4PwReset()" style="width: 100%;"> 비밀번호 초기화 </button>
+                                </div>
+                                <div class="col-sm-6 col-md-6 text-center">
+                                    <button type="button" class="btn btn-danger" onclick="click4UserDelete()" style="width: 100%;"> 회원 삭제 </button>
+                                </div>
+                            </div>
+
+                        </div> <!-- ./modal-body -->
+                    </div> <!-- modal-content -->
+                </div> <!-- ./modal-dialog -->
+            </div> <!-- Modal -->
+            <!-- -->
+
         </section><!-- ./content -->
     </div> <!-- ./content-wrapper -->
 </th:block>
+
 
 <th:block layout:fragment="custom_js">
 

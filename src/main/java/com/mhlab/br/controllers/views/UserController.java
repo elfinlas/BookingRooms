@@ -76,4 +76,17 @@ public class UserController {
         return accountDataService.signUpAccountData(dto);
     }
 
+
+    @ResponseBody
+    @PostMapping("reset/pw/{idx}")
+    public JsonResponseVO post4ResetAccountPw(@PathVariable(name = "idx") Integer idx) {
+        return accountDataService.resetAccountPw(idx);
+    }
+
+    @ResponseBody
+    @PostMapping("delete/{idx}")
+    public JsonResponseVO post4DeleteAccount(@PathVariable(name = "idx") Integer idx) {
+        return accountDataService.deleteAccount(idx);
+    }
+
 }

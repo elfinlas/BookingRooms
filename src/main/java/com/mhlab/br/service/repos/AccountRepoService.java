@@ -67,6 +67,13 @@ public class AccountRepoService extends AbstractListPageService {
     }
 
     /**
+     * index로 계정 정보를 가져오는 메서드
+     * @param accountIdx
+     * @return
+     */
+    public Account getAccountData4Idx(int accountIdx) { return accountRepo.getOne(accountIdx); }
+
+    /**
      * 자동 로그인 토큰으로 데이터를 찾는 메서드
      * @param token
      * @return
@@ -127,6 +134,15 @@ public class AccountRepoService extends AbstractListPageService {
     }
 
     /**
+     * 계정 정보 업데이트
+     * @param account
+     */
+    public void updateAccountData(Account account) {
+        account.setUpdateDate(LocalDateTime.now());
+        accountRepo.save(account);
+    }
+
+    /**
      * AutoLogin Data를 저장해주는 메서드
      * @param autoLogin
      */
@@ -146,6 +162,15 @@ public class AccountRepoService extends AbstractListPageService {
      */
     public void deleteAutoLoginData(AutoLogin targetAutoLogin) {
         autoLoginRepo.delete(targetAutoLogin);
+    }
+
+
+    /**
+     * 계정 삭제
+     * @param accountIdx
+     */
+    public void deleteAccount(int accountIdx) {
+        accountRepo.delete(accountRepo.getOne(accountIdx));
     }
 
 }

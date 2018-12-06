@@ -9,6 +9,8 @@ import com.mhlab.br.domain.pages.PageMaker;
 import com.mhlab.br.domain.vo.JsonResponseVO;
 import com.mhlab.br.jpa.entity.Account;
 import com.mhlab.br.jpa.entity.AutoLogin;
+import com.mhlab.br.jpa.entity.MeetingMember;
+import com.mhlab.br.jpa.persistence.MeetingAttendMemberRepo;
 import com.mhlab.br.service.repos.AccountRepoService;
 import com.mhlab.br.utils.CommonUtils;
 import com.mhlab.br.utils.SecurityUtils;
@@ -38,12 +40,15 @@ import java.util.stream.Collectors;
 public class AccountDataService {
 
     public static final String AUTO_LOGIN_TOKEN_KEY = "BKAutoLoginToken";
+    public static final String RESET_PW = "1234";
 
     private AccountRepoService accountRepoService;
+    private MeetingAttendMemberRepo meetingAttendMemberRepo;
     private ModelMapper modelMapper;
 
-    public AccountDataService(AccountRepoService accountRepoService, ModelMapper modelMapper) {
+    public AccountDataService(AccountRepoService accountRepoService, MeetingAttendMemberRepo meetingAttendMemberRepo, ModelMapper modelMapper) {
         this.accountRepoService = accountRepoService;
+        this.meetingAttendMemberRepo = meetingAttendMemberRepo;
         this.modelMapper = modelMapper;
     }
 
@@ -205,5 +210,38 @@ public class AccountDataService {
             return new JsonResponseVO(JsonResponseEnum.LOGOUT_SUCCESS);
         }
         else { return new JsonResponseVO(JsonResponseEnum.LOGOUT_FAIL); } //세션에 로그인 정보가 없는 경우
+    }
+
+
+    /**
+     * 비밀번호 초기화 메서드
+     * @param accountIdx
+     * @return
+     */
+    public JsonResponseVO resetAccountPw(int accountIdx) {
+        Account target = accountRepoService.getAccountData4Idx(accountIdx);
+        target.setPw(SecurityUtils.encryptData4SHA(RESET_PW));
+        accountRepoService.updateAccountData(target);
+        return new JsonResponseVO(JsonResponseEnum.ACCOUNT_RESET_PW_SUCCESS);
+    }
+
+    /**
+     * 계정 삭제 처리 메서드
+     * @param accountIdx
+     * @return
+     */
+    public JsonResponseVO deleteAccount(int accountIdx) {
+        Account target = accountRepoService.getAccountData4Idx(accountIdx);
+
+        //순회 하면서 참석한 회의 내역을 갱신한다.
+        for (MeetingMember member : meetingAttendMemberRepo.findByAttendCompanyMember(target)) {
+            member.setAttendOutMember(target.getName());
+            member.setAttendCompanyMember(null);
+            meetingAttendMemberRepo.save(member);
+        }
+
+        //모두 처리 후 삭제 처리
+        accountRepoService.deleteAccount(accountIdx);
+        return new JsonResponseVO(JsonResponseEnum.ACCOUNT_DELETE_SUCCESS);
     }
 }

@@ -37,11 +37,12 @@
                             <table class="table table-hover table-responsive">
                                 <colgroup>
                                     <col width="5%">
-                                    <col width="25%">
-                                    <col width="25%">
-                                    <col width="15%">
                                     <col width="20%">
-                                    <col width="10%">
+                                    <col width="20%">
+                                    <col width="20%">
+                                    <col width="15%">
+                                    <col width="15%">
+                                    <col width="5%">
                                 </colgroup>
 
                                 <tr>
@@ -50,6 +51,7 @@
                                     <th>이름</th>
                                     <th>부서</th>
                                     <th>등록일</th>
+                                    <th>변경일</th>
                                     <th>기타</th>
                                 </tr>
 
@@ -59,11 +61,13 @@
                                     <td th:text="${account.getName()}"></td>
                                     <td th:text="${account.getTeamName()}"></td>
                                     <td th:text="${#temporals.format(account.getCreateDate(), 'yy-MM-dd HH:mm')}"></td>
+                                    <td th:text="${#temporals.format(account.getUpdateDate(), 'yy-MM-dd HH:mm')}"></td>
                                     <td>
                                         <button type='button' class='btn btn-xs btn-danger'
                                                 th:data1="${account.getAccountIdx()}"
                                                 th:data2="${account.getName()}"
-                                                onclick="click4Option(this.getAttribute('data1'), this.getAttribute('data2') )">
+                                                th:data3="${account.getTeamName()}"
+                                                onclick="click4Option(this.getAttribute('data1'), this.getAttribute('data2'), this.getAttribute('data3') )">
                                             <i class='fa fa-pencil-square'></i>
                                         </button>
                                     </td>
@@ -113,11 +117,25 @@
 
                             <input id="accountIdx" type="hidden">
 
+                            <div class="form-group">
+                                <label>사용자 이름</label>
+                                <input type="email" id="user_name" class="form-control" style='ime-mode:disabled;' placeholder="변경할 사용자 이름을 입력하세요.">
+                            </div>
+
+                            <div class="form-group">
+                                <label>부서명</label>
+                                <input type="email" id="team_name" class="form-control" style='ime-mode:disabled;' placeholder="변경할 부서명을 입력하세요.">
+                            </div>
+
                             <div class="row" id="buttonViewRead" style="margin-top: 30px;">
-                                <div class="col-sm-6 col-md-6 text-center">
+                                <div class="col-sm-4 col-md-4 text-center">
+                                    <button type="button" class="btn btn-success" onclick="click4UserInfo()" style="width: 100%;"> 사용자 정보 변경 </button>
+                                </div>
+
+                                <div class="col-sm-4 col-md-4 text-center">
                                     <button type="button" class="btn btn-warning" onclick="click4PwReset()" style="width: 100%;"> 비밀번호 초기화 </button>
                                 </div>
-                                <div class="col-sm-6 col-md-6 text-center">
+                                <div class="col-sm-4 col-md-4 text-center">
                                     <button type="button" class="btn btn-danger" onclick="click4UserDelete()" style="width: 100%;"> 회원 삭제 </button>
                                 </div>
                             </div>

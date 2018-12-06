@@ -244,4 +244,18 @@ public class AccountDataService {
         accountRepoService.deleteAccount(accountIdx);
         return new JsonResponseVO(JsonResponseEnum.ACCOUNT_DELETE_SUCCESS);
     }
+
+
+    /**
+     * 사용자 계정 정보를 업데이트 하는 메서드
+     * @param dto
+     * @return
+     */
+    public JsonResponseVO updateAccount(SignUpDto dto) {
+        Account target = accountRepoService.getAccountData4Idx(dto.getSignUpIdx());
+        target.setName(dto.getSignUpName());
+        target.setTeamName(dto.getTeamName());
+        accountRepoService.updateAccountData(target);
+        return new JsonResponseVO(JsonResponseEnum.ACCOUNT_INFO_UPDATE_SUCCESS);
+    }
 }

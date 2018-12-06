@@ -32,6 +32,10 @@ public enum JsonResponseEnum {
     ACCOUNT_DELETE_SUCCESS(50, "success"),
     ACCOUNT_DELETE_FAIL(-50, "fail"),
 
+    //UPDATE Account Info
+    ACCOUNT_INFO_UPDATE_SUCCESS(60, "success"),
+    ACCOUNT_INFO_UPDATE_FAIL(-60, "fail"),
+
     //Meeting
     MEETING_BEFORE_RES_SUCCESS(100, "Ok"),
     MEETING_BEFORE_RES_FAIL(-100, "Fail"),

@@ -12,6 +12,7 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 public class SignUpDto {
+    private int signUpIdx; //업데이트 시 사용할 사용자 idx
     private String signUpId; //사용자 ID
     private String signUpName; //사용자 이름
     private String teamName; //부서명

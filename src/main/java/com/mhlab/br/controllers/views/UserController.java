@@ -78,15 +78,21 @@ public class UserController {
 
 
     @ResponseBody
-    @PostMapping("reset/pw/{idx}")
+    @PostMapping("update/account/reset/pw/{idx}")
     public JsonResponseVO post4ResetAccountPw(@PathVariable(name = "idx") Integer idx) {
         return accountDataService.resetAccountPw(idx);
     }
 
     @ResponseBody
-    @PostMapping("delete/{idx}")
+    @PostMapping("delete/account/{idx}")
     public JsonResponseVO post4DeleteAccount(@PathVariable(name = "idx") Integer idx) {
         return accountDataService.deleteAccount(idx);
+    }
+
+    @ResponseBody
+    @PostMapping("update/account/info")
+    public JsonResponseVO post4UpdateAccount(@RequestBody SignUpDto dto) {
+        return accountDataService.updateAccount(dto);
     }
 
 }

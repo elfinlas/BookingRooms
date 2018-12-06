@@ -73,3 +73,8 @@ function logout() {
         }
     });
 }
+
+
+function updateMyInfo() {
+
+}

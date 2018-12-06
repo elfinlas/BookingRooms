@@ -1,14 +1,19 @@
 package com.mhlab.br.service.repos;
 
 import com.mhlab.br.domain.dto.AccountDTO;
+import com.mhlab.br.domain.pages.Criteria;
+import com.mhlab.br.domain.pages.PageMaker;
 import com.mhlab.br.jpa.entity.Account;
 import com.mhlab.br.jpa.entity.AutoLogin;
 import com.mhlab.br.jpa.persistence.AccountRepo;
 import com.mhlab.br.jpa.persistence.AutoLoginRepo;
+import com.mhlab.br.service.abstracts.AbstractListPageService;
 import com.mhlab.br.utils.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,7 +29,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class AccountRepoService {
+public class AccountRepoService extends AbstractListPageService {
 
     private AccountRepo accountRepo;
     private AutoLoginRepo autoLoginRepo;
@@ -62,6 +67,13 @@ public class AccountRepoService {
     }
 
     /**
+     * index로 계정 정보를 가져오는 메서드
+     * @param accountIdx
+     * @return
+     */
+    public Account getAccountData4Idx(int accountIdx) { return accountRepo.getOne(accountIdx); }
+
+    /**
      * 자동 로그인 토큰으로 데이터를 찾는 메서드
      * @param token
      * @return
@@ -69,6 +81,29 @@ public class AccountRepoService {
     public Optional<AutoLogin> getAutoLoginData4Token(String token) {
         return autoLoginRepo.findByToken(token);
     }
+
+
+    /**
+     * 전체 사용자 리스트를 페이징 해서 가져오는 메서드
+     * @param criteria
+     * @return
+     */
+    public List<Account> getAllAccountPageList(Criteria criteria) {
+        return accountRepo.findAllBy(PageRequest.of(criteria.getPage(), criteria.getPerPageNum(), Sort.Direction.DESC, "createDate")).stream()
+                .filter(account -> !account.getId().equals("admin"))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Account 용 PageMaker를 만들어주는 메서드
+     * @param criteria
+     * @return
+     */
+    public PageMaker getPageMaker(Criteria criteria) {
+        return getPageMaker(accountRepo.countAllBy(), criteria);
+    }
+
+
 
 
     //////////////////////////////
@@ -99,6 +134,15 @@ public class AccountRepoService {
     }
 
     /**
+     * 계정 정보 업데이트
+     * @param account
+     */
+    public void updateAccountData(Account account) {
+        account.setUpdateDate(LocalDateTime.now());
+        accountRepo.save(account);
+    }
+
+    /**
      * AutoLogin Data를 저장해주는 메서드
      * @param autoLogin
      */
@@ -118,6 +162,15 @@ public class AccountRepoService {
      */
     public void deleteAutoLoginData(AutoLogin targetAutoLogin) {
         autoLoginRepo.delete(targetAutoLogin);
+    }
+
+
+    /**
+     * 계정 삭제
+     * @param accountIdx
+     */
+    public void deleteAccount(int accountIdx) {
+        accountRepo.delete(accountRepo.getOne(accountIdx));
     }
 
 }

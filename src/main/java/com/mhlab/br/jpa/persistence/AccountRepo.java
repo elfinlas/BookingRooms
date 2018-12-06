@@ -1,6 +1,7 @@
 package com.mhlab.br.jpa.persistence;
 
 import com.mhlab.br.jpa.entity.Account;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -56,5 +57,18 @@ public interface AccountRepo extends JpaRepository<Account, Integer> {
     /////////////////////////
     //     With Paging
     /////////////////////////
+
+    /**
+     * 사용자 전체 리스트를 페이징해서 가져오는 메서드
+     * @param pageable
+     * @return
+     */
+    List<Account> findAllBy(Pageable pageable);
+
+    /**
+     * 전체 사용자 카운트를 가져오는 메서드
+     * @return
+     */
+    int countAllBy();
 
 }

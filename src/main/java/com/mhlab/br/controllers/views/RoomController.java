@@ -1,5 +1,6 @@
 package com.mhlab.br.controllers.views;
 
+import com.mhlab.br.component.annotations.AdminOnly;
 import com.mhlab.br.domain.dto.RoomDTO;
 import com.mhlab.br.domain.dto.RoomInMeetingDTO;
 import com.mhlab.br.domain.enums.JsonResponseEnum;
@@ -33,40 +34,14 @@ import java.util.Map;
 @RequestMapping("room/*")
 public class RoomController {
 
-    private RoomRepoService roomRepoService;
     private RoomDataService roomDataService;
+    private RoomRepoService roomRepoService;
     private MeetingDataService meetingDataService;
 
-
-    public RoomController(RoomRepoService roomRepoService, RoomDataService roomDataService, MeetingDataService meetingDataService) {
-        this.roomRepoService = roomRepoService;
+    public RoomController(RoomDataService roomDataService, RoomRepoService roomRepoService, MeetingDataService meetingDataService) {
         this.roomDataService = roomDataService;
+        this.roomRepoService = roomRepoService;
         this.meetingDataService = meetingDataService;
-    }
-
-    /**
-     * 회의실 현황의 화면 데이터를 처리하는 메서드
-     * @param criteria
-     * @return
-     */
-    @GetMapping("status/list")
-    public ModelAndView getRoomStatusDataList(@ModelAttribute SearchCriteria criteria) {
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("views/room/status/list");
-        mv.addObject("roomList", roomRepoService.getAllRoomPageList(criteria));
-        mv.addObject("pageMaker", roomRepoService.getPageMaker(criteria));
-        return mv;
-    }
-
-    /**
-     * 회의실 히스토리 데이터를 처리하는 메서드
-     * @param criteria
-     * @return
-     */
-    @GetMapping("")
-    public ModelAndView getRoomHistoryList(@ModelAttribute SearchCriteria criteria) {
-        ModelAndView mv = new ModelAndView();
-        return mv;
     }
 
 
@@ -76,7 +51,6 @@ public class RoomController {
         mv.setViewName("views/room/meeting/list");
         return mv;
     }
-
 
     /**
      *
@@ -97,10 +71,26 @@ public class RoomController {
     }
 
     /**
+     * 회의실 현황의 화면 데이터를 처리하는 메서드
+     * @param criteria
+     * @return
+     */
+    @AdminOnly
+    @GetMapping("status/list")
+    public ModelAndView getRoomStatusDataList(@ModelAttribute SearchCriteria criteria) {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("views/room/status/list");
+        mv.addObject("roomList", roomRepoService.getAllRoomPageList(criteria));
+        mv.addObject("pageMaker", roomRepoService.getPageMaker(criteria));
+        return mv;
+    }
+
+    /**
      * 회의실 데이터 등록
      * @param dto
      * @return
      */
+    @AdminOnly
     @ResponseBody
     @PostMapping("add/data")
     public JsonResponseVO postRoomAdd(@RequestBody RoomDTO dto) {
@@ -109,10 +99,11 @@ public class RoomController {
 
 
     /**
-     *
+     * 회의실 데이터를
      * @param dto
      * @return
      */
+    @AdminOnly
     @ResponseBody
     @PostMapping("update/data")
     public JsonResponseVO postRoomUpdate(@RequestBody RoomDTO dto) {
@@ -125,6 +116,7 @@ public class RoomController {
      * @param idx
      * @return
      */
+    @AdminOnly
     @ResponseBody
     @PostMapping("delete/data/{idx}")
     public JsonResponseVO postRoomDelete(@PathVariable(name = "idx") Integer idx) {

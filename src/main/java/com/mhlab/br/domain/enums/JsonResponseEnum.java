@@ -24,6 +24,18 @@ public enum JsonResponseEnum {
     LOGOUT_SUCCESS(30, "success"),
     LOGOUT_FAIL(-30, "fail"),
 
+    ////Reset
+    ACCOUNT_RESET_PW_SUCCESS(40, "success"),
+    ACCOUNT_RESET_PW_FAIL(-40, "fail"),
+
+    ////Delete
+    ACCOUNT_DELETE_SUCCESS(50, "success"),
+    ACCOUNT_DELETE_FAIL(-50, "fail"),
+
+    //UPDATE Account Info
+    ACCOUNT_INFO_UPDATE_SUCCESS(60, "success"),
+    ACCOUNT_INFO_UPDATE_FAIL(-60, "fail"),
+
     //Meeting
     MEETING_BEFORE_RES_SUCCESS(100, "Ok"),
     MEETING_BEFORE_RES_FAIL(-100, "Fail"),
@@ -48,6 +60,9 @@ public enum JsonResponseEnum {
     ROOM_DATA_DELETE_SUCCESS(203, "success"),
 
     ROOM_MEETING_DATA_GET_SUCCESS(210, "success"), //회의실별 회의 데이터 조회 성공
+
+
+
 
     SYSTEM_TEST(99999, "Test Ok");
 

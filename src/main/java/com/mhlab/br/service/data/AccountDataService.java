@@ -1,16 +1,22 @@
 package com.mhlab.br.service.data;
 
+import com.mhlab.br.domain.dto.AccountDTO;
 import com.mhlab.br.domain.dto.LoginDTO;
 import com.mhlab.br.domain.dto.SignUpDto;
 import com.mhlab.br.domain.enums.JsonResponseEnum;
+import com.mhlab.br.domain.pages.Criteria;
+import com.mhlab.br.domain.pages.PageMaker;
 import com.mhlab.br.domain.vo.JsonResponseVO;
 import com.mhlab.br.jpa.entity.Account;
 import com.mhlab.br.jpa.entity.AutoLogin;
+import com.mhlab.br.jpa.entity.MeetingMember;
+import com.mhlab.br.jpa.persistence.MeetingAttendMemberRepo;
 import com.mhlab.br.service.repos.AccountRepoService;
 import com.mhlab.br.utils.CommonUtils;
 import com.mhlab.br.utils.SecurityUtils;
 import com.mhlab.br.utils.SessionHelper;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.WebUtils;
@@ -20,6 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 계정 데이터를 처리하는 서비스 객체
@@ -32,13 +40,42 @@ import java.time.LocalDateTime;
 public class AccountDataService {
 
     public static final String AUTO_LOGIN_TOKEN_KEY = "BKAutoLoginToken";
+    public static final String RESET_PW = "1234";
 
     private AccountRepoService accountRepoService;
+    private MeetingAttendMemberRepo meetingAttendMemberRepo;
+    private ModelMapper modelMapper;
 
-    public AccountDataService(AccountRepoService accountRepoService) {
+    public AccountDataService(AccountRepoService accountRepoService, MeetingAttendMemberRepo meetingAttendMemberRepo, ModelMapper modelMapper) {
         this.accountRepoService = accountRepoService;
+        this.meetingAttendMemberRepo = meetingAttendMemberRepo;
+        this.modelMapper = modelMapper;
     }
 
+
+    /////////////////////////
+    //  Get Data
+    /////////////////////////
+
+    /**
+     * 전체 사용자 리스트를 페이징 해서 가져오는 메서드
+     * @param criteria
+     * @return
+     */
+    public List<AccountDTO> getAllAccountPageList(Criteria criteria) {
+        return accountRepoService.getAllAccountPageList(criteria).stream()
+                .map(account -> modelMapper.map(account, AccountDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * PageMaker를 반환하는 메서드
+     * @param criteria
+     * @return
+     */
+    public PageMaker getPageMaker(Criteria criteria) {
+        return accountRepoService.getPageMaker(criteria);
+    }
 
     /////////////////////////
     //  Login & Logout
@@ -173,5 +210,52 @@ public class AccountDataService {
             return new JsonResponseVO(JsonResponseEnum.LOGOUT_SUCCESS);
         }
         else { return new JsonResponseVO(JsonResponseEnum.LOGOUT_FAIL); } //세션에 로그인 정보가 없는 경우
+    }
+
+
+    /**
+     * 비밀번호 초기화 메서드
+     * @param accountIdx
+     * @return
+     */
+    public JsonResponseVO resetAccountPw(int accountIdx) {
+        Account target = accountRepoService.getAccountData4Idx(accountIdx);
+        target.setPw(SecurityUtils.encryptData4SHA(RESET_PW));
+        accountRepoService.updateAccountData(target);
+        return new JsonResponseVO(JsonResponseEnum.ACCOUNT_RESET_PW_SUCCESS);
+    }
+
+    /**
+     * 계정 삭제 처리 메서드
+     * @param accountIdx
+     * @return
+     */
+    public JsonResponseVO deleteAccount(int accountIdx) {
+        Account target = accountRepoService.getAccountData4Idx(accountIdx);
+
+        //순회 하면서 참석한 회의 내역을 갱신한다.
+        for (MeetingMember member : meetingAttendMemberRepo.findByAttendCompanyMember(target)) {
+            member.setAttendOutMember(target.getName());
+            member.setAttendCompanyMember(null);
+            meetingAttendMemberRepo.save(member);
+        }
+
+        //모두 처리 후 삭제 처리
+        accountRepoService.deleteAccount(accountIdx);
+        return new JsonResponseVO(JsonResponseEnum.ACCOUNT_DELETE_SUCCESS);
+    }
+
+
+    /**
+     * 사용자 계정 정보를 업데이트 하는 메서드
+     * @param dto
+     * @return
+     */
+    public JsonResponseVO updateAccount(SignUpDto dto) {
+        Account target = accountRepoService.getAccountData4Idx(dto.getSignUpIdx());
+        target.setName(dto.getSignUpName());
+        target.setTeamName(dto.getTeamName());
+        accountRepoService.updateAccountData(target);
+        return new JsonResponseVO(JsonResponseEnum.ACCOUNT_INFO_UPDATE_SUCCESS);
     }
 }

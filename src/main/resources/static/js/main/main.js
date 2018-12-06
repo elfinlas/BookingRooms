@@ -5,6 +5,15 @@
 
 $(document).ready(function () {
     initWithModal();
+
+    if (getUrlParam('result') === 'noadmin') {
+        swal({
+            title: '권한 없음',
+            text: '관리자급 사용자만 접근이 가능합니다.',
+            type: 'error',
+            confirmButtonText: '확인'
+        }).then(function () { self.location = "/"; })
+    }
 });
 
 //아이템을 클릭했을 때

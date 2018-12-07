@@ -44,7 +44,10 @@ public class RoomController {
         this.meetingDataService = meetingDataService;
     }
 
-
+    /**
+     * 회의실 별 회의 데이터를 가져오는 메서드
+     * @return
+     */
     @GetMapping("meeting/time")
     public ModelAndView getRoomInMeeting() {
         ModelAndView mv = new ModelAndView();
@@ -53,7 +56,7 @@ public class RoomController {
     }
 
     /**
-     *
+     * 회의실에 따른 데이터를 가져오는 메서드
      * @param idx
      * @return
      */
@@ -64,6 +67,12 @@ public class RoomController {
     }
 
 
+    /**
+     * 회의실 및 시간에 따른 데이터를 가져오는 메서드
+     * @param roomStr
+     * @param dateStr
+     * @return
+     */
     @ResponseBody
     @GetMapping("get/data/meeting/time/{room}/{date}")
     public JsonResponseVO getRoomInMeetingData(@PathVariable(name = "room") String roomStr, @PathVariable(name = "date") String dateStr) {

@@ -45,7 +45,6 @@ public class RoomDataService {
         return new JsonResponseVO(JsonResponseEnum.ROOM_DATA_GET_SUCCESS, roomRepoService.getRoomData4Idx(idx));
     }
 
-
     /**
      *
      * @param roomStr
@@ -60,9 +59,6 @@ public class RoomDataService {
                             collect(Collectors.toList());
         }
     }
-
-
-
 
     /**
      * 회의실 데이터를 추가하는 메서드

@@ -59,20 +59,20 @@ public class UserController {
         return "redirect:/users/login";
     }
 
-    @PostMapping("login")
     @ResponseBody
+    @PostMapping("login")
     public JsonResponseVO loginPost(HttpServletRequest request, HttpServletResponse response, @RequestBody LoginDTO dto) {
         return accountDataService.login4NonAutoLogin(request, response, dto);
     }
 
-    @PostMapping("logout")
     @ResponseBody
+    @PostMapping("logout")
     public JsonResponseVO logout(HttpServletRequest request, HttpServletResponse response) {
         return accountDataService.logout(request, response);
     }
 
-    @PostMapping("signup")
     @ResponseBody
+    @PostMapping("signup")
     public JsonResponseVO post4SignUp(@RequestBody SignUpDto dto) {
         return accountDataService.signUpAccountData(dto);
     }

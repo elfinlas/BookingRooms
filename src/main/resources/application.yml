@@ -1,18 +1,10 @@
 spring:
   profiles:
-    active: dev
+    active: stage
+    # active: dev
   devtools:
     livereload:
       enabled: true
   thymeleaf:
     cache: false
     check-template-location: false
-  jpa:
-    hibernate:
-      ddl-auto: update
-      use-new-id-generator-mappings: false
-    show-sql: false
-    generate-ddl: true
-    database: mysql
-    database-platform: com.mhlab.br.config.CustomMySql5Dialect
-

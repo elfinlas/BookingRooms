@@ -42,6 +42,9 @@ dependencies {
 	// Thymeleaf 구조 https://mvnrepository.com/artifact/nz.net.ultraq.thymeleaf/thymeleaf-layout-dialect
 	compile group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '2.3.0'
 
+	//H2 DB 사용
+	testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
+
 	runtimeOnly('org.springframework.boot:spring-boot-devtools')
 
 	testImplementation('org.springframework.boot:spring-boot-starter-test')

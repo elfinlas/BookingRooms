@@ -75,7 +75,7 @@ public class RoomDataService {
     }
 
     /**
-     *
+     * 회의실 업데이트 메서드
      * @param dto
      * @return
      */
@@ -85,11 +85,12 @@ public class RoomDataService {
     }
 
     /**
-     *
+     * 회의실 삭제 메서드
      * @param idx
      * @return
      */
     public JsonResponseVO deleteData(int idx) {
+        if(roomRepoService.getAllRoomList().size() == 1) { return new JsonResponseVO(JsonResponseEnum.ROOM_DATA_DELETE_FAIL_ONLY_ONE); }
         roomRepoService.deleteRoomData(idx);
         return new JsonResponseVO(JsonResponseEnum.ROOM_DATA_DELETE_SUCCESS);
     }

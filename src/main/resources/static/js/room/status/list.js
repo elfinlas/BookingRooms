@@ -113,6 +113,7 @@ function click4Delete() {
                 endLoading();
                 let resultCode = JSON.parse(jqXHR)['resultCode'];
                 if (resultCode === 203) { location.reload(); }
+                else if (resultCode === -203) { showSAlert('삭제 불가', '최소 1개 이상의 회의실은 존재해야 합니다.' , 'error'); }
                 else { //정상적으로 값을 수신하지 못한 경우
                     showSAlert('서버 에러', '서버에서 문제가 발생하였습니다. ('+resultCode+')' , 'error');
                 }

@@ -4,6 +4,7 @@ import com.mhlab.br.domain.dto.RoomDTO;
 import com.mhlab.br.domain.enums.JsonResponseEnum;
 import com.mhlab.br.domain.vo.JsonResponseVO;
 import com.mhlab.br.jpa.entity.Room;
+import com.mhlab.br.service.repos.MeetingRepoService;
 import com.mhlab.br.service.repos.RoomRepoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,9 +24,11 @@ import java.util.stream.Collectors;
 public class RoomDataService {
 
     private RoomRepoService roomRepoService;
+    private MeetingRepoService meetingRepoService;
 
-    public RoomDataService(RoomRepoService roomRepoService) {
+    public RoomDataService(RoomRepoService roomRepoService, MeetingRepoService meetingRepoService) {
         this.roomRepoService = roomRepoService;
+        this.meetingRepoService = meetingRepoService;
     }
 
 
@@ -91,6 +94,10 @@ public class RoomDataService {
      */
     public JsonResponseVO deleteData(int idx) {
         if(roomRepoService.getAllRoomList().size() == 1) { return new JsonResponseVO(JsonResponseEnum.ROOM_DATA_DELETE_FAIL_ONLY_ONE); }
+        else if (meetingRepoService.getMeeting4Room(roomRepoService.getRoomData4Idx(idx)).size() != 0) {
+            return new JsonResponseVO(JsonResponseEnum.ROOM_DATA_DELETE_FAIL_HAS_MEETING_DATA);
+        }
+        //else if
         roomRepoService.deleteRoomData(idx);
         return new JsonResponseVO(JsonResponseEnum.ROOM_DATA_DELETE_SUCCESS);
     }

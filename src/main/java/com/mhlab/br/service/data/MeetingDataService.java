@@ -13,7 +13,6 @@ import com.mhlab.br.jpa.entity.Room;
 import com.mhlab.br.jpa.persistence.AccountRepo;
 import com.mhlab.br.jpa.persistence.MeetingAttendMemberRepo;
 import com.mhlab.br.service.repos.MeetingRepoService;
-import com.mhlab.br.service.repos.RoomRepoService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -104,7 +103,7 @@ public class MeetingDataService {
         List<RoomDTO> roomDTOList = roomList.stream()
                 .map(room -> modelMapper.map(room, RoomDTO.class))
                 .collect(Collectors.toList());
-        List<MeetingDTO> meetingDTOList = meetingRepoService.getMeeting4RoomList(roomList, start, end).stream()
+        List<MeetingDTO> meetingDTOList = meetingRepoService.getMeeting4RoomListWithTime(roomList, start, end).stream()
                 .map(meeting -> modelMapper.map(meeting, MeetingDTO.class))
                 .collect(Collectors.toList());
         RoomInMeetingDTO dto = new RoomInMeetingDTO()
@@ -314,7 +313,7 @@ public class MeetingDataService {
         LocalDateTime targetStartDate = LocalDateTime.of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth(), 0,0,0); //회의실 조회 시작일
         LocalDateTime targetEndDate = LocalDateTime.of(endDate.getYear(), endDate.getMonth(), endDate.getDayOfMonth(), 23,59,59); //회의실 조회 종료일
 
-        for (Meeting meeting : meetingRepoService.getMeeting4Room(meetingDTO.getRoom(), targetStartDate, targetEndDate)) { //순회하며 점검
+        for (Meeting meeting : meetingRepoService.getMeeting4RoomWithTime(meetingDTO.getRoom(), targetStartDate, targetEndDate)) { //순회하며 점검
             if (meeting.getMeetingIdx() == meetingDTO.getMeetingIdx()) { continue; } //만약 업데이트의 경우 넘겨준다.
 
             if (startDate.isEqual(meeting.getStartDate())) { return START_SAME; }

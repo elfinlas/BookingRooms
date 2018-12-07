@@ -23,8 +23,12 @@ public interface MeetingRepo extends JpaRepository<Meeting, Integer> {
     //    WithOut Paging
     /////////////////////////
 
-    //Test
-    List<Meeting> findByRoomAndStartDateGreaterThanEqualAndEndDateLessThanEqual(Room room, LocalDateTime startDate, LocalDateTime endDate);
+    /**
+     * 회의실에 따른 회의 데이터를 가져온다.
+     * @param room
+     * @return
+     */
+    List<Meeting> findByRoom(Room room);
 
     /**
      * 특정 회의실에 시작, 종료 시간에 맞는 데이터를 가져오는 메서드

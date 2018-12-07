@@ -74,6 +74,14 @@ public class MeetingRepoService extends AbstractListPageService {
         return meetingRepo.getOne(idx);
     }
 
+    /**
+     * 회의실에 따른 회의 데이터를 가져오는 메서드
+     * @param room
+     * @return
+     */
+    public List<Meeting> getMeeting4Room(Room room) {
+        return meetingRepo.findByRoom(room);
+    }
 
     /**
      * 특정 회의실에서 진행 및 시작, 종료 시간에 맞는 데이터를 가져오는 메서드
@@ -82,7 +90,7 @@ public class MeetingRepoService extends AbstractListPageService {
      * @param end
      * @return
      */
-    public List<Meeting> getMeeting4RoomList(List<Room> roomList, LocalDateTime start, LocalDateTime end) {
+    public List<Meeting> getMeeting4RoomListWithTime(List<Room> roomList, LocalDateTime start, LocalDateTime end) {
         return roomList.stream()
                 .map(room -> meetingRepo.findByRoomAndStartDateAfterAndEndDateBeforeOrderByStartDate(room, start, end))
                 .flatMap(List::stream)
@@ -97,7 +105,7 @@ public class MeetingRepoService extends AbstractListPageService {
      * @param end
      * @return
      */
-    public List<Meeting> getMeeting4Room(Room room, LocalDateTime start, LocalDateTime end) {
+    public List<Meeting> getMeeting4RoomWithTime(Room room, LocalDateTime start, LocalDateTime end) {
         return meetingRepo.findByRoomAndStartDateAfterAndEndDateBeforeOrderByStartDate(room, start, end);
     }
 

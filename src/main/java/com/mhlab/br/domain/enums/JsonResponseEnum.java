@@ -61,7 +61,8 @@ public enum JsonResponseEnum {
     ROOM_DATA_ADD_SUCCESS(201, "success"),
     ROOM_DATA_UPDATE_SUCCESS(202, "success"),
     ROOM_DATA_DELETE_SUCCESS(203, "success"),
-    ROOM_DATA_DELETE_FAIL_ONLY_ONE(-203, "Fail, Room item must be more than two."),
+    ROOM_DATA_DELETE_FAIL_ONLY_ONE(-200, "Fail, Room item must be more than two."),
+    ROOM_DATA_DELETE_FAIL_HAS_MEETING_DATA(-201, "Fail, Use room data for meeting."),
 
     ROOM_MEETING_DATA_GET_SUCCESS(210, "success"), //회의실별 회의 데이터 조회 성공
 

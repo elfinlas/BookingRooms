@@ -13,5 +13,10 @@ import java.util.Optional;
 
 @Repository
 public interface AutoLoginRepo extends JpaRepository<AutoLogin, Integer> {
+    /**
+     * 자동 로그인 토큰을 찾는 메서드
+     * @param token
+     * @return
+     */
     Optional<AutoLogin> findByToken(String token);
 }

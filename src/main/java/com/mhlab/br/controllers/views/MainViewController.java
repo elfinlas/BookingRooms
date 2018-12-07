@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.time.LocalDateTime;
 
 /**
+ * 메인 화면
  * Created by MHLab on 17/10/2018.
  */
 

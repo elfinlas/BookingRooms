@@ -141,10 +141,18 @@ public class MeetingDataService {
      * @return
      */
     public List<MeetingDTO> getMeetingData4Week() {
-        LocalDateTime monday = LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.FRIDAY)).plusDays(3); //월요일
-        LocalDateTime friday = LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.FRIDAY)).plusDays(7); //금요일
-        LocalDateTime startDate = LocalDateTime.of(monday.getYear(), monday.getMonth(), monday.getDayOfMonth(), 0,0,0);
-        LocalDateTime endDate = LocalDateTime.of(friday.getYear(), friday.getMonth(), friday.getDayOfMonth(), 23,59,59);
+        LocalDateTime start;
+        LocalDateTime end;
+        if (!LocalDateTime.now().getDayOfWeek().equals(DayOfWeek.SUNDAY)) { //일요일인 경우
+            start = LocalDateTime.now();
+            end = LocalDateTime.now().plusDays(6);
+        }
+        else { //그 외는 시작일
+            start = LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.FRIDAY)).plusDays(2); //월요일
+            end = LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.FRIDAY)).plusDays(8); //금요일
+        }
+        LocalDateTime startDate = LocalDateTime.of(start.getYear(), start.getMonth(), start.getDayOfMonth(), 0,0,0);
+        LocalDateTime endDate = LocalDateTime.of(end.getYear(), end.getMonth(), end.getDayOfMonth(), 23,59,59);
         return getMeetingData4DateWithMemberStr(startDate, endDate);
     }
 

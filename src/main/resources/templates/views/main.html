@@ -77,11 +77,11 @@
                         </div>
 
                         <div class="box-body">
-                            <th:block th:if="${todayList.size() == 0}">
+                            <th:block th:if="${weekList.size() == 0}">
                                 <h2 class="page-header">이번 주 회의 일정이 없습니다.</h2>
                             </th:block>
 
-                            <th:block th:unless="${todayList.size() == 0}">
+                            <th:block th:unless="${weekList.size() == 0}">
                                 <table class="table table-hover table-responsive">
                                     <colgroup>
                                         <col width="10%">

@@ -1,7 +1,7 @@
 spring:
   profiles:
-    active: stage
-#     active: dev
+#    active: stage
+     active: dev
   devtools:
     livereload:
       enabled: true

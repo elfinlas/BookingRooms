@@ -65,5 +65,5 @@
 
 ## 스크린샷
 
-[](https://github.com/elfinlas/BookingRooms/blob/master/git_res/img/login.png?raw=true)
-[](https://github.com/elfinlas/BookingRooms/blob/master/git_res/img/main_01.png?raw=true)
+[](https://github.com/elfinlas/BookingRooms/blob/master/git_res/img/login.png)
+[](https://github.com/elfinlas/BookingRooms/blob/master/git_res/img/main_01.png)

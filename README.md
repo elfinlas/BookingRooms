@@ -65,5 +65,10 @@
 
 ## 스크린샷
 
+* 로그인 화면 
 ![login](https://raw.githubusercontent.com/elfinlas/BookingRooms/master/git_res/img/login.png)
+
+<br>
+
+* 메인 화면
 ![main](https://raw.githubusercontent.com/elfinlas/BookingRooms/master/git_res/img/main_01.png)
